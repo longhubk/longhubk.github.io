@@ -1,2 +1,2 @@
 # longhubk.github.io
-my page in github io
+My page in github io
