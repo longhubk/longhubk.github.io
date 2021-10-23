@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Dang nhap</title>
+  <link rel="stylesheet" type="text/css" href="main.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <script src="index.js" type="text/javascript" ></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="blurb">
+      <label for="us">Username</label>
+      <input id="us" type="text" placeholder="enter username" /><br />
+      <label for="us">Password</label>
+      <input id="pw" type="password" placeholder="enter password" /><br />
+      <label for="us">Password</label>
+      <input id="pwa" type="password" placeholder="enter password again" /><br />
+      <button id="btn-login" onclick="su()">Sign Up</button>
+    </div>
+    <!-- /.blurb -->
+  </div>
+  <!-- /.container -->
+  <footer>
+  </footer>
+  <script type="text/javascript">
+    const uf = document.getElementById('us');
+    const pf = document.getElementById('pw');
+    const pfa = document.getElementById('pwa');
+    const su = () => signup(uf.value, pf.value, pfa.value);
+
+  </script>
+</body>
+
+</html>

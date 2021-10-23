@@ -1,0 +1,37 @@
+version: '3'
+services:
+  #Nginx Service
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+      - "443:443"
+    networks:
+      - app-network
+
+  # #MySQL Service
+  # db:
+  #   image: mysql:8.0
+  #   container_name: db
+  #   restart: unless-stopped
+  #   tty: true
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     MYSQL_DATABASE: blogdb
+  #     MYSQL_ROOT_PASSWORD: admin
+  #     SERVICE_TAGS: dev
+  #     SERVICE_NAME: mysql
+  #   networks:
+  #     - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge

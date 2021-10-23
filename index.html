@@ -3,6 +3,8 @@
   <head>
     <title>Nguyen Thanh Long, Pages</title>
     <link rel="stylesheet" type="text/css" href="main.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="index.js" type="text/javascript" ></script>
   </head>
   <body>
     <nav>
@@ -11,6 +13,10 @@
         <li><a href="/about.html">About</a></li>
         <li><a href="/myCV.html">CV</a></li>
         <li><a href="/blog.html">Blog</a></li>
+      </ul>
+      <ul>
+        <li id="lg"><a href="/login.html">log in</a></li>
+        <li id="su"><a href="/signup.html">sign up</a></li>
       </ul>
     </nav>
     <div class="container">
@@ -29,5 +35,25 @@
         <li><a href="https://github.com/longhubk">longhubk</a></li>
       </ul>
     </footer>
+    <script type="text/javascript">
+      const lg = document.getElementById('lg');
+      const su = document.getElementById('su');
+      const temp = document.createElement('a');
+      const temp2 = document.createElement('a');
+      (async () => {
+        const isLogin = await checkIsLogin();
+        console.log('res Is Login: ', isLogin);
+        if (isLogin) {
+          temp.setAttribute('onclick', 'return logout()');
+          temp2.setAttribute('href', '/about.html');
+          temp2.innerHTML = isLogin;
+          temp.innerHTML = 'Log Out';
+          lg.innerHTML = '';
+          lg.appendChild(temp2);
+          lg.appendChild(temp);
+          su.innerHTML = '';
+        } 
+      })();
+    </script>
   </body>
 </html>
