@@ -23,9 +23,12 @@
       <div class="blurb">
         <h1>Hi there, I'm Nguyen Thanh Long!</h1>
         <p>
-          This is my blog page in github io platform. <a href="/about">Read more about me...</a>
+          This is my blog page in github io platform. <a href="/about.html">Read more about me...</a>
         </p>
+
       </div>
+      <p>New post here</p>
+      <ol id="list-note"></ol>
       <!-- /.blurb -->
     </div>
     <!-- /.container -->
@@ -46,6 +49,21 @@
           su.innerHTML = '';
         } 
       })();
+
+    (async () => {
+      const ln = document.getElementById('list-note');
+      console.log('manage your note');
+      const listNote = await getListNote();
+      console.log('listNote', listNote);
+      for (const note of listNote) {
+        const li = document.createElement('li')
+        li.setAttribute('class', "note-item")
+        li.innerHTML = `
+          <a class="note-tit" href='/note.list.html?noteId=${note._id}'>${note.title}</a>
+          `;
+        ln.append(li);
+      }
+    })()
     </script>
   </body>
 </html>

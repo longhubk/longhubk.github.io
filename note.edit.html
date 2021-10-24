@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Some thing i have note</title>
-    <link rel="stylesheet" type="text/css" href="main.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
-    <script src="index.js" type="text/javascript" ></script>
-  </head>
-  <body>
-    <nav>
-      <ul>
-        <li><a href="/">Go Back</a></li>
-      </ul>
-    </nav>
-    <div class="container">
-      <div>
-        <input id="txt-title" value="" type="text" /><br/>
-        <textarea id="txt-content" rows="20"></textarea><br/><br/>
-        <button onclick="update()">update</button>
-      </div>
-      <!-- /.blurb -->
-    </div>
-    <!-- /.container -->
-    <footer>
-    </footer>
-    <script type="text/javascript">
-      const txtField = document.getElementById('txt-content');
-      const txtTitle = document.getElementById('txt-title');
-      let note;
-      (async () => {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        const params = Object.fromEntries(urlSearchParams.entries());
-        const {noteId} = params; 
-        note = await getNote(noteId);
-        console.log('note', note);
-        txtTitle.value = note.title; 
-        txtField.value = note.content;
-      })();
 
-      const update = async () => {
-        console.log('noteId', note._id);
-        const res = await updateNote(note._id, txtTitle.value, txtField.value);
-        if (res.code === '00') {
-          window.alert('update successfully');
-        } else {
-          window.alert('update failed', res.msg);
-        }
+<head>
+  <title>Edit note</title>
+  <link rel="stylesheet" type="text/css" href="main.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
+  <script src="index.js" type="text/javascript"></script>
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <div>
+      <textarea id="txt-title" rows="2"></textarea><br /><br />
+      <textarea id="txt-content" rows="20"></textarea><br /><br />
+      <button onclick="update()">update</button>
+    </div>
+    <!-- /.blurb -->
+  </div>
+  <!-- /.container -->
+  <footer>
+  </footer>
+  <script type="text/javascript">
+    const txtField = document.getElementById('txt-content');
+    const txtTitle = document.getElementById('txt-title');
+    let note;
+    (async () => {
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      const params = Object.fromEntries(urlSearchParams.entries());
+      const { noteId } = params;
+      note = await getNote(noteId);
+      console.log('note', note);
+      txtTitle.value = note.title;
+      txtField.value = note.content;
+    })();
+
+    const update = async () => {
+      console.log('noteId', note._id);
+      const res = await updateNote(note._id, txtTitle.value, txtField.value);
+      if (res.code === '00') {
+        window.alert('update successfully');
+      } else {
+        window.alert('update failed', res.msg);
       }
-    </script>
-  </body>
+    }
+  </script>
+</body>
+
 </html>

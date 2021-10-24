@@ -129,7 +129,7 @@ const updateNote = async (noteId, title, content) => {
   const oldTK = localStorage.getItem('token');
   if (oldTK) {
     try {
-      const data = await axios.post(`${server_url}/note/update`, {noteId, title, content }, { headers: { Authorization: `Bearer ${oldTK}` } });
+      const data = await axios.post(`${server_url}/note/update`, { noteId, title, content }, { headers: { Authorization: `Bearer ${oldTK}` } });
       console.log('update res', data);
       if (data.data.code === '00') {
         console.log('update ok', JSON.stringify(data.data.msg));

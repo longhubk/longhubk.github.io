@@ -10,13 +10,14 @@
   <body>
     <nav>
       <ul>
-        <li><a href="/">Go Back</a></li>
+        <li><a href="/">Home</a></li>
       </ul>
     </nav>
     <div class="container">
       <div>
+        <h1 id="tit"></h1>
         <div id="blg"></div>
-        <button onclick="con()">con</button>
+        <!-- <button onclick="con()">con</button> -->
       </div>
       <!-- /.blurb -->
     </div>
@@ -25,12 +26,20 @@
     </footer>
     <script type="text/javascript">
       const blg = document.getElementById('blg');
-      const con = async () => {
-        console.log('tao da vao day dcm may');
-        const mdx = await getNote('617475b84d0be733d4691c32');
-        console.log('mdx', mdx);
-        blg.innerHTML = renderNote(mdx.content);
-      }
+      const tit = document.getElementById('tit');
+      (async () => {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        const {noteId} = params; 
+        note = await getNote(noteId);
+        console.log('note', note);
+        if (note) {
+          tit.innerHTML = note.title;
+          blg.innerHTML = renderNote(note.content);
+        } else {
+          blg.innerHTML = 'Not found'
+        }
+      })();
     </script>
   </body>
 </html>
