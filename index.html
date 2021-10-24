@@ -12,7 +12,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="/about.html">About</a></li>
         <li><a href="/myCV.html">CV</a></li>
-        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/note.list.html">Blog</a></li>
       </ul>
       <ul>
         <li id="lg"><a href="/login.html">log in</a></li>
@@ -38,19 +38,11 @@
     <script type="text/javascript">
       const lg = document.getElementById('lg');
       const su = document.getElementById('su');
-      const temp = document.createElement('a');
-      const temp2 = document.createElement('a');
       (async () => {
         const isLogin = await checkIsLogin();
         console.log('res Is Login: ', isLogin);
         if (isLogin) {
-          temp.setAttribute('onclick', 'return logout()');
-          temp2.setAttribute('href', '/about.html');
-          temp2.innerHTML = isLogin;
-          temp.innerHTML = 'Log Out';
-          lg.innerHTML = '';
-          lg.appendChild(temp2);
-          lg.appendChild(temp);
+          lg.innerHTML = `<a href='/note.manager.html'>${isLogin}</a> <a onclick='return logout()'>Log Out</a>` ;
           su.innerHTML = '';
         } 
       })();
