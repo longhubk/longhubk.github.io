@@ -2,8 +2,9 @@
 <html>
 
 <head>
-  <title>Dang nhap</title>
+  <title>VSB</title>
   <link rel="stylesheet" type="text/css" href="main.css" />
+  <link rel="shortcut icon" href="code.ico">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
   <script src="index.js" type="text/javascript"></script>
 </head>
@@ -17,8 +18,8 @@
   <div class="container">
     <div class="blurb">
       <label for="us"></label>
-      <input id="us" type="text" placeholder="enter username" /><br />
-      <input id="pw" type="password" placeholder="enter password" /><br />
+      <input id="us" type="text" placeholder="enter username" /><br /><br />
+      <input id="pw" type="password" placeholder="enter password" /><br /> <br />
       <button id="btn-login" onclick="lg()">Log in</button>
     </div>
     <!-- /.blurb -->
@@ -30,6 +31,14 @@
     const uf = document.getElementById('us');
     const pf = document.getElementById('pw');
     const lg = () => login(uf.value, pf.value);
+
+    (async () => {
+      const isLogin = await checkIsLogin();
+      console.log('res Is Login: ', isLogin);
+      if (isLogin) {
+        window.location.href = '/';
+      } 
+    })();
   </script>
 </body>
 

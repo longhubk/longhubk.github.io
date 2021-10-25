@@ -1,4 +1,4 @@
-console.log('index.js start');
+// console.log('index.js start');
 const server_url = "https://dblogit.herokuapp.com";
 
 const checkIsLogin = async () => {
@@ -6,7 +6,7 @@ const checkIsLogin = async () => {
   if (oldTK) {
     try {
       const data = await axios.get(`${server_url}/user/profile`, { headers: { Authorization: `Bearer ${oldTK}` } });
-      console.log('profile', data);
+      // console.log('profile', data);
       if (data.data.code === '00') {
         console.log('is login');
         return data.data.msg.user.username;
@@ -30,15 +30,15 @@ const logout = () => {
   console.log('logout', oldTK);
   console.log('cho tao xin may bug loi ra di', oldTK);
   localStorage.removeItem('token');
-  // location.reload();
+  location.reload();
 }
 
 const login = (us, pw) => {
-  console.log('login by', us, pw);
+  // console.log('login by', us, pw);
   axios.post(`${server_url}/user/login`, { username: us, password: pw }).then((data) => {
-    console.log('data', JSON.stringify(data));
+    // console.log('data', JSON.stringify(data));
     const { msg, code } = data.data;
-    console.log('msg:', JSON.stringify(msg), 'code: ', code);
+    // console.log('msg:', JSON.stringify(msg), 'code: ', code);
     if (code === '00') {
       window.alert('login success');
       localStorage.setItem('token', msg.token);
@@ -52,11 +52,11 @@ const login = (us, pw) => {
 }
 
 const signup = (us, pw, pwa) => {
-  console.log('signup by', us, pw, pwa);
+  // console.log('signup by', us, pw, pwa);
   axios.post(`${server_url}/user/signup`, { username: us, password: pw, passwordAgain: pwa }).then((data) => {
-    console.log('data', JSON.stringify(data));
+    // console.log('data', JSON.stringify(data));
     const { msg, code } = data.data;
-    console.log('msg:', JSON.stringify(msg), 'code: ', code);
+    // console.log('msg:', JSON.stringify(msg), 'code: ', code);
     if (code === '00') {
       window.alert('Sign up success');
       location.reload();
@@ -76,32 +76,24 @@ const renderNote = (rawMD) => {
           return hljs.highlight(lang, str).value;
         } catch (err) { }
       }
-
       try {
         return hljs.highlightAuto(str).value;
       } catch (err) { }
-
       return ''; // use external default escaping
     }
   });
-  const abc = md.render('# long handsome!');
-  console.log(abc);
-  // => <h1>Remarkable rulezz!</h1>
-  console.log(rawMD);
   const res = md.render(rawMD);
-  console.log(res);
-  console.log('res', res);
   return res;
 }
 
 const getListNote = async () => {
-  console.log('getListNote');
+  // console.log('getListNote');
   try {
     const data = await axios.get(`${server_url}/note`);
-    console.log('data', data);
+    // console.log('data', data);
     if (data.data.code === '00') {
       const res = data.data.msg;
-      console.log('res note', data.data.msg.content);
+      // console.log('res note', data.data.msg.content);
       return res;
     } else {
       console.log('not note');
@@ -111,10 +103,9 @@ const getListNote = async () => {
 }
 
 const getNote = async (noteId) => {
-  console.log('getNote', noteId);
+  // console.log('getNote', noteId);
   try {
     const data = await axios.get(`${server_url}/note/${noteId}`);
-    // console.log('data', data);
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
@@ -130,7 +121,7 @@ const updateNote = async (noteId, title, content) => {
   if (oldTK) {
     try {
       const data = await axios.post(`${server_url}/note/update`, { noteId, title, content }, { headers: { Authorization: `Bearer ${oldTK}` } });
-      console.log('update res', data);
+      // console.log('update res', data);
       if (data.data.code === '00') {
         console.log('update ok', JSON.stringify(data.data.msg));
         return data.data;
@@ -150,7 +141,7 @@ const createNote = async (title, content) => {
   if (oldTK) {
     try {
       const data = await axios.post(`${server_url}/note/`, { title, content }, { headers: { Authorization: `Bearer ${oldTK}` } });
-      console.log('create res', data);
+      // console.log('create res', data);
       if (data.data.code === '00') {
         console.log('create ok', JSON.stringify(data.data.msg));
         return data.data;

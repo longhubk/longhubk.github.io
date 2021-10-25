@@ -2,8 +2,9 @@
 <html>
 
 <head>
-  <title>Manage your note</title>
+  <title>VSB</title>
   <link rel="stylesheet" type="text/css" href="main.css" />
+  <link rel="shortcut icon" href="code.ico">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
   <script src="index.js" type="text/javascript"></script>
 </head>
@@ -24,10 +25,18 @@
   </footer>
   <script type="text/javascript">
     (async () => {
+      const isLogin = await checkIsLogin();
+      console.log('res Is Login: ', isLogin);
+      if (!isLogin) {
+        window.location.href = '/';
+      } 
+    })();
+
+    (async () => {
       const ln = document.getElementById('list-note');
-      console.log('manage your note');
+      // console.log('manage your note');
       const listNote = await getListNote();
-      console.log('listNote', listNote);
+      // console.log('listNote', listNote);
       for (const note of listNote) {
         const li = document.createElement('li')
         li.setAttribute('class', "note-item")

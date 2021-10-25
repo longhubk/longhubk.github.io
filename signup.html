@@ -2,8 +2,9 @@
 <html>
 
 <head>
-  <title>Dang nhap</title>
+  <title>VSB</title>
   <link rel="stylesheet" type="text/css" href="main.css" />
+  <link rel="shortcut icon" href="code.ico">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
   <script src="index.js" type="text/javascript" ></script>
 </head>
@@ -16,12 +17,9 @@
   </nav>
   <div class="container">
     <div class="blurb">
-      <label for="us">Username</label>
-      <input id="us" type="text" placeholder="enter username" /><br />
-      <label for="us">Password</label>
-      <input id="pw" type="password" placeholder="enter password" /><br />
-      <label for="us">Password</label>
-      <input id="pwa" type="password" placeholder="enter password again" /><br />
+      <input id="us" type="text" placeholder="enter username" /><br /><br/>
+      <input id="pw" type="password" placeholder="enter password" /><br /><br/>
+      <input id="pwa" type="password" placeholder="enter password again" /><br /><br />
       <button id="btn-login" onclick="su()">Sign Up</button>
     </div>
     <!-- /.blurb -->
@@ -34,6 +32,14 @@
     const pf = document.getElementById('pw');
     const pfa = document.getElementById('pwa');
     const su = () => signup(uf.value, pf.value, pfa.value);
+
+    (async () => {
+      const isLogin = await checkIsLogin();
+      console.log('res Is Login: ', isLogin);
+      if (isLogin) {
+        window.location.href = '/';
+      } 
+    })();
 
   </script>
 </body>

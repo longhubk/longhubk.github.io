@@ -2,8 +2,9 @@
 <html>
 
 <head>
-  <title>New note</title>
+  <title>VSB</title>
   <link rel="stylesheet" type="text/css" href="main.css" />
+  <link rel="shortcut icon" href="code.ico">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
   <script src="index.js" type="text/javascript"></script>
@@ -21,7 +22,6 @@
       <textarea id="txt-content" rows="20"></textarea><br /><br />
       <button onclick="create()">create</button>
       <div style="width: 2rem"></div>
-      <button onclick="preview()">preview</button>
     </div>
     <!-- /.blurb -->
   </div>
@@ -40,9 +40,13 @@
       }
     }
 
-    const preview = () => {
-      console.log('need to do');
-    }
+    (async () => {
+      const isLogin = await checkIsLogin();
+      console.log('res Is Login: ', isLogin);
+      if (!isLogin) {
+        window.location.href = '/';
+      } 
+    })();
 
   </script>
 </body>
