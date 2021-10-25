@@ -135,10 +135,30 @@ const updateNote = async (noteId, title, content) => {
         console.log('update ok', JSON.stringify(data.data.msg));
         return data.data;
       } else {
-        console.log('is not login');
+        console.log('update fail');
         return data.data;
       }
-    } catch (err) { console.log('not login') };
+    } catch (err) { console.log(err) };
+  } else {
+    console.log('no token');
+    return { code: '09', msg: 'no token' };
+  }
+}
+
+const createNote = async (title, content) => {
+  const oldTK = localStorage.getItem('token');
+  if (oldTK) {
+    try {
+      const data = await axios.post(`${server_url}/note/`, { title, content }, { headers: { Authorization: `Bearer ${oldTK}` } });
+      console.log('create res', data);
+      if (data.data.code === '00') {
+        console.log('create ok', JSON.stringify(data.data.msg));
+        return data.data;
+      } else {
+        console.log('create fail');
+        return data.data;
+      }
+    } catch (err) { console.log(err) };
   } else {
     console.log('no token');
     return { code: '09', msg: 'no token' };

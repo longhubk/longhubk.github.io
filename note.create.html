@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Edit note</title>
+  <title>New note</title>
   <link rel="stylesheet" type="text/css" href="main.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
@@ -19,7 +19,7 @@
     <div>
       <textarea id="txt-title" rows="2"></textarea><br /><br />
       <textarea id="txt-content" rows="20"></textarea><br /><br />
-      <button onclick="update()">update</button>
+      <button onclick="create()">create</button>
       <div style="width: 2rem"></div>
       <button onclick="preview()">preview</button>
     </div>
@@ -31,30 +31,19 @@
   <script type="text/javascript">
     const txtField = document.getElementById('txt-content');
     const txtTitle = document.getElementById('txt-title');
-    let note;
-    (async () => {
-      const urlSearchParams = new URLSearchParams(window.location.search);
-      const params = Object.fromEntries(urlSearchParams.entries());
-      const { noteId } = params;
-      note = await getNote(noteId);
-      console.log('note', note);
-      txtTitle.value = note.title;
-      txtField.value = note.content;
-    })();
-
-    const update = async () => {
-      console.log('noteId', note._id);
-      const res = await updateNote(note._id, txtTitle.value, txtField.value);
+    const create = async () => {
+      const res = await createNote(txtTitle.value, txtField.value);
       if (res.code === '00') {
-        window.alert('update successfully');
+        window.alert('create successfully');
       } else {
-        window.alert('update failed', res.msg);
+        window.alert('create failed', res.msg);
       }
     }
 
     const preview = () => {
       console.log('need to do');
     }
+
   </script>
 </body>
 
