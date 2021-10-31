@@ -18,6 +18,10 @@
     <div>
       <textarea id="txt-title" rows="2"></textarea><br /><br />
       <textarea id="txt-content" rows="20"></textarea><br /><br />
+      <select id="note-state">
+        <option value="0">Publish</option>
+        <option value="1">Private</option>
+      </select>
       <button onclick="update()">update</button>
       <div style="width: 2rem"></div>
     </div>
@@ -27,7 +31,9 @@
   <script type="text/javascript">
     const txtField = document.getElementById('txt-content');
     const txtTitle = document.getElementById('txt-title');
+    const noteState = document.getElementById('note-state');
     let note;
+    // const {_id, createdBy, ...rest} = note;
 
     (async () => {
       const isLogin = await checkIsLogin();
@@ -41,19 +47,24 @@
       const urlSearchParams = new URLSearchParams(window.location.search);
       const params = Object.fromEntries(urlSearchParams.entries());
       const { noteId } = params;
-      note = await getNote(noteId);
+      note = await getAdminNote(noteId);
       // console.log('note', note);
       txtTitle.value = note.title;
       txtField.value = note.content;
+      noteState.value = note.state;
     })();
 
     const update = async () => {
       console.log('noteId', note._id);
-      const res = await updateNote(note._id, txtTitle.value, txtField.value);
+
+      const updateData = { title: txtTitle.value, content: txtField.value, state: noteState.value }
+      console.log('state: ', noteState.value );
+      const res = await updateNote(updateData, note);
       if (res.code === '00') {
         window.alert('update successfully');
+        window.location.href = `/note.list.html?noteId=${note._id}`;
       } else {
-        window.alert('update failed', res.msg);
+        window.alert(`update failed: ${res.msg}`);
       }
     }
 
