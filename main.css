@@ -1,42 +1,23 @@
+* {
+  font-size: calc(0.75em + 1vmin);
+}
+
 body {
-  margin: 20px auto;
+  margin: 10px auto;
   width: 90%;
-}
-nav {
-  display: flex;
-  justify-content: space-between;
-}
-nav ul,
-footer ul {
   font-family: "Helvetica", "Arial", "Sans-Serif";
-  padding: 0px;
-  list-style: none;
-  font-weight: bold;
+  box-sizing: border-box;
 }
-nav ul li,
-footer ul li {
-  display: inline;
-  margin-right: 20px;
+
+#nav {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  padding: 1rem 0;
 }
+
 a {
   text-decoration: none;
   color: #999;
-}
-a:hover {
-  text-decoration: underline;
-}
-h1 {
-  font-size: 3em;
-  font-family: "Helvetica", "Arial", "Sans-Serif";
-}
-p {
-  font-size: 1.5em;
-  line-height: 1.4em;
-  color: #333;
-}
-footer {
-  border-top: 1px solid #d5d5d5;
-  font-size: 0.8em;
 }
 
 textarea {
@@ -50,6 +31,10 @@ button {
 
 input {
   padding: 0.5rem;
+}
+
+ul {
+  list-style-type: none;
 }
 
 ul.posts {
@@ -76,18 +61,10 @@ ul.posts li {
 }
 
 #list-note .note-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-#list-note .note-item .note-tit {
-  font-size: x-large;
+  margin: 3rem 0;
 }
 
 #list-note .note-item .note-edit {
-  font-size: medium;
   color: lightseagreen;
 }
 

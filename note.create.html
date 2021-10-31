@@ -11,21 +11,17 @@
 </head>
 
 <body>
-  <nav>
-    <ul>
+  <div class="container">
+    <ul id="nav">
       <li><a href="/">Home</a></li>
     </ul>
-  </nav>
-  <div class="container">
     <div>
       <textarea id="txt-title" rows="2"></textarea><br /><br />
       <textarea id="txt-content" rows="20"></textarea><br /><br />
       <button onclick="create()">create</button>
       <div style="width: 2rem"></div>
     </div>
-    <!-- /.blurb -->
   </div>
-  <!-- /.container -->
   <footer>
   </footer>
   <script type="text/javascript">
@@ -45,7 +41,7 @@
       console.log('res Is Login: ', isLogin);
       if (!isLogin) {
         window.location.href = '/';
-      } 
+      }
     })();
 
   </script>

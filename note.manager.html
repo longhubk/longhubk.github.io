@@ -10,17 +10,13 @@
 </head>
 
 <body>
-  <nav>
-    <ul>
+  <div class="container">
+    <ul id="nav">
       <li><a href="/">Home</a></li>
     </ul>
-  </nav>
-  <div class="container">
-    <ol id="list-note"></ol>
+    <ul id="list-note"></ul>
     <a href="/note.create.html">New note</a>
-    <!-- /.blurb -->
   </div>
-  <!-- /.container -->
   <footer>
   </footer>
   <script type="text/javascript">
@@ -29,7 +25,7 @@
       console.log('res Is Login: ', isLogin);
       if (!isLogin) {
         window.location.href = '/';
-      } 
+      }
     })();
 
     (async () => {

@@ -10,21 +10,15 @@
 </head>
 
 <body>
-  <nav>
-    <ul>
+  <div class="container">
+    <ul id="nav">
       <li><a href="/">Home</a></li>
     </ul>
-  </nav>
-  <div class="container">
-    <div class="blurb">
-      <label for="us"></label>
-      <input id="us" type="text" placeholder="enter username" /><br /><br />
-      <input id="pw" type="password" placeholder="enter password" /><br /> <br />
-      <button id="btn-login" onclick="lg()">Log in</button>
-    </div>
-    <!-- /.blurb -->
+    <label for="us"></label>
+    <input id="us" type="text" placeholder="enter username" /><br /><br />
+    <input id="pw" type="password" placeholder="enter password" /><br /> <br />
+    <button id="btn-login" onclick="lg()">Log in</button>
   </div>
-  <!-- /.container -->
   <footer>
   </footer>
   <script type="text/javascript">
@@ -37,7 +31,7 @@
       console.log('res Is Login: ', isLogin);
       if (isLogin) {
         window.location.href = '/';
-      } 
+      }
     })();
   </script>
 </body>
