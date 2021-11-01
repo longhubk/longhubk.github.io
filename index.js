@@ -1,6 +1,6 @@
 // console.log('index.js start');
-// const server_url = "https://dblogit.herokuapp.com";
-const server_url = "http://localhost:3000";
+const server_url = "https://dblogit.herokuapp.com";
+//const server_url = "http://localhost:3000";
 
 const checkIsLogin = async () => {
   const oldTK = localStorage.getItem('token');
