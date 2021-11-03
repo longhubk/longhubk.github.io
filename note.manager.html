@@ -37,7 +37,7 @@
       let itemPages = "";
       for (let i = 0; i < countNote; i += perPage) {
         const numPage = +(i > 0 ? (i / perPage) : i)+1;
-        itemPages += `<a style="margin: 1rem" href="/index.html?page=${numPage}">${numPage}</a>`;
+        itemPages += `<a style="margin: 1rem" href="/note.manager.html?page=${numPage}">${numPage}</a>`;
       }
       console.log('itemPage 1', itemPages);
       return itemPages;
