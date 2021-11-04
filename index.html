@@ -5,7 +5,7 @@
   <title>VSB</title>
   <link rel="stylesheet" type="text/css" href="main.css" />
   <link rel="shortcut icon" href="code.ico">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <script src="axios.js" type="text/javascript"></script>
   <script src="index.js" type="text/javascript"></script>
 </head>
 
@@ -52,7 +52,7 @@
       let itemPages = "";
       for (let i = 0; i < countNote; i += perPage) {
         const numPage = +(i > 0 ? (i / perPage) : i)+1;
-        itemPages += `<a style="margin: 1rem" href="/index.html?page=${numPage}">${numPage}</a>`;
+        itemPages += `<a href="/index.html?page=${numPage}">${numPage}</a>`;
       }
       console.log('itemPage 1', itemPages);
       return itemPages;

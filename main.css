@@ -72,6 +72,22 @@ img[alt="img1"] {
   width: 100%;
 }
 
+#tit {
+  font-size: xx-large;
+  font-size: xxx-large;
+}
+
+#pagination {
+  margin: 4rem 0;
+}
+
+#pagination a {
+  font-size: 1.5rem;
+  padding: 1rem;
+  background-color: beige;
+  margin: 0 1rem;
+}
+
 /* If the screen size is 600px wide or less, hide the element */
 @media only screen and (min-width: 1000px) {
   body {
