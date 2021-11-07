@@ -23,7 +23,7 @@
     </p>
     <p>New post here</p>
     <ul id="list-note"></ul>
-    <ul id="pagination"></ul>
+    <div id="pagination"></div>
   </div>
   <!-- /.container -->
   <footer>
@@ -37,7 +37,7 @@
     const su = document.getElementById('su');
     const pg = document.getElementById('pagination');
     const ln = document.getElementById('list-note');
-    const perPage = 10;
+    const page = getQueryParam('page');
 
     (async () => {
       const isLogin = await checkIsLogin();
@@ -48,40 +48,25 @@
       }
     })();
     
-    const createItem = async (countNote) => {
-      let itemPages = "";
-      for (let i = 0; i < countNote; i += perPage) {
-        const numPage = +(i > 0 ? (i / perPage) : i)+1;
-        itemPages += `<a href="/index.html?page=${numPage}">${numPage}</a>`;
-      }
-      console.log('itemPage 1', itemPages);
-      return itemPages;
-    }
-
     (async () => {
       const countNote = (await getCountNote()).count;
       console.log('countNote', countNote);
       if (countNote) {
-        const itemPage = await createItem(countNote);
+        const itemPage = await createPageItem(countNote, page, '/index.html');
         console.log('itemPage 2', itemPage);
         pg.innerHTML = itemPage;
       }
 
-      const urlSearchParams = new URLSearchParams(window.location.search);
-      const params = Object.fromEntries(urlSearchParams.entries());
-      const { page } = params;
       const currentPage = page ? page : 1;
       const listNote = await getListNote(currentPage);
+      let innerNote = ''
       for (const note of listNote) {
-        console.log('note', note);
-        const li = document.createElement('li')
-        li.setAttribute('class', "note-item")
-        li.innerHTML = `
+       innerNote += `<li class="note-item">
           <a class="note-tit" href='/note.list.html?noteId=${note._id}'>${note.title}</a>
           <p>${new Date(note.created_at).toDateString()}</p>
-          `;
-        ln.append(li);
+          </li>`;
       }
+      ln.innerHTML = innerNote;
     })()
   </script>
 </body>

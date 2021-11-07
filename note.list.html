@@ -27,12 +27,11 @@
   <script type="text/javascript">
     const blg = document.getElementById('blg');
     const tit = document.getElementById('tit');
+    const role = getQueryParam('role');
+
     (async () => {
-      const urlSearchParams = new URLSearchParams(window.location.search);
-      const params = Object.fromEntries(urlSearchParams.entries());
-      const { noteId } = params;
-      note = await getNote(noteId);
-      // console.log('note', note);
+      const noteId = getQueryParam('noteId');
+      note = role === 1 ? (await getNote(noteId)) : (await getAdminNote(noteId)) ;
       if (note) {
         tit.innerHTML = note.title;
         blg.innerHTML = renderNote(note.content);

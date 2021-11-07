@@ -28,7 +28,6 @@
 
     (async () => {
       const isLogin = await checkIsLogin();
-      console.log('res Is Login: ', isLogin);
       if (isLogin) {
         window.location.href = '/';
       }

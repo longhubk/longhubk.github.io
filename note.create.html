@@ -17,8 +17,13 @@
     <div>
       <textarea id="txt-title" rows="2"></textarea><br /><br />
       <textarea id="txt-content" rows="20"></textarea><br /><br />
+      <select id="note-state">
+        <option value="0">Publish</option>
+        <option value="1">Private</option>
+        <option value="2">Hidden</option>
+      </select>
       <button onclick="create()">create</button>
-      <div style="width: 2rem"></div>
+      <div style="width: 2rem"></div
     </div>
   </div>
   <footer>
@@ -26,10 +31,12 @@
   <script type="text/javascript">
     const txtField = document.getElementById('txt-content');
     const txtTitle = document.getElementById('txt-title');
+    const noteState = document.getElementById('note-state');
     const create = async () => {
-      const res = await createNote(txtTitle.value, txtField.value);
+      const res = await createNote(txtTitle.value, txtField.value, noteState.value);
       if (res.code === '00') {
         window.alert('create successfully');
+        window.location.href = `/note.list.html?noteId=${res.msg.noteId}&role=1`;
       } else {
         window.alert('create failed', res.msg);
       }
@@ -37,7 +44,6 @@
 
     (async () => {
       const isLogin = await checkIsLogin();
-      console.log('res Is Login: ', isLogin);
       if (!isLogin) {
         window.location.href = '/';
       }

@@ -18,6 +18,7 @@ body {
 a {
   text-decoration: none;
   color: #999;
+  cursor: pointer;
 }
 
 textarea {
@@ -26,7 +27,8 @@ textarea {
 }
 
 button {
-  padding: 0.5rem 1.25rem
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
 }
 
 input {
@@ -37,18 +39,18 @@ ul {
   list-style-type: none;
 }
 
-ul.posts {
+.posts {
   margin: 20px auto 40px;
   font-size: 1.5em;
 }
 
-ul.posts li {
+.posts li {
   list-style: none;
 }
 
 #txt-content {
   width: 100%;
-  height: 500px;
+  max-height: 1000px;
 }
 
 #txt-title {
@@ -82,10 +84,16 @@ img[alt="img1"] {
 }
 
 #pagination a {
-  font-size: 1.5rem;
-  padding: 1rem;
   background-color: beige;
-  margin: 0 1rem;
+  margin: 0 0.75rem;
+}
+
+#current-page {
+  color: black;
+}
+
+.hidden-page {
+  display: none;
 }
 
 /* If the screen size is 600px wide or less, hide the element */
@@ -93,5 +101,11 @@ img[alt="img1"] {
   body {
     margin: 60px auto;
     width: 70%;
+  }
+}
+
+@media only screen and (min-width: 320px) {
+  #pagination a {
+    font-size: 7vw;
   }
 }

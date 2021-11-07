@@ -15,57 +15,41 @@
       <li><a href="/">Home</a></li>
     </ul>
     <ul id="list-note"></ul>
-    <ul id="pagination"></ul>
+    <div id="pagination"></div>
     <a href="/note.create.html">New note</a>
+    <div style="height: 50px"></div>
   </div>
   <footer>
   </footer>
   <script type="text/javascript">
     const ln = document.getElementById('list-note');
     const pg = document.getElementById('pagination');
-    const perPage = 10;
+
+    const page = getQueryParam('page');
 
     (async () => {
       const isLogin = await checkIsLogin();
-      console.log('res Is Login: ', isLogin);
       if (!isLogin) {
         window.location.href = '/';
       }
     })();
 
-    const createItem = async (countNote) => {
-      let itemPages = "";
-      for (let i = 0; i < countNote; i += perPage) {
-        const numPage = +(i > 0 ? (i / perPage) : i)+1;
-        itemPages += `<a href="/note.manager.html?page=${numPage}">${numPage}</a>`;
-      }
-      console.log('itemPage 1', itemPages);
-      return itemPages;
-    }
-
     (async () => {
       const countNote = (await getAdminCountNote()).count;
-      console.log('countNote', countNote);
       if (countNote) {
-        const itemPage = await createItem(countNote);
-        console.log('itemPage 2', itemPage);
+        const itemPage = await createPageItem(countNote, page, '/note.manager.html');
         pg.innerHTML = itemPage;
       }
 
-      const urlSearchParams = new URLSearchParams(window.location.search);
-      const params = Object.fromEntries(urlSearchParams.entries());
-      const { page } = params;
       const currentPage = page ? page : 1;
       const listNote = await getAdminListNote(currentPage);
-      // console.log('listNote', listNote);
+      let innerNote = ''
       for (const note of listNote) {
-        const li = document.createElement('li')
-        li.setAttribute('class', "note-item")
-        li.innerHTML = `
-          <a class="note-tit" href='/note.list.html?noteId=${note._id}'>${note.title}</a>
-          <a class="note-edit" href='/note.edit.html?noteId=${note._id}'>edit</a>`;
-        ln.append(li);
+       innerNote += `<li class="note-item">
+          <a class="note-tit" href='/note.list.html?noteId=${note._id}&role=1'>${note.title}</a>
+          <a class="note-edit" href='/note.edit.html?noteId=${note._id}'>edit</a></li>`;
       }
+      ln.innerHTML = innerNote;
     })()
   </script>
 </body>
