@@ -22,6 +22,8 @@
       This is my blog page in github io platform. <a href="/about.html">Read more about me...</a>
     </p>
     <p>New post here</p>
+    <input id="is" type="text" value="" placeholder="type something" />
+    <button id="bs" onclick="btnSearch()">search</button>
     <ul id="list-note"></ul>
     <div id="pagination"></div>
   </div>
@@ -35,9 +37,12 @@
   <script type="text/javascript">
     const lg = document.getElementById('lg');
     const su = document.getElementById('su');
+    const bs = document.getElementById('bs');
+    const is = document.getElementById('is');
     const pg = document.getElementById('pagination');
     const ln = document.getElementById('list-note');
     const page = getQueryParam('page');
+    const keyword = getQueryParam('keyword');
 
     (async () => {
       const isLogin = await checkIsLogin();
@@ -47,18 +52,22 @@
         su.innerHTML = `<a href="#" onclick='return logout()'>Log Out</a>`;
       }
     })();
-    
-    (async () => {
-      const countNote = (await getCountNote()).count;
+
+    const btnSearch = () => {
+      let url = new URL(window.location.href);
+      url.searchParams.append('keyword', is.value);
+    }
+
+    const renderListNote = async (keyword = '') => {
+      const countNote = (await getCountNote(keyword)).count;
       console.log('countNote', countNote);
       if (countNote) {
         const itemPage = await createPageItem(countNote, page, '/index.html');
         console.log('itemPage 2', itemPage);
         pg.innerHTML = itemPage;
       }
-
       const currentPage = page ? page : 1;
-      const listNote = await getListNote(currentPage);
+      const listNote = await getListNote(currentPage, keyword);
       let innerNote = ''
       for (const note of listNote) {
        innerNote += `<li class="note-item">
@@ -67,6 +76,10 @@
           </li>`;
       }
       ln.innerHTML = innerNote;
+    }
+    
+    (async () => {
+      await renderListNote(keyword);
     })()
   </script>
 </body>

@@ -100,10 +100,10 @@ const renderNote = (rawMD) => {
   const res = md.render(rawMD);
   return res;
 }
-const getAdminListNote = async (page = 1) => {
+const getAdminListNote = async (page = 1, keyword = '') => {
   try {
     const oldTK = localStorage.getItem('token')
-    let data = await axios.get(`${server_url}/note/page-ad/${page}`, { headers: { Authorization: `Bearer ${oldTK}` } });
+    let data = await axios.get(`${server_url}/note/page-ad/${page}/${keyword}`, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
@@ -114,9 +114,9 @@ const getAdminListNote = async (page = 1) => {
 }
 
 
-const getListNote = async (page = 1) => {
+const getListNote = async (page = 1, keyword = '') => {
   try {
-    const data = await axios.get(`${server_url}/note/page/${page}`);
+    const data = await axios.get(`${server_url}/note/page/${page}/${keyword}`);
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
@@ -151,9 +151,9 @@ const getNote = async (noteId) => {
   } catch (err) { console.log(err) };
 }
 
-const getCountNote = async () => {
+const getCountNote = async (keyword = '') => {
   try {
-    const data = await axios.get(`${server_url}/note/count`);
+    const data = await axios.get(`${server_url}/note/count/${keyword}`);
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
@@ -163,10 +163,10 @@ const getCountNote = async () => {
   } catch (err) { console.log(err) };
 }
 
-const getAdminCountNote = async () => {
+const getAdminCountNote = async (keyword = '') => {
   try {
     const oldTK = localStorage.getItem('token')
-    const data = await axios.get(`${server_url}/note/count-ad`, { headers: { Authorization: `Bearer ${oldTK}` } });
+    const data = await axios.get(`${server_url}/note/count-ad/${keyword}`, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
