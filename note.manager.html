@@ -14,6 +14,8 @@
     <ul id="nav">
       <li><a href="/">Home</a></li>
     </ul>
+    <input id="is" type="text" value="" placeholder="type something" />
+    <button id="bs" onclick="btnSearch()">search</button>
     <ul id="list-note"></ul>
     <div id="pagination"></div>
     <a href="/note.create.html">New note</a>
@@ -24,8 +26,11 @@
   <script type="text/javascript">
     const ln = document.getElementById('list-note');
     const pg = document.getElementById('pagination');
+    const bs = document.getElementById('bs');
+    const is = document.getElementById('is');
 
     const page = getQueryParam('page');
+    const keyword = getQueryParam('keyword');
 
     (async () => {
       const isLogin = await checkIsLogin();
@@ -34,15 +39,20 @@
       }
     })();
 
-    (async () => {
-      const countNote = (await getAdminCountNote()).count;
+
+    const btnSearch = () => {
+      insertParam('keyword', is.value);
+    }
+
+    const renderListNote = async (keyword = '') => {
+      const countNote = (await getAdminCountNote(keyword)).count;
       if (countNote) {
         const itemPage = await createPageItem(countNote, page, '/note.manager.html');
         pg.innerHTML = itemPage;
       }
 
       const currentPage = page ? page : 1;
-      const listNote = await getAdminListNote(currentPage);
+      const listNote = await getAdminListNote(currentPage, keyword);
       let innerNote = ''
       for (const note of listNote) {
        innerNote += `<li class="note-item">
@@ -50,6 +60,10 @@
           <a class="note-edit" href='/note.edit.html?noteId=${note._id}'>edit</a></li>`;
       }
       ln.innerHTML = innerNote;
+    }
+    
+    (async () => {
+      await renderListNote(keyword);
     })()
   </script>
 </body>

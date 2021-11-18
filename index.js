@@ -1,5 +1,5 @@
-const server_url = "https://dblogit.herokuapp.com";
-//const server_url = "http://localhost:3000";
+// const server_url = "https://dblogit.herokuapp.com";
+const server_url = "http://localhost:3000";
 
 const perPage = 10;
 const deltaPage = 2;
@@ -103,7 +103,7 @@ const renderNote = (rawMD) => {
 const getAdminListNote = async (page = 1, keyword = '') => {
   try {
     const oldTK = localStorage.getItem('token')
-    let data = await axios.get(`${server_url}/note/page-ad/${page}/${keyword}`, { headers: { Authorization: `Bearer ${oldTK}` } });
+    const data = await axios.get(`${server_url}/note/page-ad/${page}${keyword ? `?keyword=${keyword}` : ''}`, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
@@ -116,7 +116,7 @@ const getAdminListNote = async (page = 1, keyword = '') => {
 
 const getListNote = async (page = 1, keyword = '') => {
   try {
-    const data = await axios.get(`${server_url}/note/page/${page}/${keyword}`);
+    const data = await axios.get(`${server_url}/note/page/${page}${keyword ? `?keyword=${keyword}` : ''}`);
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
@@ -126,8 +126,38 @@ const getListNote = async (page = 1, keyword = '') => {
   } catch (err) { console.log(err) };
 }
 
+const insertParam = (key, value) => {
+  console.log('insertParam', key, value);
+  key = encodeURIComponent(key);
+  value = encodeURIComponent(value);
+
+  // kvp looks like ['key1=value1', 'key2=value2', ...]
+  var kvp = document.location.search.substr(1).split('&');
+  let i=0;
+
+  for(; i<kvp.length; i++){
+      if (kvp[i].startsWith(key + '=')) {
+          let pair = kvp[i].split('=');
+          pair[1] = value;
+          kvp[i] = pair.join('=');
+          break;
+      }
+  }
+
+  if(i >= kvp.length){
+      kvp[kvp.length] = [key,value].join('=');
+  }
+
+  // can return this or...
+  let params = kvp.join('&');
+
+  // reload page with new params
+  document.location.search = params;
+}
+
 const getAdminNote = async (noteId) => {
   try {
+    console.log('getAdminNote');
     const oldTK = localStorage.getItem('token')
     const data = await axios.get(`${server_url}/note/one-ad/${noteId}`, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
@@ -141,6 +171,7 @@ const getAdminNote = async (noteId) => {
 
 const getNote = async (noteId) => {
   try {
+    console.log('getNote');
     const data = await axios.get(`${server_url}/note/one/${noteId}`);
     if (data.data.code === '00') {
       const res = data.data.msg;
@@ -153,7 +184,7 @@ const getNote = async (noteId) => {
 
 const getCountNote = async (keyword = '') => {
   try {
-    const data = await axios.get(`${server_url}/note/count/${keyword}`);
+    const data = await axios.get(`${server_url}/note/count${keyword ? `?keyword=${keyword}` : ''}`);
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
@@ -166,7 +197,7 @@ const getCountNote = async (keyword = '') => {
 const getAdminCountNote = async (keyword = '') => {
   try {
     const oldTK = localStorage.getItem('token')
-    const data = await axios.get(`${server_url}/note/count-ad/${keyword}`, { headers: { Authorization: `Bearer ${oldTK}` } });
+    const data = await axios.get(`${server_url}/note/count-ad${keyword ? `?keyword=${keyword}` : ''}`, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;

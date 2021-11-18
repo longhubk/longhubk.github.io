@@ -54,8 +54,7 @@
     })();
 
     const btnSearch = () => {
-      let url = new URL(window.location.href);
-      url.searchParams.append('keyword', is.value);
+      insertParam('keyword', is.value);
     }
 
     const renderListNote = async (keyword = '') => {
