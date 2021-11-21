@@ -22,6 +22,8 @@
         <option value="1">Private</option>
         <option value="2">Hidden</option>
       </select>
+      <select id="note-tag">
+      </select>
       <button onclick="create()">create</button>
       <div style="width: 2rem"></div
     </div>
@@ -32,8 +34,10 @@
     const txtField = document.getElementById('txt-content');
     const txtTitle = document.getElementById('txt-title');
     const noteState = document.getElementById('note-state');
+    const noteTag = document.getElementById('note-tag');
+
     const create = async () => {
-      const res = await createNote(txtTitle.value, txtField.value, noteState.value);
+      const res = await createNote(txtTitle.value, txtField.value, noteState.value, noteTag.value);
       if (res.code === '00') {
         window.alert('create successfully');
         window.location.href = `/note.list.html?noteId=${res.msg.noteId}&role=1`;
@@ -47,6 +51,13 @@
       if (!isLogin) {
         window.location.href = '/';
       }
+
+      const listTag = await getTag();
+      let innerTag = ``;
+      for(const tag of listTag) {
+        innerTag += `<option value="${tag._id}">${tag.name}</option>`;
+      }
+      noteTag.innerHTML = innerTag;
     })();
 
   </script>

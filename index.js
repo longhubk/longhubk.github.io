@@ -100,10 +100,14 @@ const renderNote = (rawMD) => {
   const res = md.render(rawMD);
   return res;
 }
-const getAdminListNote = async (page = 1, keyword = '') => {
+const getAdminListNote = async (page = 1, keyword, tag) => {
   try {
     const oldTK = localStorage.getItem('token')
-    const data = await axios.get(`${server_url}/note/page-ad/${page}${keyword ? `?keyword=${keyword}` : ''}`, { headers: { Authorization: `Bearer ${oldTK}` } });
+    const url = `${server_url}/note/page-ad/${page}`;
+    const kwUrl = keyword ? `${url}?keyword=${keyword}` : url;
+    const tgUrl = (keyword && tag) ? `${kwUrl}&tag=${tag}` : tag ? `${url}?tag=${tag}` : url;
+    console.log('tgUrl', tgUrl);
+    const data = await axios.get(tgUrl, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
@@ -131,34 +135,31 @@ const insertParam = (key, value) => {
   key = encodeURIComponent(key);
   value = encodeURIComponent(value);
 
-  // kvp looks like ['key1=value1', 'key2=value2', ...]
   var kvp = document.location.search.substr(1).split('&');
-  let i=0;
+  let i = 0;
 
-  for(; i<kvp.length; i++){
-      if (kvp[i].startsWith(key + '=')) {
-          let pair = kvp[i].split('=');
-          pair[1] = value;
-          kvp[i] = pair.join('=');
-          break;
-      }
+  for (; i < kvp.length; i++) {
+    if (kvp[i].startsWith(key + '=')) {
+      let pair = kvp[i].split('=');
+      pair[1] = value;
+      kvp[i] = pair.join('=');
+      break;
+    }
   }
 
-  if(i >= kvp.length){
-      kvp[kvp.length] = [key,value].join('=');
+  if (i >= kvp.length) {
+    kvp[kvp.length] = [key, value].join('=');
   }
 
-  // can return this or...
   let params = kvp.join('&');
 
-  // reload page with new params
   document.location.search = params;
 }
 
 const getAdminNote = async (noteId) => {
   try {
     console.log('getAdminNote');
-    const oldTK = localStorage.getItem('token')
+    const oldTK = localStorage.getItem('token');
     const data = await axios.get(`${server_url}/note/one-ad/${noteId}`, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
       const res = data.data.msg;
@@ -196,7 +197,7 @@ const getCountNote = async (keyword = '') => {
 
 const getAdminCountNote = async (keyword = '') => {
   try {
-    const oldTK = localStorage.getItem('token')
+    const oldTK = localStorage.getItem('token');
     const data = await axios.get(`${server_url}/note/count-ad${keyword ? `?keyword=${keyword}` : ''}`, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
       const res = data.data.msg;
@@ -210,33 +211,62 @@ const getAdminCountNote = async (keyword = '') => {
 
 
 const updateNote = async (updateData, oldData) => {
-  const oldTK = localStorage.getItem('token')
+  const oldTK = localStorage.getItem('token');
   if (oldTK) {
     try {
       const data = await axios.post(`${server_url}/note/update`, { updateData, oldData }, { headers: { Authorization: `Bearer ${oldTK}` } });
-      // if (data.data.code === '00') {
-        return data.data;
-      // } else {
-        // return data.data;
-      // }
+      return data.data;
     } catch (err) { console.log(err) };
   } else {
     return { code: '09', msg: 'no token' };
   }
 }
 
-const createNote = async (title, content, state = 0) => {
+const createNote = async (title, content, state = 0, tag) => {
   const oldTK = localStorage.getItem('token');
   if (oldTK) {
     try {
-      const data = await axios.post(`${server_url}/note/`, { title, content, state }, { headers: { Authorization: `Bearer ${oldTK}` } });
-      // if (data.data.code === '00') {
-      //   return data.data;
-      // } else {
+      const data = await axios.post(`${server_url}/note/`, { title, content, state, tag}, { headers: { Authorization: `Bearer ${oldTK}` } });
       return data.data;
-      // }
     } catch (err) { console.log(err) };
   } else {
     return { code: '09', msg: 'no token' };
   }
+}
+
+const createNewTag = async (tag) => {
+  const oldTK = localStorage.getItem('token');
+  if (oldTK) {
+    try {
+      const data = await axios.post(`${server_url}/tag/`, { tag }, { headers: { Authorization: `Bearer ${oldTK}` } });
+      return data.data;
+    } catch (err) { console.log(err) };
+  } else {
+    return { code: '09', msg: 'no token' };
+  }
+}
+
+const updateTag = async (tag, tagId) => {
+  const oldTK = localStorage.getItem('token');
+  if (oldTK) {
+    try {
+      const data = await axios.post(`${server_url}/tag/update`, { tag, tagId }, { headers: { Authorization: `Bearer ${oldTK}` } });
+      return data.data;
+    } catch (err) { console.log(err) };
+  } else {
+    return { code: '09', msg: 'no token' };
+  }
+}
+
+const getTag = async () => {
+  try {
+    const oldTK = localStorage.getItem('token');
+    const data = await axios.get(`${server_url}/tag/`, { headers: { Authorization: `Bearer ${oldTK}` } });
+    if (data.data.code === '00') {
+      const res = data.data.msg;
+      return res;
+    } else {
+      return false;
+    }
+  } catch (err) { console.log(err) };
 }
