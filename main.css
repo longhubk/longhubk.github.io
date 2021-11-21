@@ -90,6 +90,7 @@ img[alt="img1"] {
 
 #current-page {
   color: black;
+  pointer-events: none;
 }
 
 .hidden-page {

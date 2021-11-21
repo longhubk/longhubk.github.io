@@ -55,13 +55,21 @@
       const listNote = await getAdminListNote(currentPage, keyword);
       let innerNote = ''
       for (const note of listNote) {
-       innerNote += `<li class="note-item">
-          <a class="note-tit" href='/note.list.html?noteId=${note._id}&role=1'>${note.title}</a>
-          <a class="note-edit" href='/note.edit.html?noteId=${note._id}'>edit</a></li>`;
+        innerNote += `
+          <li class="note-item">
+            <div>
+              <a class="note-tit" href='/note.list.html?noteId=${note._id}&role=1'>${note.title}</a>
+              <a class="note-edit" href='/note.edit.html?noteId=${note._id}'>edit</a>
+            </div>
+            <div>
+              <p>${new Date(note.created_at).toDateString()}</p>
+              <p>${note.state == 0 ? "Public" : note.state === 1 ? "Private" : "Hidden"}</p>
+            </div>
+          </li>`;
       }
       ln.innerHTML = innerNote;
     }
-    
+
     (async () => {
       await renderListNote(keyword);
     })()
