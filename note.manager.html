@@ -31,7 +31,7 @@
     </ul>
     <input id="is" type="text" value="" placeholder="type something" />
     <button id="bs" onclick="btnSearch()">search</button>
-    <button onclick="btnNewNote()" >New note</button>
+    <button onclick="btnNewNote()">New note</button>
     <button onclick="openModal()">Create tag</button>
     <ul id="list-tag">list tag</ul>
     <ul id="list-note"></ul>
@@ -50,6 +50,8 @@
     const page = getQueryParam('page');
     const keyword = getQueryParam('keyword');
     const tag = getQueryParam('tag');
+
+    let listAction = [];
 
     (async () => {
       const isLogin = await checkIsLogin();
@@ -79,7 +81,6 @@
       const res = await createNewTag(inputTag.value);
       if (res.code === '00') {
         window.alert('create successfully');
-        // inputTag.value = '';
         window.location.reload();
       } else {
         window.alert(`update failed: ${res.msg}`);
@@ -91,7 +92,7 @@
     }
 
     const btnNewNote = () => {
-      window.location.href="/note.create.html";
+      window.location.href = "/note.create.html";
     }
 
     const renderListNote = async (keyword = '', tag) => {
@@ -105,6 +106,8 @@
       const listNote = await getAdminListNote(currentPage, keyword, tag);
       let innerNote = ''
       for (const note of listNote) {
+        const act = listAction.find(e => String(e.noteId._id) === String(note._id));
+        const reAct = act && Number(act.action) === 1 ? 2 : 1;
         innerNote += `
           <li class="note-item">
             <div>
@@ -114,10 +117,25 @@
             <div>
               <p>${new Date(note.created_at).toDateString()}</p>
               <p>${note.state == 0 ? "Public" : note.state === 1 ? "Private" : "Hidden"}</p>
+              <button onclick="changeAction('${note._id}', ${reAct}, 
+              ${act ? Number(act.action) : 'null' })">
+                ${ACT[reAct]}
+              </button>
+              <span>${note.tag ? note.tag.name : 'no tag'}</span>
             </div>
           </li>`;
       }
       ln.innerHTML = innerNote;
+    }
+
+    const changeAction = async (noteId, action, oldAction) => {
+      const res = await changeNoteAction(noteId, action, oldAction);
+      if (res.code === '00') {
+        window.alert('change successfully');
+        window.location.reload();
+      } else {
+        window.alert(`update failed: ${res.msg}`);
+      }
     }
 
     const renderListTag = async () => {
@@ -138,6 +156,7 @@
     }
 
     (async () => {
+      listAction = await getNoteAction();
       await renderListNote(keyword, tag);
       await renderListTag();
     })()

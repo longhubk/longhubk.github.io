@@ -1,8 +1,9 @@
-const server_url = "https://dblogit.herokuapp.com";
-// const server_url = "http://localhost:3000";
+// const server_url = "https://dblogit.herokuapp.com";
+const server_url = "http://localhost:3000";
 
 const perPage = 10;
 const deltaPage = 2;
+const ACT = ["view", "like", "dislike"];
 
 const getQueryParam = (param) => {
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -105,8 +106,7 @@ const getAdminListNote = async (page = 1, keyword, tag) => {
     const oldTK = localStorage.getItem('token')
     const url = `${server_url}/note/page-ad/${page}`;
     const kwUrl = keyword ? `${url}?keyword=${keyword}` : url;
-    const tgUrl = (keyword && tag) ? `${kwUrl}&tag=${tag}` : tag ? `${url}?tag=${tag}` : url;
-    console.log('tgUrl', tgUrl);
+    const tgUrl = (keyword && tag) ? `${kwUrl}&tag=${tag}` : tag ? `${url}?tag=${tag}` : kwUrl;
     const data = await axios.get(tgUrl, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
       const res = data.data.msg;
@@ -226,7 +226,7 @@ const createNote = async (title, content, state = 0, tag) => {
   const oldTK = localStorage.getItem('token');
   if (oldTK) {
     try {
-      const data = await axios.post(`${server_url}/note/`, { title, content, state, tag}, { headers: { Authorization: `Bearer ${oldTK}` } });
+      const data = await axios.post(`${server_url}/note/`, { title, content, state, tag }, { headers: { Authorization: `Bearer ${oldTK}` } });
       return data.data;
     } catch (err) { console.log(err) };
   } else {
@@ -262,6 +262,31 @@ const getTag = async () => {
   try {
     const oldTK = localStorage.getItem('token');
     const data = await axios.get(`${server_url}/tag/`, { headers: { Authorization: `Bearer ${oldTK}` } });
+    if (data.data.code === '00') {
+      const res = data.data.msg;
+      return res;
+    } else {
+      return false;
+    }
+  } catch (err) { console.log(err) };
+}
+
+const changeNoteAction = async (noteId, action, oldAction) => {
+  const oldTK = localStorage.getItem('token');
+  if (oldTK) {
+    try {
+      const data = await axios.post(`${server_url}/note/action`, { noteId, action, oldAction }, { headers: { Authorization: `Bearer ${oldTK}` } });
+      return data.data;
+    } catch (err) { console.log(err) };
+  } else {
+    return { code: '09', msg: 'no token' };
+  }
+}
+
+const getNoteAction = async (act = 1) => {
+  try {
+    const oldTK = localStorage.getItem('token');
+    const data = await axios.get(`${server_url}/note/action/${act}`, { headers: { Authorization: `Bearer ${oldTK}` } });
     if (data.data.code === '00') {
       const res = data.data.msg;
       return res;
