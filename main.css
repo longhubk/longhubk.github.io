@@ -17,8 +17,8 @@ body {
 
 a {
   text-decoration: none;
-  color: #999;
   cursor: pointer;
+  color: #333
 }
 
 textarea {
@@ -27,6 +27,7 @@ textarea {
 }
 
 button {
+  margin: 0.5rem;
   padding: 0.5rem 1.25rem;
   cursor: pointer;
 }
@@ -37,6 +38,10 @@ input {
 
 ul {
   list-style-type: none;
+}
+
+.sub-txt {
+  color: #999;
 }
 
 .posts {
@@ -79,13 +84,61 @@ img[alt="img1"] {
   font-size: xxx-large;
 }
 
+.fx {
+  display: flex;
+}
+.wr {
+  flex-wrap: wrap;
+}
+
+.space-b {
+  justify-content: space-between;
+}
+
+.space-c {
+  justify-content: center;
+}
+
+.align-c {
+  align-items: center;
+}
+
+.pc-80 {
+  width: 80%;
+}
+
+.pc-20 {
+  width: 20%;
+}
+
+.mr-1 {
+  margin: 0.5rem;
+}
+
+.yel-color {
+  color:#fed766;
+}
+
+.red-color {
+  color:#fe4a49;
+}
+
+.blu-color {
+  color:#0392cf;
+}
+
+.gre-color {
+  color:#7bc043;
+}
+
 #pagination {
   margin: 4rem 0;
 }
 
-#pagination a {
+#pagination div {
   background-color: beige;
-  margin: 0 0.75rem;
+  margin: 0.5rem;
+  padding: 0 1rem;
 }
 
 #current-page {
@@ -170,12 +223,8 @@ img[alt="img1"] {
   justify-content: right;
 }
 
-#list-tag {
-  display: flex;
-}
-
 #list-tag .tag-item {
-  margin: 0 0.5rem;
+  width: fit-content;
 }
 
 /* If the screen size is 600px wide or less, hide the element */

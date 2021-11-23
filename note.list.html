@@ -22,8 +22,7 @@
       <div id="blg"></div>
     </div>
   </div>
-  <footer>
-  </footer>
+  <footer></footer>
   <script type="text/javascript">
     const blg = document.getElementById('blg');
     const tit = document.getElementById('tit');
@@ -31,7 +30,7 @@
     const role = getQueryParam('role');
 
     (async () => {
-      console.log('role', role);
+      getFooter();
       const noteId = getQueryParam('noteId');
       note = (role !== undefined && Number(role) === 1) ? (await getAdminNote(noteId)) : (await getNote(noteId)) ;
       if (note) {

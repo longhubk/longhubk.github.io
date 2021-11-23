@@ -5,6 +5,16 @@ const perPage = 10;
 const deltaPage = 2;
 const ACT = ["view", "like", "dislike"];
 
+const getFooter = () => {
+  console.log('getFooter here');
+  const footer = document.getElementsByTagName("footer")[0];
+  footer.innerHTML = `
+  <div class="fx wr">
+    <a class="mr-1" href="mailto:longn7284@gmail.com">Email</a>
+    <a class="mr-1" href="https://github.com/longhubk">Github</a>
+  </div>`
+}
+
 const getQueryParam = (param) => {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
@@ -13,7 +23,7 @@ const getQueryParam = (param) => {
 
 const createPageItem = async (countNote, page = 1, resUrl) => {
   let itemPages = "";
-  const templateBtn = (numPage, display, isHidden = false) => `<a ${Number(numPage) === Number(page) ? 'id="current-page"' : ''} ${isHidden ? 'class="hidden-page"' : ''} href="${resUrl}?page=${numPage}">${display}</a>`
+  const templateBtn = (numPage, display, isHidden = false) => `<div ${isHidden ? 'class="hidden-page"' : ''}><a ${Number(numPage) === Number(page) ? 'id="current-page"' : ''} href="${resUrl}?page=${numPage}">${display}</a></div>`
   let maxPage = 1;
   for (let i = 0; i < countNote; i += perPage) {
     const numPage = +(i > 0 ? (i / perPage) : i) + 1;

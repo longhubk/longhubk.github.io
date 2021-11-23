@@ -17,23 +17,14 @@
       <li id="lg"><a href="/login.html">log in</a></li>
       <li id="su"><a href="/signup.html">sign up</a></li>
     </ul>
-    <h2>Welcome to VSB - Very Simple Blog</h2>
-    <p>
-      This is my blog page in github io platform. <a href="/about.html">Read more about me...</a>
-    </p>
-    <p>New post here</p>
+    <h2>Welcome to VSB (Very Simple Blog)</h2>
+    <p>This is my blog page in github io platform. Read more about me...<a href="/about.html">here</a></p>
     <input id="is" type="text" value="" placeholder="type something" />
     <button id="bs" onclick="btnSearch()">search</button>
     <ul id="list-note"></ul>
-    <div id="pagination"></div>
+    <div id="pagination" class="fx wr"></div>
   </div>
-  <!-- /.container -->
-  <footer>
-    <ul>
-      <li><a href="mailto:longn7284@gmail.com">email</a></li>
-      <li><a href="https://github.com/longhubk">longhubk</a></li>
-    </ul>
-  </footer>
+  <footer></footer>
   <script type="text/javascript">
     const lg = document.getElementById('lg');
     const su = document.getElementById('su');
@@ -69,15 +60,16 @@
       const listNote = await getListNote(currentPage, keyword);
       let innerNote = ''
       for (const note of listNote) {
-       innerNote += `<li class="note-item">
+        innerNote += `<li class="note-item">
           <a class="note-tit" href='/note.list.html?noteId=${note._id}'>${note.title}</a>
-          <p>${new Date(note.created_at).toDateString()}</p>
+          <p class="sub-txt">${new Date(note.created_at).toDateString()}</p>
           </li>`;
       }
       ln.innerHTML = innerNote;
     }
-    
+
     (async () => {
+      getFooter();
       await renderListNote(keyword);
     })()
   </script>

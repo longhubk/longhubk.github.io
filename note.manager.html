@@ -30,16 +30,15 @@
       <li><a href="/">Home</a></li>
     </ul>
     <input id="is" type="text" value="" placeholder="type something" />
-    <button id="bs" onclick="btnSearch()">search</button>
-    <button onclick="btnNewNote()">New note</button>
-    <button onclick="openModal()">Create tag</button>
-    <ul id="list-tag">list tag</ul>
+    <button id="bs" onclick="btnSearch()">Search</button>
+    <button onclick="btnNewNote()">New Note</button>
+    <button onclick="openModal()">New Tag</button>
+    <div id="list-tag" class="fx wr">loading...</div>
     <ul id="list-note"></ul>
-    <div id="pagination"></div>
+    <div id="pagination" class="fx wr"></div>
     <div style="height: 50px"></div>
   </div>
-  <footer>
-  </footer>
+  <footer></footer>
   <script type="text/javascript">
     const ln = document.getElementById('list-note');
     const pg = document.getElementById('pagination');
@@ -110,18 +109,26 @@
         const reAct = act && Number(act.action) === 1 ? 2 : 1;
         innerNote += `
           <li class="note-item">
-            <div>
+            <div class="fx space-b align-c wr">
+              <div class="fx wr pc-80">
               <a class="note-tit" href='/note.list.html?noteId=${note._id}&role=1'>${note.title}</a>
+              </div>
+              <div class="fx wr space-c pc-20">
               <a class="note-edit" href='/note.edit.html?noteId=${note._id}'>edit</a>
+              </div>
             </div>
-            <div>
-              <p>${new Date(note.created_at).toDateString()}</p>
-              <p>${note.state == 0 ? "Public" : note.state === 1 ? "Private" : "Hidden"}</p>
+            <div class="fx space-b wr align-c sub-txt">
               <button onclick="changeAction('${note._id}', ${reAct}, 
               ${act ? Number(act.action) : 'null' })">
                 ${ACT[reAct]}
               </button>
+              <span>${note.content ? `${note.content.length} - ${note.content.split(' ').length}` : '0'}</span>
+              <span>${note.createBy ? note.createBy.username : 'unknown'}</span>
+            </div>
+            <div class="fx space-b wr align-c sub-txt">
+              <span class="${note.state == 0 ? 'blu-color' : 'red-color'}">${note.state == 0 ? "Public" : note.state === 1 ? "Private" : "Hidden"}</span>
               <span>${note.tag ? note.tag.name : 'no tag'}</span>
+              <span>${new Date(note.created_at).toDateString()}</span>
             </div>
           </li>`;
       }
@@ -143,9 +150,9 @@
       let innerTag = ''
       for (const tag of listTag) {
         innerTag += `
-          <li class="tag-item">
+          <div class="tag-item">
             <button onClick='filterTag("${tag._id}")' > ${tag.name} </button>
-          </li>`;
+          </div>`;
       }
       lt.innerHTML = innerTag;
     }
