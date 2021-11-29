@@ -6,8 +6,6 @@ var ballRadius = 10;
 var x = canvas.width / 2;
 var y = canvas.height - 30;
 
-var rightPressed = false;
-var leftPressed = false;
 var points = [];
 
 var food = {
@@ -15,56 +13,43 @@ var food = {
   y: canvas.height / 2,
 };
 
-for (var i = 0; i < 10; i++) {
-  points.push({ x: x + 5, y: y })
+function initPoint() {
+  points = [];
+  for (var i = 0; i < 1; i++) {
+    points.push({ x: x + 5, y: y });
+  }
 }
 
 var score = 0;
 var lives = 3;
 var colorCode = '#008744';
 
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
 document.addEventListener("mousemove", mouseMoveHandler, false);
-
-function keyDownHandler(e) {
-  if (e.key == "Right" || e.key == "ArrowRight") {
-    rightPressed = true;
-  }
-  else if (e.key == "Left" || e.key == "ArrowLeft") {
-    leftPressed = true;
-  }
-}
-
-function keyUpHandler(e) {
-  if (e.key == "Right" || e.key == "ArrowRight") {
-    rightPressed = false;
-  }
-  else if (e.key == "Left" || e.key == "ArrowLeft") {
-    leftPressed = false;
-  }
-}
 
 function mouseMoveHandler(e) {
   x = e.clientX;
   y = e.clientY;
 }
 
-function drawOnePoint(pX, pY) {
+function drawOnePoint(idx, x = undefined, y = undefined) {
   ctx.beginPath();
-  ctx.arc(pX, pY, ballRadius, 0, Math.PI * 2);
+  ctx.arc(x ? x : points[idx].x, y ? y : points[idx].y, ballRadius, 0, Math.PI * 2);
   ctx.fillStyle = colorCode;
   ctx.fill();
   ctx.closePath();
+  if (idx !== undefined) {
+    ctx.font = "9px Arial";
+    ctx.fillStyle = '#FFF';
+    ctx.fillText(idx, points[idx].x - 5, points[idx].y + 2);
+  }
 }
 
 function updatePoints() {
-  for (var idx = points.length - 1; idx >= 0; idx--) {
-    if (idx === 0) {
-      const next = getNextPoint(points[idx].x, points[idx].y, x, y, 2 * ballRadius);
-      points[idx].x = next.x;
-      points[idx].y = next.y;
-    } else if (idx > 0) {
+  const next = getNextPoint(points[0].x, points[0].y, x, y, 2 * ballRadius);
+  if (next.x !== points[0].x || next.y !== points[0].y) {
+    points[0].x = next.x;
+    points[0].y = next.y;
+    for (var idx = points.length - 1; idx > 0; idx--) {
       points[idx].x = points[idx - 1].x;
       points[idx].y = points[idx - 1].y;
     }
@@ -74,7 +59,7 @@ function updatePoints() {
 function calDistanceTwoPoint(point1, point2) {
   const delta1 = Math.pow((point2.x - point1.x), 2);
   const delta2 = Math.pow((point2.y - point1.y), 2);
-  const res = Math.sqrt(delta1 + delta2)
+  const res = Math.sqrt(delta1 + delta2);
   return res;
 }
 
@@ -110,7 +95,7 @@ function getCoefficient(qA, qB, qC, xA, yA, r) {
   var temp = yA * qB + qC;
   var a = a2 + b2;
   var b = (-2) * xA * (b2) + 2 * (temp) * qA;
-  var c = Math.pow(xA, 2) * b2 + Math.pow(temp, 2) - b2 * (Math.pow(r, 2))
+  var c = Math.pow(xA, 2) * b2 + Math.pow(temp, 2) - b2 * (Math.pow(r, 2));
   return { a, b, c };
 }
 
@@ -157,7 +142,15 @@ function getNextPoint(xA, yA, xB, yB, r) {
   const ac2 = getAnotherCoordinate(leq.a, leq.b, leq.c, req.x2);
   const res2 = { x: req.x2, y: ac2 };
   const dis2 = calDistanceTwoPoint(res2, { x: xB, y: yB });
-  return dis1 < dis2 ? res1 : res2;
+  let nextPoint = dis1 < dis2 ? res1 : res2;
+  if (nextPoint.x > canvas.width) {
+    nextPoint.x = ballRadius;
+    nextPoint.y = (-leq.c - ballRadius * leq.a) / leq.b;
+  } else if (nextPoint.y > canvas.height) {
+    nextPoint.y = ballRadius;
+    nextPoint.x = (-leq.c - ballRadius * leq.b) / leq.a;
+  }
+  return nextPoint;
 }
 
 function randomRange(min, max) {
@@ -167,25 +160,37 @@ function randomRange(min, max) {
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (var idx = 0; idx < points.length; idx++) {
-    drawOnePoint(points[idx].x, points[idx].y);
+  // if (lives < 0) {
+  //   lives = 3;
+  //   initPoint();
+  // }
+  for (var idx = points.length - 1; idx >= 0; idx--) {
+    // // if (idx > 0) {
+    // const dis = calDistanceTwoPoint(points[0], points[idx]);
+    // console.log('dis2', dis);
+    // if (dis < 2 * ballRadius) {
+    //   console.log('minus live');
+    //   lives = lives-1;
+    // }
+    // }
+    drawOnePoint(idx);
   }
   const dis = calDistanceTwoPoint(points[0], food);
   if (dis < 2 * ballRadius) {
     score += 1;
-    points.push({x: -1, y: -1});
-    for (var idx = points.length-1; idx > 0; idx--) {
-      points[idx].x = points[idx-1].x;
-      points[idx].y = points[idx-1].y;
+    points.push({ x: -1, y: -1 });
+    for (var idx = points.length - 1; idx > 0; idx--) {
+      points[idx].x = points[idx - 1].x;
+      points[idx].y = points[idx - 1].y;
     }
     points[0].x = food.x;
     points[0].y = food.y;
 
-    food.x = randomRange(0, canvas.width - ballRadius);
-    food.y = randomRange(0, canvas.height - ballRadius);
+    food.x = randomRange(2 * ballRadius, canvas.width - 2 * ballRadius);
+    food.y = randomRange(2 * ballRadius, canvas.height - 2 * ballRadius);
   }
   if (food.x !== null && food.y !== null) {
-    drawOnePoint(food.x, food.y);
+    drawOnePoint(undefined, food.x, food.y);
   }
   drawScore();
   drawLives();
@@ -193,7 +198,8 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
+initPoint();
 draw();
 setInterval(() => {
   updatePoints();
-}, 200);
+}, 500);
