@@ -20,19 +20,59 @@
     <div>
       <h1 id="tit"></h1>
       <div id="blg"></div>
+      <div id="i-cmt">
+        <input id="ic" type="text" value="" placeholder="comment something..." />
+        <button id="bc" onclick="btnComment()">comment</button>
+      </div>
+      <div id="cmt"></div>
     </div>
   </div>
   <footer></footer>
   <script type="text/javascript">
     const blg = document.getElementById('blg');
     const tit = document.getElementById('tit');
+    const cmt = document.getElementById('cmt');
+    const iCmt = document.getElementById('i-cmt');
+    const ipCmt = document.getElementById('ic');
+    const btnCmt = document.getElementById('bc');
     const noteTag = document.getElementById('note-tag');
     const role = getQueryParam('role');
+    const noteId = getQueryParam('noteId');
 
-    (async () => {
+    const btnComment = async() => {
+      const comment = {
+        noteId,
+        content: ipCmt.value,
+      }
+      const res = await createComment(comment);
+      if (res.code === '00') {
+        window.location.reload();
+      } else {
+        window.alert(`comment failed: ${res.msg}`);
+      }
+    };
+
+    (async() => {
       getFooter();
-      const noteId = getQueryParam('noteId');
-      note = (role !== undefined && Number(role) === 1) ? (await getAdminNote(noteId)) : (await getNote(noteId)) ;
+      const isLogin = await checkIsLogin();
+      console.log('res Is Login: ', isLogin);
+      if (!isLogin) {
+        btnCmt.disabled = true;
+      }
+      const listCMTs = await getComments(noteId);
+      console.log('listCMT', {
+        listCMTs
+      });
+      let htmlCMTs = ''
+      if (listCMTs) {
+        for (const c of listCMTs) {
+          htmlCMTs += `<div><b>${c.createBy.username}</b> : ${c.content}</div>`;
+        }
+      }
+      console.log('htmlCMTs', htmlCMTs);
+      cmt.innerHTML = htmlCMTs;
+
+      note = (role !== undefined && Number(role) === 1) ? (await getAdminNote(noteId)) : (await getNote(noteId));
       if (note) {
         tit.innerHTML = note.title;
         blg.innerHTML = renderNote(note.content);
