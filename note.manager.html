@@ -31,13 +31,15 @@
       <li><a href="/breakout.html">Breakout</a></li>
       <li><a href="/snake.html">Snake</a></li>
     </ul>
-    <input id="is" type="text" value="" placeholder="type something" />
-    <button id="bs" onclick="btnSearch()">Search</button>
+    <div class="search-box">
+      <input id="is" type="text" value="" placeholder="type something" />
+      <button id="bs" onclick="btnSearch()">Search</button>
+    </div>
     <button onclick="btnNewNote()">New Note</button>
     <button onclick="openModal()">New Tag</button>
-    <div id="list-tag" class="fx wr">loading...</div>
-    <ul id="list-note"></ul>
-    <div id="pagination" class="fx wr"></div>
+    <div id="list-tag" class="fx wr">Loading Tag...</div>
+    <ul id="list-note">Loading Note...</ul>
+    <div id="pagination" class="fx wr">Loading Page...</div>
     <div style="height: 50px"></div>
   </div>
   <footer></footer>

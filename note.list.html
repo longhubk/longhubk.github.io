@@ -20,7 +20,7 @@
     <div>
       <h1 id="tit"></h1>
       <div id="blg"></div>
-      <div id="i-cmt">
+      <div class="search-box" id="i-cmt">
         <input id="ic" type="text" value="" placeholder="comment something..." />
         <button id="bc" onclick="btnComment()">comment</button>
       </div>
@@ -66,7 +66,7 @@
       let htmlCMTs = ''
       if (listCMTs) {
         for (const c of listCMTs) {
-          htmlCMTs += `<div><b>${c.createBy.username}</b> : ${c.content}</div>`;
+          htmlCMTs += `<div class="box-ver"><b>${c.createBy.username}</b> : ${c.content}</div>`;
         }
       }
       console.log('htmlCMTs', htmlCMTs);

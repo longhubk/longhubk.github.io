@@ -9,6 +9,10 @@ body {
   box-sizing: border-box;
 }
 
+footer {
+  margin-top: 2rem;
+}
+
 #nav {
   display: grid;
   grid-template-columns: auto auto auto auto;
@@ -18,12 +22,12 @@ body {
 a {
   text-decoration: none;
   cursor: pointer;
-  color: #333
+  color: #333;
 }
 
 textarea {
- resize: none;
- padding: 0.5rem;
+  resize: none;
+  padding: 0.5rem;
 }
 
 button {
@@ -116,19 +120,19 @@ img[alt="img1"] {
 }
 
 .yel-color {
-  color:#fed766;
+  color: #fed766;
 }
 
 .red-color {
-  color:#fe4a49;
+  color: #fe4a49;
 }
 
 .blu-color {
-  color:#0392cf;
+  color: #0392cf;
 }
 
 .gre-color {
-  color:#7bc043;
+  color: #7bc043;
 }
 
 #pagination {
@@ -150,6 +154,25 @@ img[alt="img1"] {
   display: none;
 }
 
+.search-box {
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+  padding: 0.5rem;
+  flex: 8;
+  height: 100%;
+  outline: none;
+}
+
+.search-box button {
+  flex: 1;
+}
+
+.box-ver {
+  margin-top: 1rem;
+}
 
 /* The Modal (background) */
 .modal {
@@ -162,8 +185,8 @@ img[alt="img1"] {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
@@ -174,22 +197,34 @@ img[alt="img1"] {
   padding: 0;
   border: 1px solid #888;
   width: 80%;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
 }
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
-  to {top:0; opacity:1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 @keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 /* The Close Button */
@@ -213,7 +248,9 @@ img[alt="img1"] {
   color: #444;
 }
 
-.modal-body {padding: 5px 16px;}
+.modal-body {
+  padding: 5px 16px;
+}
 
 .modal-footer {
   padding: 5px 16px;
