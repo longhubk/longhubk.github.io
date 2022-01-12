@@ -52,10 +52,8 @@
 
     const renderListNote = async (keyword = '') => {
       const countNote = (await getCountNote(keyword)).count;
-      console.log('countNote', countNote);
       if (countNote) {
-        const itemPage = await createPageItem(countNote, page, '/index.html');
-        console.log('itemPage 2', itemPage);
+        const itemPage = await createPageItem(countNote, page);
         pg.innerHTML = itemPage;
       }
       const currentPage = page ? page : 1;

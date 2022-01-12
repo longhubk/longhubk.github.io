@@ -6,7 +6,6 @@ const deltaPage = 2;
 const ACT = ["view", "like", "dislike"];
 
 const getFooter = () => {
-  console.log("getFooter here");
   const footer = document.getElementsByTagName("footer")[0];
   footer.innerHTML = `
   <div class="fx wr">
@@ -21,12 +20,12 @@ const getQueryParam = (param) => {
   return params[param];
 };
 
-const createPageItem = async (countNote, page = 1, resUrl) => {
+const createPageItem = async (countNote, page = 1) => {
   let itemPages = "";
   const templateBtn = (numPage, display, isHidden = false) =>
-    `<div ${isHidden ? 'class="hidden-page"' : ""}><a ${
+    `<div ${isHidden ? 'class="hidden-page"' : ""}><button ${
       Number(numPage) === Number(page) ? 'id="current-page"' : ""
-    } href="${resUrl}?page=${numPage}">${display}</a></div>`;
+    } onclick="insertParam('page', ${numPage})">${display}</button></div>`;
   let maxPage = 1;
   for (let i = 0; i < countNote; i += perPage) {
     const numPage = +(i > 0 ? i / perPage : i) + 1;
@@ -172,12 +171,15 @@ const getListNote = async (page = 1, keyword = "") => {
   }
 };
 
-const insertParam = (key, value) => {
-  console.log("insertParam", key, value);
+const insertParam = (key, value, inc = "") => {
   key = encodeURIComponent(key);
   value = encodeURIComponent(value);
 
-  var kvp = document.location.search.substr(1).split("&");
+  var kvp = document.location.search
+    .substr(1)
+    .split("&")
+    .filter((e) => e.includes(inc));
+
   let i = 0;
 
   for (; i < kvp.length; i++) {
@@ -200,7 +202,6 @@ const insertParam = (key, value) => {
 
 const getAdminNote = async (noteId) => {
   try {
-    console.log("getAdminNote");
     const oldTK = localStorage.getItem("token");
     const data = await axios.get(`${server_url}/note/one-ad/${noteId}`, {
       headers: { Authorization: `Bearer ${oldTK}` },
@@ -218,7 +219,6 @@ const getAdminNote = async (noteId) => {
 
 const getNote = async (noteId) => {
   try {
-    console.log("getNote");
     const data = await axios.get(`${server_url}/note/one/${noteId}`);
     if (data.data.code === "00") {
       const res = data.data.msg;
@@ -247,13 +247,15 @@ const getCountNote = async (keyword = "") => {
   }
 };
 
-const getAdminCountNote = async (keyword = "") => {
+const getAdminCountNote = async (keyword = "", tag = "") => {
   try {
     const oldTK = localStorage.getItem("token");
-    const data = await axios.get(
-      `${server_url}/note/count-ad${keyword ? `?keyword=${keyword}` : ""}`,
-      { headers: { Authorization: `Bearer ${oldTK}` } }
-    );
+    const uri = `${server_url}/note/count-ad${
+      keyword ? `?keyword=${keyword}` : ""
+    }${tag ? `${keyword === "" ? "?" : "&"}tag=${tag}` : ""} `;
+    const data = await axios.get(uri, {
+      headers: { Authorization: `Bearer ${oldTK}` },
+    });
     if (data.data.code === "00") {
       const res = data.data.msg;
       return res;
@@ -410,7 +412,6 @@ const createComment = async (comment) => {
   const oldTK = localStorage.getItem("token");
   if (oldTK) {
     try {
-      console.log('cmt', {comment});
       const data = await axios.post(
         `${server_url}/cmt/`,
         { ...comment },

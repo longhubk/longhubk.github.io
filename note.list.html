@@ -55,21 +55,16 @@
     (async() => {
       getFooter();
       const isLogin = await checkIsLogin();
-      console.log('res Is Login: ', isLogin);
       if (!isLogin) {
         btnCmt.disabled = true;
       }
       const listCMTs = await getComments(noteId);
-      console.log('listCMT', {
-        listCMTs
-      });
       let htmlCMTs = ''
       if (listCMTs) {
         for (const c of listCMTs) {
           htmlCMTs += `<div class="box-ver"><b>${c.createBy.username}</b> : ${c.content}</div>`;
         }
       }
-      console.log('htmlCMTs', htmlCMTs);
       cmt.innerHTML = htmlCMTs;
 
       note = (role !== undefined && Number(role) === 1) ? (await getAdminNote(noteId)) : (await getNote(noteId));

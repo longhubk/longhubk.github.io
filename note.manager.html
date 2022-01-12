@@ -56,7 +56,7 @@
 
     let listAction = [];
 
-    (async () => {
+    (async() => {
       const isLogin = await checkIsLogin();
       if (!isLogin) {
         window.location.href = '/';
@@ -74,13 +74,13 @@
       modal.style.display = "none";
     }
 
-    window.onclick = function (event) {
+    window.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";
       }
     }
 
-    const createTag = async () => {
+    const createTag = async() => {
       const res = await createNewTag(inputTag.value);
       if (res.code === '00') {
         window.alert('create successfully');
@@ -91,27 +91,27 @@
     }
 
     const btnSearch = () => {
-      insertParam('keyword', is.value);
+      insertParam('keyword', is.value, 'keyword');
     }
 
     const btnNewNote = () => {
       window.location.href = "/note.create.html";
     }
 
-    const renderListNote = async (keyword = '', tag) => {
-      const countNote = (await getAdminCountNote(keyword, tag)).count;
-      if (countNote) {
-        const itemPage = await createPageItem(countNote, page, '/note.manager.html');
-        pg.innerHTML = itemPage;
-      }
+    const renderListNote = async(keyword = '', tag) => {
+        const countNote = (await getAdminCountNote(keyword, tag)).count;
+        if (countNote) {
+          const itemPage = await createPageItem(countNote, page);
+          pg.innerHTML = itemPage;
+        }
 
-      const currentPage = page ? page : 1;
-      const listNote = await getAdminListNote(currentPage, keyword, tag);
-      let innerNote = ''
-      for (const note of listNote) {
-        const act = listAction.find(e => String(e.noteId._id) === String(note._id));
-        const reAct = act && Number(act.action) === 1 ? 2 : 1;
-        innerNote += `
+        const currentPage = page ? page : 1;
+        const listNote = await getAdminListNote(currentPage, keyword, tag);
+        let innerNote = ''
+        for (const note of listNote) {
+          const act = listAction.find(e => String(e.noteId._id) === String(note._id));
+          const reAct = act && Number(act.action) === 1 ? 2 : 1;
+          innerNote += `
           <li class="note-item">
             <div class="fx space-b align-c wr">
               <div class="fx wr pc-80">
@@ -155,15 +155,10 @@
       for (const tag of listTag) {
         innerTag += `
           <div class="tag-item">
-            <button onClick='filterTag("${tag._id}")' > ${tag.name} </button>
+            <button onClick="insertParam('tag', '${tag._id}', 'tag')" > ${tag.name} </button>
           </div>`;
       }
       lt.innerHTML = innerTag;
-    }
-
-    const filterTag = (tagId) => {
-      console.log('filter tag')
-      insertParam('tag', tagId);
     }
 
     (async () => {
