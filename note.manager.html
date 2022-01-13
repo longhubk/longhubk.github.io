@@ -162,6 +162,7 @@
     }
 
     (async () => {
+      getFooter();
       listAction = await getNoteAction();
       await renderListNote(keyword, tag);
       await renderListTag();

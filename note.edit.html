@@ -46,6 +46,7 @@
     })();
 
     (async () => {
+      getFooter();
       const noteId = getQueryParam('noteId');
       note = await getAdminNote(noteId);
       txtTitle.value = note.title;

@@ -174,6 +174,28 @@ img[alt="img1"] {
   margin-top: 1rem;
 }
 
+#top-btn {
+  display: none;
+}
+
+.scroll-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 2rem;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  outline: none;
+  color: #555;
+  border-color: #555;
+  cursor: pointer;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+}
+
+
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */

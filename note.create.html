@@ -47,6 +47,7 @@
     }
 
     (async () => {
+      getFooter();
       const isLogin = await checkIsLogin();
       if (!isLogin) {
         window.location.href = '/';

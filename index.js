@@ -11,6 +11,8 @@ const getFooter = () => {
   <div class="fx wr">
     <a class="mr-1" href="mailto:longn7284@gmail.com">Email</a>
     <a class="mr-1" href="https://github.com/longhubk">Github</a>
+    <button onclick="goToDown()" class="scroll-btn" id="down-btn" title="Go to down">v</button>
+    <button onclick="goToTop()" class="scroll-btn" id="top-btn" title="Go to top">^</button>
   </div>`;
 };
 
@@ -407,6 +409,31 @@ const getComments = async (noteId) => {
     console.log(err);
   }
 };
+
+window.onscroll = function() {scrollFunction()};
+
+const scrollFunction = () => {
+  const topBtn = document.getElementById("top-btn")
+  const downBtn = document.getElementById("down-btn")
+  if (topBtn && downBtn) {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      topBtn.style.display = "block";
+      downBtn.style.display = "none";
+    } else {
+      topBtn.style.display = "none";
+      downBtn.style.display = "block";
+    }
+  }
+}
+
+const goToTop = () => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+const goToDown = () => {
+  window.scrollTo(0,document.body.scrollHeight);
+}
 
 const createComment = async (comment) => {
   const oldTK = localStorage.getItem("token");
