@@ -1,5 +1,5 @@
-const server_url = "https://dblogit.herokuapp.com";
-// const server_url = "http://localhost:3000";
+// const server_url = "https://dblogit.herokuapp.com";
+const server_url = "http://localhost:3000";
 
 const perPage = 10;
 const deltaPage = 2;
@@ -132,18 +132,20 @@ const renderNote = (rawMD) => {
   const res = md.render(rawMD);
   return res;
 };
-const getAdminListNote = async (page = 1, keyword, tag) => {
+const getAdminListNote = async (queries) => {
   try {
     const oldTK = localStorage.getItem("token");
-    const url = `${server_url}/note/page-ad/${page}`;
-    const kwUrl = keyword ? `${url}?keyword=${keyword}` : url;
-    const tgUrl =
-      keyword && tag
-        ? `${kwUrl}&tag=${tag}`
-        : tag
-        ? `${url}?tag=${tag}`
-        : kwUrl;
-    const data = await axios.get(tgUrl, {
+    const stringQuery = getStringQuery(queries);
+    const uri = `${server_url}/note/list-ad${stringQuery}`;
+    console.log('uri', uri);
+    // const kwUrl = keyword ? `${url}?keyword=${keyword}` : url;
+    // const tgUrl =
+    //   keyword && tag
+    //     ? `${kwUrl}&tag=${tag}`
+    //     : tag
+    //     ? `${url}?tag=${tag}`
+    //     : kwUrl;
+    const data = await axios.get(uri, {
       headers: { Authorization: `Bearer ${oldTK}` },
     });
     if (data.data.code === "00") {
@@ -157,11 +159,25 @@ const getAdminListNote = async (page = 1, keyword, tag) => {
   }
 };
 
-const getListNote = async (page = 1, keyword = "") => {
+const getStringQuery = (queries) => {
+  const keys = Object.keys(queries);
+  const values = Object.values(queries);
+  let str = '';
+  for (let idx = 0; idx < keys.length; idx++) {
+    if ( keys[idx] && keys[idx] != '' && values[idx] && values[idx] != '') {
+      str += idx === 0 ? '?' : '&';
+      str += `${keys[idx]}=${values[idx]}`;
+    }
+  }
+  console.log('query', str);
+  return str;
+}
+
+const getListNote = async (queries) => {
   try {
-    const data = await axios.get(
-      `${server_url}/note/page/${page}${keyword ? `?keyword=${keyword}` : ""}`
-    );
+    const queryString = getStringQuery(queries);
+    const uri = `${server_url}/note/list${queryString}`;
+    const data = await axios.get(uri);
     if (data.data.code === "00") {
       const res = data.data.msg;
       return res;

@@ -53,6 +53,7 @@
     const page = getQueryParam('page');
     const keyword = getQueryParam('keyword');
     const tag = getQueryParam('tag');
+    const action = getQueryParam('action');
 
     let listAction = [];
 
@@ -106,7 +107,8 @@
         }
 
         const currentPage = page ? page : 1;
-        const listNote = await getAdminListNote(currentPage, keyword, tag);
+        const queries = { page: currentPage, keyword, tag, action };
+        const listNote = await getAdminListNote(queries);
         let innerNote = ''
         for (const note of listNote) {
           const act = listAction.find(e => String(e.noteId._id) === String(note._id));
