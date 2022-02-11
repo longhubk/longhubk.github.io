@@ -1,5 +1,5 @@
-// const server_url = "https://dblogit.herokuapp.com";
-const server_url = "http://localhost:3000";
+const server_url = "https://dblogit.herokuapp.com";
+// const server_url = "http://localhost:3000";
 
 const perPage = 10;
 const deltaPage = 2;
@@ -238,6 +238,20 @@ const getAdminNote = async (noteId) => {
 const getNote = async (noteId) => {
   try {
     const data = await axios.get(`${server_url}/note/one/${noteId}`);
+    if (data.data.code === "00") {
+      const res = data.data.msg;
+      return res;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getNoteShare = async (noteId) => {
+  try {
+    const data = await axios.get(`${server_url}/note/one-share/${noteId}`);
     if (data.data.code === "00") {
       const res = data.data.msg;
       return res;
