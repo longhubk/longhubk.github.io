@@ -67,7 +67,15 @@
       }
       cmt.innerHTML = htmlCMTs;
 
-      note = (role !== undefined && Number(role) === 1) ? (await getAdminNote(noteId)) : (await getNote(noteId));
+      if (role !== undefined) {
+        if (Number(role) === 1) {
+          note = await getAdminNote(noteId);
+        } else if (Number(role) === 2) {
+          note = await getNoteShare(noteId);
+        }
+      } else {
+        note = await getNote(noteId);
+      }
       if (note) {
         tit.innerHTML = note.title;
         blg.innerHTML = renderNote(note.content);

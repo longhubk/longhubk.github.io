@@ -249,6 +249,20 @@ const getCountNote = async (keyword = "") => {
   }
 };
 
+const getNoteShare = async (noteId) => {
+  try {
+    const data = await axios.get(`${server_url}/note/one-share/${noteId}`);
+    if (data.data.code === "00") {
+      const res = data.data.msg;
+      return res;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const getAdminCountNote = async (keyword = "", tag = "") => {
   try {
     const oldTK = localStorage.getItem("token");
