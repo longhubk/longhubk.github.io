@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 
 <head>
   <title>VSB</title>
+  <meta charset="utf-8" />
   <link rel="stylesheet" type="text/css" href="main.css" />
   <link rel="shortcut icon" href="code.ico">
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
@@ -10,6 +11,7 @@
   <script src="remarkable.js" type="text/javascript"></script>
   <script src="axios.js" type="text/javascript"></script>
   <script src="index.js" type="text/javascript"></script>
+  <script src="countdown.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -78,7 +80,19 @@
       }
       if (note) {
         tit.innerHTML = note.title;
-        blg.innerHTML = renderNote(note.content);
+        if (note.countdown !== undefined && note.countdown !== null && Number(role) === 2) {
+          // "Feb 14, 2022 0:0:0"
+          const countDownDate = new Date(note.countdown).getTime();
+          const now = new Date().getTime();
+          const delta = countDownDate - now;
+          if (delta > 0) {
+            setCountdown(countDownDate, blg);
+          } else {
+            blg.innerHTML = renderNote(note.content);
+          }
+        } else {
+          blg.innerHTML = renderNote(note.content);
+        }
       } else {
         blg.innerHTML = 'Not found'
       }

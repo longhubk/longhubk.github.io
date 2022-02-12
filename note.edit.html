@@ -24,6 +24,8 @@
         <option value="2">Hidden</option>
         <option value="3">Sharing</option>
       </select>
+      <label for="birthdaytime">countdown</label>
+      <input type="datetime-local" id="txt-date" name="cd">
       <select id="note-tag">
       </select>
       <button onclick="update()">update</button>
@@ -35,6 +37,7 @@
   <script type="text/javascript">
     const txtField = document.getElementById('txt-content');
     const txtTitle = document.getElementById('txt-title');
+    const txtDate = document.getElementById('txt-date');
     const noteState = document.getElementById('note-state');
     const noteTag = document.getElementById('note-tag');
     let note;
@@ -52,6 +55,7 @@
       note = await getAdminNote(noteId);
       txtTitle.value = note.title;
       txtField.value = note.content;
+      txtDate.value = note.countdown;
       noteState.value = note.state;
 
       const listTag = await getTag();
@@ -64,7 +68,10 @@
     })();
 
     const update = async () => {
-      const updateData = { title: txtTitle.value, content: txtField.value, state: noteState.value, tag: noteTag.value }
+      const updateData = { title: txtTitle.value, content: txtField.value, state: noteState.value, tag: noteTag.value}
+      if (txtDate.value !== undefined && txtDate.value !== null) {
+        updateData.countdown = txtDate.value;
+      }
       const res = await updateNote(updateData, note);
       if (res.code === '00') {
         window.alert('update successfully');
