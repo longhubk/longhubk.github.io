@@ -53,6 +53,7 @@
     const page = getQueryParam('page');
     const keyword = getQueryParam('keyword');
     const tag = getQueryParam('tag');
+    let countNote = 0;
 
     let listAction = [];
 
@@ -99,7 +100,7 @@
     }
 
     const renderListNote = async(keyword = '', tag) => {
-        const countNote = (await getAdminCountNote(keyword, tag)).count;
+        countNote = (await getAdminCountNote(keyword, tag)).count;
         if (countNote) {
           const itemPage = await createPageItem(countNote, page);
           pg.innerHTML = itemPage;
@@ -107,7 +108,7 @@
 
         const currentPage = page ? page : 1;
         const listNote = await getAdminListNote(currentPage, keyword, tag);
-        let innerNote = ''
+        let innerNote = `<p>All: ${countNote}</p>`
         for (const note of listNote) {
           const act = listAction.find(e => String(e.noteId._id) === String(note._id));
           const reAct = act && Number(act.action) === 1 ? 2 : 1;
@@ -153,9 +154,10 @@
       const listTag = await getTag();
       let innerTag = ''
       for (const tag of listTag) {
+        const countNoteOfTag = (await getAdminCountNote(undefined, String(tag._id))).count;
         innerTag += `
           <div class="tag-item">
-            <button onClick="insertParam('tag', '${tag._id}', 'tag')" > ${tag.name} </button>
+            <button onClick="insertParam('tag', '${tag._id}', 'tag')" > ${tag.name} (${countNoteOfTag}) </button>
           </div>`;
       }
       lt.innerHTML = innerTag;
