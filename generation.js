@@ -77,6 +77,93 @@ class ArrowHor {
     ctx.stroke();
   }
 }
+
+const marries = [
+  {
+    id: "1",
+    husband: "1",
+    wife: "2",
+  },
+  {
+    id: "2",
+    husband: "3",
+    wife: "4",
+  },
+];
+
+const units = [
+  {
+    id: "1",
+    name: "Nguyen Van Tu",
+    old: 81,
+    gender: "male",
+    parent: null,
+  },
+  {
+    id: "2",
+    name: "Giap Thi Mo",
+    old: 80,
+    gender: "female",
+    parent: null,
+  },
+  {
+    id: "3",
+    name: "Nguyen Van Luong",
+    old: 48,
+    gender: "male",
+    parent: "1",
+  },
+  {
+    id: "4",
+    name: "Nguyen Thi Canh",
+    old: 45,
+    gender: "female",
+    parent: null,
+  },
+  {
+    id: "5",
+    name: "Nguyen Thanh Long",
+    old: 24,
+    gender: "male",
+    parent: "2",
+  },
+  {
+    id: "6",
+    name: "Nguyen Cam Ly ",
+    old: 12,
+    gender: "female",
+    parent: "2",
+  },
+];
+
+const families = [];
+
+const checkIsDraw = (listFamily, unit) => {
+  let isDraw = false;
+  for (let i = 0; i < listFamily.length; i++) {
+    const isFar = listFamily[i].far.id === unit.id;
+    const isMom = listFamily[i].mom.id === unit.id;
+    const isChild = listFamily[i].children.find((e) => e.id === unit.id);
+    isDraw = isFar || isMom || isChild;
+  }
+  return isDraw ? true : false;
+};
+
+for (let i = 0; i < marries.length; i++) {
+  const far = units.find((e) => e.id === marries[i].husband);
+  // console.log('far', {far});
+  const mom = units.find((e) => e.id === marries[i].wife);
+  // console.log('mom', {mom});
+  const children = units.filter((e) => e.parent === marries[i].id);
+  families.push({
+    far: { ...far, isDraw: checkIsDraw(families, far) },
+    mom: { ...mom, isDraw: checkIsDraw(families, mom) },
+    children: children.map((e) => ({ ...e, isDraw: checkIsDraw(families, e) })),
+    isDraw: false,
+  });
+}
+console.log("families", { families });
+
 // function drawArrow(box, box, name) {}
 const family = {
   far: {
@@ -103,41 +190,71 @@ const family = {
   ],
 };
 
+const mapUnit = new Map();
+
 class Family {
   constructor(data, firstPoint = { x: -50, y: -50 }) {
+    this.participants = [data.far, data.mom, ...data.children];
     this.data = data;
     this.firstPoint = firstPoint;
   }
-  draw() {
-    const box1 = new Box(
-      this.firstPoint.x,
-      this.firstPoint.y,
-      this.data.far.name
-    );
-    const box4 = new Box(
-      this.firstPoint.x + box1.width * 1.5,
-      this.firstPoint.y,
-      this.data.mom.name
-    );
 
-    const arrow14 = new ArrowHor(box1, box4);
-    box1.draw();
-    box4.draw();
-    arrow14.draw();
-    for (let i = 0; i < this.data.children.length; i++) {
-      const box2 = new Box(
-        this.firstPoint.x - box1.width + i * 200,
-        this.firstPoint.y - box1.y * 3,
-        this.data.children[i].name
+  draw() {
+    let far;
+    if (!this.data.far.isDraw) {
+      far = new Box(this.firstPoint.x, this.firstPoint.y, this.data.far.name);
+      far.draw();
+      mapUnit.set(this.data.far.id, far);
+    } else {
+      far = mapUnit.get(this.data.far.id);
+      // console.log('new.far.x', far.x, far.y);
+      this.firstPoint = { x: far.x, y: far.y };
+    }
+
+    let mom;
+    if (!this.data.mom.isDraw) {
+      // console.log('mom.x', JSON.stringify(this.data.mom, null, 2));
+      mom = new Box(
+        this.firstPoint.x + far.width * 1.5,
+        this.firstPoint.y,
+        this.data.mom.name
       );
-      const arrow12 = new ArrowVer(box2, arrow14);
-      box2.draw();
-      arrow12.draw();
+      mom.draw();
+      // console.log('mom.x2', mom.x);
+      mapUnit.set(this.data.mom.id, mom);
+    } else {
+      // console.log('mom.x4', mom.x);
+      mom = mapUnit.get(this.data.mom.id);
+    }
+
+    // console.log('far.x', far.x);
+    // console.log('mom.x3', mom.x);
+    const relMarry = new ArrowHor(far, mom);
+    relMarry.draw();
+
+    for (let i = 0; i < this.data.children.length; i++) {
+      let child;
+      if (!this.data.children[i].isDraw) {
+        child = new Box(
+          this.firstPoint.x - far.width + i * 200,
+          this.firstPoint.y + Math.abs(far.y) + 100,
+          this.data.children[i].name
+        );
+        child.draw();
+        mapUnit.set(this.data.children[i].id, child);
+      } else {
+        child = mapUnit.get(this.data.children[i].id);
+      }
+
+      const relParent = new ArrowVer(child, relMarry);
+      relParent.draw();
     }
   }
 }
 
-const family1 = new Family(family);
+// const family1 = new Family(family);
+
+console.log("map", mapUnit.size);
 
 function draw() {
   canvas.width = window.innerWidth;
@@ -154,7 +271,14 @@ function draw() {
     -window.innerHeight / 2 + cameraOffset.y
   );
 
-  family1.draw();
+  if (families.length > 0) {
+    for (let i = 0; i < families.length; i++) {
+      // console.log('family 0', JSON.stringify(families[0], null, 2));
+      const fam = new Family(families[i]);
+      fam.draw();
+    }
+  }
+
   // ctx.clearRect(0,0, window.innerWidth, window.innerHeight)
   // ctx.fillStyle = "#118811"
 
