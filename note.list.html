@@ -22,6 +22,10 @@
     <div>
       <h1 id="tit"></h1>
       <div id="blg"></div>
+      <audio controls loop id="aud">
+        <source id="aud-src" src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
       <div class="search-box" id="i-cmt">
         <input id="ic" type="text" value="" placeholder="comment something..." />
         <button id="bc" onclick="btnComment()">comment</button>
@@ -79,6 +83,13 @@
         note = await getNote(noteId);
       }
       if (note) {
+        const aud = document.getElementById('aud');
+        const aud_src = document.getElementById('aud-src');
+        aud_src.src = 'http://localhost:3000/' + note._id + '.mp3';
+        aud.autoplay="true";
+        aud.load(); //call this to just preload the audio without playing
+        aud.play();
+
         tit.innerHTML = note.title;
         if (note.countdown !== undefined && note.countdown !== null && Number(role) === 2) {
           // "Feb 14, 2022 0:0:0"

@@ -28,6 +28,10 @@
       <input type="datetime-local" id="txt-date" name="cd">
       <select id="note-tag">
       </select>
+      <label for="txt-audio">audio</label>
+      <input id="txt-audio" type="file" name="audio"
+      accept="audio/mp3" />
+      <button onclick="upload()">upload</button>
       <button onclick="update()">update</button>
       <div style="width: 2rem"></div>
     </div>
@@ -38,6 +42,7 @@
     const txtField = document.getElementById('txt-content');
     const txtTitle = document.getElementById('txt-title');
     const txtDate = document.getElementById('txt-date');
+    const txtAudio = document.getElementById('txt-audio');
     const noteState = document.getElementById('note-state');
     const noteTag = document.getElementById('note-tag');
     let note;
@@ -79,6 +84,11 @@
       } else {
         window.alert(`update failed: ${res.msg}`);
       }
+    }
+
+    const upload = async() => {
+      const noteId = getQueryParam('noteId');
+      await uploadAudio(noteId);
     }
 
   </script>

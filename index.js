@@ -1,4 +1,5 @@
 const server_url = "https://dblogit.herokuapp.com";
+// const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
 // const server_url = "http://localhost:3000";
 
 const perPage = 10;
@@ -466,3 +467,16 @@ const createComment = async (comment) => {
     return { code: "09", msg: "no token" };
   }
 };
+
+const uploadAudio = async (id) => {
+  const formData = new FormData();
+  const files = document.getElementById('txt-audio');
+  formData.append("audio", files.files[0]);
+  const oldTK = localStorage.getItem("token");
+  axios.post(`${server_url}/note/upload/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${oldTK}`
+    }
+  });
+}
