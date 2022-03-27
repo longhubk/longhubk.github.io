@@ -85,7 +85,7 @@
       if (note) {
         const aud = document.getElementById('aud');
         const aud_src = document.getElementById('aud-src');
-        aud_src.src = 'http://localhost:3000/' + note._id + '.mp3';
+        aud_src.src = 'https://dblogit.herokuapp.com/' + note._id + '.mp3';
         aud.autoplay="true";
         aud.load(); //call this to just preload the audio without playing
         aud.play();
