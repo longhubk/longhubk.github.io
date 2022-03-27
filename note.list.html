@@ -88,7 +88,9 @@
         aud_src.src = 'https://dblogit.herokuapp.com/' + note._id + '.mp3';
         aud.autoplay="true";
         aud.load(); //call this to just preload the audio without playing
-        aud.play();
+        setTimeout(() => {
+          aud.play();
+        }, 5000);
 
         tit.innerHTML = note.title;
         if (note.countdown !== undefined && note.countdown !== null && Number(role) === 2) {
