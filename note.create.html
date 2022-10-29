@@ -4,7 +4,7 @@
 <head>
   <title>VSB</title>
   <link rel="stylesheet" type="text/css" href="styles/main.css" />
-  <link rel="shortcut icon" href="code.ico">
+  <link rel="shortcut icon" href="assets/code.ico">
   <script src="scripts/axios.js" type="text/javascript"></script>
   <script src="scripts/index.js" type="text/javascript"></script>
   <script src="scripts/auth.js" type="text/javascript"></script>
@@ -43,7 +43,7 @@
       if (res.code === '00') {
         window.alert('create successfully');
         localStorage.removeItem("TAGS");
-        window.location.href = `/note.list.html?noteId=${res.msg.noteId}&role=1`;
+        window.location.href = `/note.view.html?noteId=${res.msg.noteId}&role=1`;
       } else {
         window.alert('create failed', res.msg);
       }

@@ -3,7 +3,7 @@
   <head>
     <title>VSB</title>
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
-    <link rel="shortcut icon" href="code.ico" />
+    <link rel="shortcut icon" href="assets/code.ico" />
     <script src="scripts/axios.js" type="text/javascript"></script>
     <script src="scripts/index.js" type="text/javascript"></script>
     <script src="scripts/search.js" type="text/javascript"></script>
@@ -60,7 +60,7 @@
         let innerNote = "";
         for (const note of listNote) {
           innerNote += `<li class="note-item">
-          <a class="note-tit" href='/note.list.html?noteId=${note._id}'>${
+          <a class="note-tit" href='/note.view.html?noteId=${note._id}'>${
             note.title
           }</a>
           <p class="sub-txt">${new Date(note.created_at).toDateString()}</p>
