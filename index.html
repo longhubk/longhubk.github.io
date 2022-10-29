@@ -1,78 +1,82 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>VSB</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+    <link rel="shortcut icon" href="code.ico" />
+    <script src="scripts/axios.js" type="text/javascript"></script>
+    <script src="scripts/index.js" type="text/javascript"></script>
+    <script src="scripts/search.js" type="text/javascript"></script>
+  </head>
 
-<head>
-  <title>VSB</title>
-  <link rel="stylesheet" type="text/css" href="main.css" />
-  <link rel="shortcut icon" href="code.ico">
-  <script src="axios.js" type="text/javascript"></script>
-  <script src="index.js" type="text/javascript"></script>
-</head>
-
-<body>
-  <div class="container">
-    <ul id="nav">
-      <li><a href="/">Home</a></li>
-      <li><a href="/about.html">About</a></li>
-      <li id="lg"><a href="/login.html">log in</a></li>
-      <li id="su"><a href="/signup.html">sign up</a></li>
-    </ul>
-    <h2>Welcome to VSB (Very Simple Blog)</h2>
-    <p>This is my blog page in github io platform. Read more about me...<a href="/about.html">here</a></p>
-    <div class="search-box">
-      <input id="is" type="text" value="" placeholder="Type something..." />
-      <button id="bs" onclick="btnSearch()">search</button>
+  <body>
+    <div class="container">
+      <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li id="lg"><a href="/login.html">log in</a></li>
+        <li id="su"><a href="/signup.html">sign up</a></li>
+      </ul>
+      <h2>Welcome to VSB (Very Simple Blog)</h2>
+      <p>
+        This is my blog page in github io platform. Read more about me...<a
+          href="/about.html"
+          >here</a
+        >
+      </p>
+      <div class="search-box" id="sb"></div>
+      <ul id="list-note">
+        Loading Post...
+      </ul>
+      <div id="pagination" class="fx wr">Loading Page...</div>
     </div>
-    <ul id="list-note">Loading Post...</ul>
-    <div id="pagination" class="fx wr">Loading Page...</div>
-  </div>
-  <footer></footer>
-  <script type="text/javascript">
-    const lg = document.getElementById('lg');
-    const su = document.getElementById('su');
-    const bs = document.getElementById('bs');
-    const is = document.getElementById('is');
-    const pg = document.getElementById('pagination');
-    const ln = document.getElementById('list-note');
-    const page = getQueryParam('page');
-    const keyword = getQueryParam('keyword');
+    <footer></footer>
+    <script type="text/javascript">
+      const lg = document.getElementById("lg");
+      const su = document.getElementById("su");
+      const bs = document.getElementById("bs");
+      const pg = document.getElementById("pagination");
+      const ln = document.getElementById("list-note");
+      const page = getQueryParam("page");
+      const keyword = getQueryParam("keyword");
 
-    (async () => {
-      const isLogin = await checkIsLogin();
-      console.log('res Is Login: ', isLogin);
-      if (isLogin) {
-        lg.innerHTML = `<a href='/note.manager.html'>${isLogin}</a>`;
-        su.innerHTML = `<a href="#" onclick='return logout()'>Log Out</a>`;
-      }
-    })();
+      (async () => {
+        const isLogin = await checkIsLogin();
+        console.log("res Is Login: ", isLogin);
+        if (isLogin) {
+          lg.innerHTML = `<a href='/note.manager.html'>${isLogin}</a>`;
+          su.innerHTML = `<a href="#" onclick='return logout()'>Log Out</a>`;
+        }
+      })();
 
-    const btnSearch = () => {
-      insertParam('keyword', is.value);
-    }
-
-    const renderListNote = async (keyword = '') => {
-      const countNote = (await getCountNote(keyword)).count;
-      if (countNote) {
-        const itemPage = await createPageItem(countNote, page);
-        pg.innerHTML = itemPage;
-      }
-      const currentPage = page ? page : 1;
-      const listNote = await getListNote(currentPage, keyword);
-      let innerNote = ''
-      for (const note of listNote) {
-        innerNote += `<li class="note-item">
-          <a class="note-tit" href='/note.list.html?noteId=${note._id}'>${note.title}</a>
+      const renderListNote = async (keyword = "") => {
+        const countNote = (await getCountNote(keyword)).count;
+        if (countNote) {
+          const itemPage = await createPageItem(countNote, page);
+          pg.innerHTML = itemPage;
+        }
+        const currentPage = page ? page : 1;
+        const listNote = await getListNote(currentPage, keyword);
+        let innerNote = "";
+        for (const note of listNote) {
+          innerNote += `<li class="note-item">
+          <a class="note-tit" href='/note.list.html?noteId=${note._id}'>${
+            note.title
+          }</a>
           <p class="sub-txt">${new Date(note.created_at).toDateString()}</p>
           </li>`;
-      }
-      ln.innerHTML = innerNote;
-    }
+        }
+        if (innerNote === "") {
+          innerNote += NOT_FOUND;
+        }
+        ln.innerHTML = innerNote;
+      };
 
-    (async () => {
-      getFooter();
-      await renderListNote(keyword);
-    })()
-  </script>
-</body>
-
+      (async () => {
+        await renderListNote(keyword);
+        injectSearch(keyword);
+        getFooter();
+      })();
+    </script>
+  </body>
 </html>

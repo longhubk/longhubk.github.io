@@ -3,16 +3,18 @@
 
 <head>
   <title>VSB</title>
-  <link rel="stylesheet" type="text/css" href="main.css" />
+  <link rel="stylesheet" type="text/css" href="styles/main.css" />
   <link rel="shortcut icon" href="code.ico">
-  <script src="axios.js" type="text/javascript"></script>
-  <script src="index.js" type="text/javascript"></script>
+  <script src="scripts/axios.js" type="text/javascript"></script>
+  <script src="scripts/index.js" type="text/javascript"></script>
+  <script src="scripts/auth.js" type="text/javascript"></script>
 </head>
 
 <body>
   <div class="container">
     <ul id="nav">
       <li><a href="/">Home</a></li>
+      <li><a href="/note.manager.html">Manager</a></li>
     </ul>
     <div>
       <textarea id="txt-title" rows="2"></textarea><br /><br />
@@ -40,6 +42,7 @@
       const res = await createNote(txtTitle.value, txtField.value, noteState.value, noteTag.value);
       if (res.code === '00') {
         window.alert('create successfully');
+        localStorage.removeItem("TAGS");
         window.location.href = `/note.list.html?noteId=${res.msg.noteId}&role=1`;
       } else {
         window.alert('create failed', res.msg);
@@ -47,18 +50,14 @@
     }
 
     (async () => {
-      getFooter();
-      const isLogin = await checkIsLogin();
-      if (!isLogin) {
-        window.location.href = '/';
-      }
-
+      await isLogin();
       const listTag = await getTag();
       let innerTag = ``;
       for(const tag of listTag) {
         innerTag += `<option value="${tag._id}">${tag.name}</option>`;
       }
       noteTag.innerHTML = innerTag;
+      getFooter();
     })();
 
   </script>

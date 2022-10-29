@@ -1,4 +1,3 @@
-
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
@@ -22,7 +21,7 @@ function initPoint() {
 
 var score = 0;
 var lives = 3;
-var colorCode = '#008744';
+var colorCode = "#008744";
 
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
@@ -33,13 +32,19 @@ function mouseMoveHandler(e) {
 
 function drawOnePoint(idx, x = undefined, y = undefined) {
   ctx.beginPath();
-  ctx.arc(x ? x : points[idx].x, y ? y : points[idx].y, ballRadius, 0, Math.PI * 2);
+  ctx.arc(
+    x ? x : points[idx].x,
+    y ? y : points[idx].y,
+    ballRadius,
+    0,
+    Math.PI * 2
+  );
   ctx.fillStyle = colorCode;
   ctx.fill();
   ctx.closePath();
   if (idx !== undefined) {
     ctx.font = "9px Arial";
-    ctx.fillStyle = '#FFF';
+    ctx.fillStyle = "#FFF";
     ctx.fillText(idx, points[idx].x - 5, points[idx].y + 2);
   }
 }
@@ -57,8 +62,8 @@ function updatePoints() {
 }
 
 function calDistanceTwoPoint(point1, point2) {
-  const delta1 = Math.pow((point2.x - point1.x), 2);
-  const delta2 = Math.pow((point2.y - point1.y), 2);
+  const delta1 = Math.pow(point2.x - point1.x, 2);
+  const delta2 = Math.pow(point2.y - point1.y, 2);
   const res = Math.sqrt(delta1 + delta2);
   return res;
 }
@@ -66,23 +71,20 @@ function calDistanceTwoPoint(point1, point2) {
 function resolveEquation(a, b, c) {
   var x1 = null;
   var x2 = null;
-  var d = (b * b) - (4 * a * c);
+  var d = b * b - 4 * a * c;
   if (a == 0) {
     if (b == 0) {
       if (c == 0) {
-        console.log('All are solutions of x');
-      }
-      else {
+        console.log("All are solutions of x");
+      } else {
         console.log(`Can't solve for x`);
       }
+    } else {
+      x1 = -c / b;
     }
-    else {
-      x1 = (-c / b);
-    }
-  }
-  else if (d >= 0) {
-    x1 = ((-b + Math.sqrt(d)) / (2 * a));
-    x2 = ((-b - Math.sqrt(d)) / (2 * a));
+  } else if (d >= 0) {
+    x1 = (-b + Math.sqrt(d)) / (2 * a);
+    x2 = (-b - Math.sqrt(d)) / (2 * a);
   } else {
     console.log(`Can't solve`);
   }
@@ -94,11 +96,10 @@ function getCoefficient(qA, qB, qC, xA, yA, r) {
   var b2 = Math.pow(qB, 2);
   var temp = yA * qB + qC;
   var a = a2 + b2;
-  var b = (-2) * xA * (b2) + 2 * (temp) * qA;
-  var c = Math.pow(xA, 2) * b2 + Math.pow(temp, 2) - b2 * (Math.pow(r, 2));
+  var b = -2 * xA * b2 + 2 * temp * qA;
+  var c = Math.pow(xA, 2) * b2 + Math.pow(temp, 2) - b2 * Math.pow(r, 2);
   return { a, b, c };
 }
-
 
 function getLinearEquation(point1, point2) {
   let a = 0;
@@ -107,12 +108,12 @@ function getLinearEquation(point1, point2) {
   const directionVector = {
     x: point2.x - point1.x,
     y: point2.y - point1.y,
-  }
+  };
 
-  const normalVector = { x: -directionVector.y, y: directionVector.x }
+  const normalVector = { x: -directionVector.y, y: directionVector.x };
   a = normalVector.x;
   b = normalVector.y;
-  c = - (point1.x * normalVector.x + point1.y * normalVector.y);
+  c = -(point1.x * normalVector.x + point1.y * normalVector.y);
   return { a, b, c };
 }
 
@@ -156,7 +157,6 @@ function getNextPoint(xA, yA, xB, yB, r) {
 function randomRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);

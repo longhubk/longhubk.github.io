@@ -425,13 +425,18 @@ const getComments = async (noteId) => {
   }
 };
 
-window.onscroll = function() {scrollFunction()};
+window.onscroll = function () {
+  scrollFunction();
+};
 
 const scrollFunction = () => {
-  const topBtn = document.getElementById("top-btn")
-  const downBtn = document.getElementById("down-btn")
+  const topBtn = document.getElementById("top-btn");
+  const downBtn = document.getElementById("down-btn");
   if (topBtn && downBtn) {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    if (
+      document.body.scrollTop > 20 ||
+      document.documentElement.scrollTop > 20
+    ) {
       topBtn.style.display = "block";
       downBtn.style.display = "none";
     } else {
@@ -439,16 +444,16 @@ const scrollFunction = () => {
       downBtn.style.display = "block";
     }
   }
-}
+};
 
 const goToTop = () => {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
-}
+};
 
 const goToDown = () => {
-  window.scrollTo(0,document.body.scrollHeight);
-}
+  window.scrollTo(0, document.body.scrollHeight);
+};
 
 const createComment = async (comment) => {
   const oldTK = localStorage.getItem("token");
@@ -470,13 +475,19 @@ const createComment = async (comment) => {
 
 const uploadAudio = async (id) => {
   const formData = new FormData();
-  const files = document.getElementById('txt-audio');
+  const files = document.getElementById("txt-audio");
   formData.append("audio", files.files[0]);
   const oldTK = localStorage.getItem("token");
   axios.post(`${server_url}/note/upload/${id}`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${oldTK}`
-    }
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${oldTK}`,
+    },
   });
-}
+};
+
+const redirect = (uri) => {
+  window.location.href = uri ? uri : "/";
+};
+
+const NOT_FOUND = "404 NOT FOUND";

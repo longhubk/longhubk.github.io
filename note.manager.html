@@ -1,105 +1,93 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>VSB</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+    <link rel="shortcut icon" href="code.ico" />
+    <script src="scripts/axios.js" type="text/javascript"></script>
+    <script src="scripts/index.js" type="text/javascript"></script>
+    <script src="scripts/search.js" type="text/javascript"></script>
+    <script src="scripts/auth.js" type="text/javascript"></script>
+  </head>
 
-<head>
-  <title>VSB</title>
-  <link rel="stylesheet" type="text/css" href="main.css" />
-  <link rel="shortcut icon" href="code.ico">
-  <script src="axios.js" type="text/javascript"></script>
-  <script src="index.js" type="text/javascript"></script>
-</head>
-
-<body>
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h3>Create tag</h3>
-      </div>
-      <div class="modal-body">
-        <input id="input-tag" type="text" placeholder="Enter tag.." />
-      </div>
-      <div class="modal-footer">
-        <button onclick="createTag()">Create</button>
+  <body>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h3>Create tag</h3>
+        </div>
+        <div class="modal-body">
+          <input id="input-tag" type="text" placeholder="Enter tag.." />
+        </div>
+        <div class="modal-footer">
+          <button onclick="createTag()">Create</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="container">
-    <ul id="nav">
-      <li><a href="/">Home</a></li>
-      <li><a href="/breakout.html">Breakout</a></li>
-      <li><a href="/snake.html">Snake</a></li>
-    </ul>
-    <div class="search-box">
-      <input id="is" type="text" value="" placeholder="type something" />
-      <button id="bs" onclick="btnSearch()">Search</button>
+    <div class="container">
+      <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/breakout.html">Breakout</a></li>
+        <li><a href="/snake.html">Snake</a></li>
+      </ul>
+      <div class="search-box" id="sb"></div>
+      <button onclick="btnNewNote()">New Note</button>
+      <button onclick="openModal()">New Tag</button>
+      <div id="list-tag" class="fx wr">Loading Tag...</div>
+      <ul id="list-note">
+        Loading Note...
+      </ul>
+      <div id="pagination" class="fx wr">Loading Page...</div>
+      <div style="height: 50px"></div>
     </div>
-    <button onclick="btnNewNote()">New Note</button>
-    <button onclick="openModal()">New Tag</button>
-    <div id="list-tag" class="fx wr">Loading Tag...</div>
-    <ul id="list-note">Loading Note...</ul>
-    <div id="pagination" class="fx wr">Loading Page...</div>
-    <div style="height: 50px"></div>
-  </div>
-  <footer></footer>
-  <script type="text/javascript">
-    const ln = document.getElementById('list-note');
-    const pg = document.getElementById('pagination');
-    const bs = document.getElementById('bs');
-    const is = document.getElementById('is');
-    const lt = document.getElementById('list-tag');
+    <footer></footer>
+    <script type="text/javascript">
+      const ln = document.getElementById("list-note");
+      const pg = document.getElementById("pagination");
+      const bs = document.getElementById("bs");
+      const lt = document.getElementById("list-tag");
 
-    const page = getQueryParam('page');
-    const keyword = getQueryParam('keyword');
-    const tag = getQueryParam('tag');
-    let countNote = 0;
+      const page = getQueryParam("page");
+      const keyword = getQueryParam("keyword");
+      const tag = getQueryParam("tag");
+      let countNote = 0;
 
-    let listAction = [];
+      let listAction = [];
 
-    (async() => {
-      const isLogin = await checkIsLogin();
-      if (!isLogin) {
-        window.location.href = '/';
-      }
-    })();
+      const modal = document.getElementById("myModal");
+      const inputTag = document.getElementById("input-tag");
 
-    const modal = document.getElementById("myModal");
-    const inputTag = document.getElementById("input-tag");
+      const openModal = () => {
+        modal.style.display = "block";
+      };
 
-    const openModal = () => {
-      modal.style.display = "block";
-    }
-
-    const closeModal = () => {
-      modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
+      const closeModal = () => {
         modal.style.display = "none";
-      }
-    }
+      };
 
-    const createTag = async() => {
-      const res = await createNewTag(inputTag.value);
-      if (res.code === '00') {
-        window.alert('create successfully');
-        window.location.reload();
-      } else {
-        window.alert(`update failed: ${res.msg}`);
-      }
-    }
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
 
-    const btnSearch = () => {
-      insertParam('keyword', is.value, 'keyword');
-    }
+      const createTag = async () => {
+        const res = await createNewTag(inputTag.value);
+        if (res.code === "00") {
+          window.alert("create successfully");
+          window.location.reload();
+        } else {
+          window.alert(`update failed: ${res.msg}`);
+        }
+      };
 
-    const btnNewNote = () => {
-      window.location.href = "/note.create.html";
-    }
+      const btnNewNote = () => {
+        window.location.href = "/note.create.html";
+      };
 
-    const renderListNote = async(keyword = '', tag) => {
+      const renderListNote = async (keyword = "", tag) => {
         countNote = (await getAdminCountNote(keyword, tag)).count;
         if (countNote) {
           const itemPage = await createPageItem(countNote, page);
@@ -108,68 +96,89 @@
 
         const currentPage = page ? page : 1;
         const listNote = await getAdminListNote(currentPage, keyword, tag);
-        let innerNote = `<p>All: ${countNote}</p>`
+        let innerNote = `<p>All: ${countNote}</p>`;
         for (const note of listNote) {
-          const act = listAction.find(e => String(e.noteId._id) === String(note._id));
+          const act = listAction.find(
+            (e) => String(e.noteId._id) === String(note._id)
+          );
           const reAct = act && Number(act.action) === 1 ? 2 : 1;
           innerNote += `
           <li class="note-item">
             <div class="fx space-b align-c wr">
               <div class="fx wr pc-80">
-              <a class="note-tit" href='/note.list.html?noteId=${note._id}&role=1'>${note.title}</a>
+              <a class="note-tit" href='/note.list.html?noteId=${
+                note._id
+              }&role=1'>${note.title}</a>
               </div>
               <div class="fx wr space-c pc-20">
-              <a class="note-edit" href='/note.edit.html?noteId=${note._id}'>edit</a>
+              <a class="note-edit" href='/note.edit.html?noteId=${
+                note._id
+              }'>edit</a>
               </div>
             </div>
             <div class="fx space-b wr align-c sub-txt">
               <button onclick="changeAction('${note._id}', ${reAct}, 
-              ${act ? Number(act.action) : 'null' })">
+              ${act ? Number(act.action) : "null"})">
                 ${ACT[reAct]}
               </button>
-              <span>${note.content ? `${note.content.length} - ${note.content.split(' ').length}` : '0'}</span>
-              <span>${note.createBy ? note.createBy.username : 'unknown'}</span>
+              <span>${
+                note.content
+                  ? `${note.content.length} - ${note.content.split(" ").length}`
+                  : "0"
+              }</span>
+              <span>${note.createBy ? note.createBy.username : "unknown"}</span>
             </div>
             <div class="fx space-b wr align-c sub-txt">
-              <span class="${note.state == 0 ? 'blu-color' : 'red-color'}">${note.state == 0 ? "Public" : note.state === 1 ? "Private" : "Hidden"}</span>
-              <span>${note.tag ? note.tag.name : 'no tag'}</span>
+              <span class="${note.state == 0 ? "blu-color" : "red-color"}">${
+            note.state == 0 ? "Public" : note.state === 1 ? "Private" : "Hidden"
+          }</span>
+              <span>${note.tag ? note.tag.name : "no tag"}</span>
               <span>${new Date(note.created_at).toDateString()}</span>
             </div>
           </li>`;
-      }
-      ln.innerHTML = innerNote;
-    }
+        }
+        ln.innerHTML = innerNote;
+      };
 
-    const changeAction = async (noteId, action, oldAction) => {
-      const res = await changeNoteAction(noteId, action, oldAction);
-      if (res.code === '00') {
-        window.alert('change successfully');
-        window.location.reload();
-      } else {
-        window.alert(`update failed: ${res.msg}`);
-      }
-    }
+      const changeAction = async (noteId, action, oldAction) => {
+        const res = await changeNoteAction(noteId, action, oldAction);
+        if (res.code === "00") {
+          window.alert("change successfully");
+          window.location.reload();
+        } else {
+          window.alert(`update failed: ${res.msg}`);
+        }
+      };
 
-    const renderListTag = async () => {
-      const listTag = await getTag();
-      let innerTag = ''
-      for (const tag of listTag) {
-        const countNoteOfTag = (await getAdminCountNote(undefined, String(tag._id))).count;
-        innerTag += `
-          <div class="tag-item">
-            <button onClick="insertParam('tag', '${tag._id}', 'tag')" > ${tag.name} (${countNoteOfTag}) </button>
-          </div>`;
-      }
-      lt.innerHTML = innerTag;
-    }
+      const renderListTag = async () => {
+        const listTag = await getTag();
+        const cached = localStorage.getItem("TAGS");
+        if (!cached) {
+          let innerTag = "";
+          for (const tag of listTag) {
+            const countNoteOfTag = (
+              await getAdminCountNote(undefined, String(tag._id))
+            ).count;
+            innerTag += `
+            <div class="tag-item">
+              <button onClick="insertParam('tag', '${tag._id}', 'tag')" > ${tag.name} (${countNoteOfTag}) </button>
+            </div>`;
+          }
+          localStorage.setItem("TAGS", innerTag);
+          lt.innerHTML = innerTag;
+        } else {
+          lt.innerHTML = cached;
+        }
+      };
 
-    (async () => {
-      getFooter();
-      listAction = await getNoteAction();
-      await renderListNote(keyword, tag);
-      await renderListTag();
-    })()
-  </script>
-</body>
-
+      (async () => {
+        await isLogin();
+        listAction = await getNoteAction();
+        await renderListNote(keyword, tag);
+        injectSearch(keyword);
+        getFooter();
+        await renderListTag();
+      })();
+    </script>
+  </body>
 </html>

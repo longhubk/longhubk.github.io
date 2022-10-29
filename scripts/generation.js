@@ -11,10 +11,15 @@ class Box {
   height = 100;
   width = 100;
   color = "#118811";
-  constructor(x, y, name) {
-    this.x = x;
-    this.y = y;
-    this.name = name;
+  constructor(x, y, data) {
+    const { availX, availY } = checkIsCollide(x, y, data.id);
+    if (availX !== x || availY !== y) {
+      // console.log(name, {x, y, availX, availY});
+    }
+    this.x = availX;
+    this.y = availY;
+    this.name = data.name;
+    this.id = data.id;
   }
   draw() {
     ctx.fillStyle = this.color;
@@ -89,6 +94,11 @@ const marries = [
     husband: "3",
     wife: "4",
   },
+  {
+    id: "3",
+    husband: "7",
+    wife: "8",
+  },
 ];
 
 const units = [
@@ -134,6 +144,20 @@ const units = [
     gender: "female",
     parent: "2",
   },
+  {
+    id: "7",
+    name: "Nguyen Van Luu",
+    old: 47,
+    gender: "male",
+    parent: "1",
+  },
+  {
+    id: "8",
+    name: "Nguyen Thi Ly",
+    old: 47,
+    gender: "female",
+    parent: null,
+  },
 ];
 
 const families = [];
@@ -145,8 +169,11 @@ const checkIsDraw = (listFamily, unit) => {
     const isMom = listFamily[i].mom.id === unit.id;
     const isChild = listFamily[i].children.find((e) => e.id === unit.id);
     isDraw = isFar || isMom || isChild;
+    if (isDraw) {
+      return true;
+    }
   }
-  return isDraw ? true : false;
+  return false;
 };
 
 for (let i = 0; i < marries.length; i++) {
@@ -192,6 +219,24 @@ const family = {
 
 const mapUnit = new Map();
 
+const checkIsCollide = (x, y, id) => {
+  let checkX = x;
+  let checkY = y;
+  // console.log('map', {map: [...mapUnit.entries()]});
+  const arr = [...mapUnit.entries()];
+  const idx = arr.findIndex((e) => e.id === id);
+  // console.log(id, idx, arr.length);
+  for (let i = 0; i <= idx; i++) {
+    if (checkX <= arr[i].x + 50) {
+      checkX = checkX + 50;
+    }
+    if (checkY <= arr[i].y + 50) {
+      checkY = checkY + 50;
+    }
+  }
+  return { availX: checkX, availY: checkY };
+};
+
 class Family {
   constructor(data, firstPoint = { x: -50, y: -50 }) {
     this.participants = [data.far, data.mom, ...data.children];
@@ -202,7 +247,7 @@ class Family {
   draw() {
     let far;
     if (!this.data.far.isDraw) {
-      far = new Box(this.firstPoint.x, this.firstPoint.y, this.data.far.name);
+      far = new Box(this.firstPoint.x, this.firstPoint.y, this.data.far);
       far.draw();
       mapUnit.set(this.data.far.id, far);
     } else {
@@ -217,7 +262,7 @@ class Family {
       mom = new Box(
         this.firstPoint.x + far.width * 1.5,
         this.firstPoint.y,
-        this.data.mom.name
+        this.data.mom
       );
       mom.draw();
       // console.log('mom.x2', mom.x);
@@ -238,7 +283,7 @@ class Family {
         child = new Box(
           this.firstPoint.x - far.width + i * 200,
           this.firstPoint.y + Math.abs(far.y) + 100,
-          this.data.children[i].name
+          this.data.children[i]
         );
         child.draw();
         mapUnit.set(this.data.children[i].id, child);
@@ -254,7 +299,7 @@ class Family {
 
 // const family1 = new Family(family);
 
-console.log("map", mapUnit.size);
+// console.log("map", mapUnit.size);
 
 function draw() {
   canvas.width = window.innerWidth;

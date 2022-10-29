@@ -18,14 +18,17 @@ const setCountdown = (countDownDate, elm) => {
     var dt = new Date(countDownDate);
 
     // Output the result in an element with id="demo"
-    elm.innerHTML =
-      `<p>Premiere on <b>${dt.toLocaleDateString('vi-VN')}</b> at <b>${dt.toLocaleTimeString('vi-VN')}</b></p><p>Ráng Chờ thêm <b>${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây</b> nữa nhé!<p> Bất ngờ sẽ đến he he... <b><3</b></p>`;
+    elm.innerHTML = `<p>Premiere on <b>${dt.toLocaleDateString(
+      "vi-VN"
+    )}</b> at <b>${dt.toLocaleTimeString(
+      "vi-VN"
+    )}</b></p><p>Ráng Chờ thêm <b>${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây</b> nữa nhé!<p> Bất ngờ sẽ đến he he... <b><3</b></p>`;
 
     // If the count down is over, write some text
     if (distance < 0) {
       clearInterval(cd);
       // elm.innerHTML = "";
-      console.log('EXPIRED');
+      console.log("EXPIRED");
       window.location.reload();
     }
   }, 1000);
