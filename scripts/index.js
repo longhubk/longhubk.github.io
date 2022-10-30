@@ -83,9 +83,11 @@ const login = (us, pw) => {
     .then((data) => {
       const { msg, code } = data.data;
       if (code === "00") {
-        window.alert("login success");
+        // window.alert("login success");
         localStorage.setItem("token", msg.token);
-        location.reload();
+        localStorage.removeItem("TAGS");
+        // location.reload();
+        window.location.href = "/note.manager.html";
       } else {
         window.alert("login fail", msg);
       }
@@ -329,6 +331,7 @@ const createNewTag = async (tag) => {
         { tag },
         { headers: { Authorization: `Bearer ${oldTK}` } }
       );
+      localStorage.removeItem("tags");
       return data.data;
     } catch (err) {
       console.log(err);
@@ -347,6 +350,7 @@ const updateTag = async (tag, tagId) => {
         { tag, tagId },
         { headers: { Authorization: `Bearer ${oldTK}` } }
       );
+      localStorage.removeItem("tags");
       return data.data;
     } catch (err) {
       console.log(err);
@@ -358,12 +362,15 @@ const updateTag = async (tag, tagId) => {
 
 const getTag = async () => {
   try {
+    const cache = localStorage.getItem("tags");
+    if (cache) return JSON.parse(cache);
     const oldTK = localStorage.getItem("token");
     const data = await axios.get(`${server_url}/tag/`, {
       headers: { Authorization: `Bearer ${oldTK}` },
     });
     if (data.data.code === "00") {
       const res = data.data.msg;
+      localStorage.setItem("tags", JSON.stringify(res));
       return res;
     } else {
       return false;
@@ -382,6 +389,7 @@ const changeNoteAction = async (noteId, action, oldAction) => {
         { noteId, action, oldAction },
         { headers: { Authorization: `Bearer ${oldTK}` } }
       );
+      localStorage.removeItem("ACTS");
       return data.data;
     } catch (err) {
       console.log(err);
@@ -393,12 +401,15 @@ const changeNoteAction = async (noteId, action, oldAction) => {
 
 const getNoteAction = async (act = 1) => {
   try {
+    const cache = localStorage.getItem("ACTS");
+    if (cache) return JSON.parse(cache);
     const oldTK = localStorage.getItem("token");
     const data = await axios.get(`${server_url}/note/action/${act}`, {
       headers: { Authorization: `Bearer ${oldTK}` },
     });
     if (data.data.code === "00") {
       const res = data.data.msg;
+      localStorage.setItem("ACTS", JSON.stringify(res));
       return res;
     } else {
       return false;
@@ -432,16 +443,22 @@ window.onscroll = function () {
 const scrollFunction = () => {
   const topBtn = document.getElementById("top-btn");
   const downBtn = document.getElementById("down-btn");
+
   if (topBtn && downBtn) {
-    if (
-      document.body.scrollTop > 20 ||
-      document.documentElement.scrollTop > 20
-    ) {
-      topBtn.style.display = "block";
+    if (window.innerWidth < 1000) {
+      topBtn.style.display = "none";
       downBtn.style.display = "none";
     } else {
-      topBtn.style.display = "none";
-      downBtn.style.display = "block";
+      if (
+        document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20
+      ) {
+        topBtn.style.display = "block";
+        downBtn.style.display = "none";
+      } else {
+        topBtn.style.display = "none";
+        downBtn.style.display = "block";
+      }
     }
   }
 };
@@ -491,3 +508,14 @@ const redirect = (uri) => {
 };
 
 const NOT_FOUND = "404 NOT FOUND";
+
+const addMangerNav = (username) => {
+  const nav = document.getElementById("nav");
+  nav.innerHTML =
+    nav.innerHTML + `<li><a href="/note.manager.html">${username}</a></li>`;
+};
+
+const getPageInfo = (countNote, currentPage) =>
+  `<p>All: ${countNote} - Page: ${currentPage}/${Math.ceil(
+    countNote / perPage
+  )}</p>`;

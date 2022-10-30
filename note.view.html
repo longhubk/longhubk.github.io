@@ -16,7 +16,7 @@
   <body>
     <div class="container">
       <ul id="nav">
-        <li><a href="/">Home</a></li>
+        <li><a href="/">HOME</a></li>
       </ul>
       <div>
         <div class="fx space-b" id="tit-box">
@@ -55,6 +55,9 @@
 
       (async () => {
         const isLogin = await checkIsLogin();
+        if (isLogin) {
+          addMangerNav(isLogin);
+        }
         const listCMTs = await getComments(noteId);
         let htmlCMTs = "";
         if (listCMTs) {
@@ -131,7 +134,7 @@
             const titBox = document.getElementById("tit-box");
             titBox.innerHTML =
               titBox.innerHTML +
-              `<button onClick="redirect('/note.edit.html?noteId=${note._id}')">edit</button>`;
+              `<button onClick="redirect('/note.edit.html?noteId=${note._id}')">EDIT</button>`;
           }
         } else {
           blg.innerHTML = NOT_FOUND;

@@ -8,7 +8,7 @@ const btnSearch = () => {
 const injectSearch = (keyword) => {
   const searchHTML = `
         <input id="is" type="text" value="" placeholder="Type something..." autofocus  />
-        <button id="bs" onclick="btnSearch()">search</button>`;
+        <button id="bs" onclick="btnSearch()">Search</button>`;
 
   const searchBox = document.getElementById("sb");
   searchBox.innerHTML = searchHTML;

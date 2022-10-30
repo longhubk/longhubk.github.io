@@ -28,14 +28,16 @@
 
     <div class="container">
       <ul id="nav">
-        <li><a href="/">Home</a></li>
+        <li><a href="/">HOME</a></li>
         <li><a href="/breakout.html">Breakout</a></li>
         <li><a href="/snake.html">Snake</a></li>
       </ul>
       <div class="search-box" id="sb"></div>
-      <button onclick="btnNewNote()">New Note</button>
-      <button onclick="openModal()">New Tag</button>
+      <button onclick="btnNewNote()">NEW NOTE</button>
+      <button onclick="openModal()">NEW TAG</button>
       <div id="list-tag" class="fx wr">Loading Tag...</div>
+      <br />
+      <div id="list-gim" class="fx"></div>
       <ul id="list-note">
         Loading Note...
       </ul>
@@ -48,7 +50,7 @@
       const pg = document.getElementById("pagination");
       const bs = document.getElementById("bs");
       const lt = document.getElementById("list-tag");
-
+      const gim = document.getElementById("list-gim");
       const page = getQueryParam("page");
       const keyword = getQueryParam("keyword");
       const tag = getQueryParam("tag");
@@ -87,6 +89,26 @@
         window.location.href = "/note.create.html";
       };
 
+      const renderGim = async (listAction) => {
+        listAction = await getNoteAction();
+        let gimHTML = "";
+        for (const action of listAction) {
+          const act = action.action;
+          if (act === 1) {
+            const noteID = action.noteId._id;
+            gimHTML += `<div>
+              <a href="/note.view.html?noteId=${noteID}&role=1">${
+              action.noteId.title
+            }</a>
+              <button onClick="changeAction('${noteID}', ${Number(2)}, ${Number(
+              act
+            )})" >Un Gim</button>
+              </div>`;
+          }
+        }
+        gim.innerHTML = gimHTML;
+      };
+
       const renderListNote = async (keyword = "", tag) => {
         countNote = (await getAdminCountNote(keyword, tag)).count;
         if (countNote) {
@@ -96,7 +118,7 @@
 
         const currentPage = page ? page : 1;
         const listNote = await getAdminListNote(currentPage, keyword, tag);
-        let innerNote = `<p>All: ${countNote}</p>`;
+        let innerNote = getPageInfo(countNote, currentPage);
         for (const note of listNote) {
           const act = listAction.find(
             (e) => String(e.noteId._id) === String(note._id)
@@ -113,7 +135,7 @@
               <div class="fx wr space-c pc-20">
               <a class="note-edit" href='/note.edit.html?noteId=${
                 note._id
-              }'>edit</a>
+              }'>EDIT</a>
               </div>
             </div>
             <div class="fx space-b wr align-c sub-txt">
@@ -173,7 +195,7 @@
 
       (async () => {
         await isLogin();
-        listAction = await getNoteAction();
+        await renderGim();
         await renderListNote(keyword, tag);
         injectSearch(keyword);
         getFooter();

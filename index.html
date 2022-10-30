@@ -12,10 +12,10 @@
   <body>
     <div class="container">
       <ul id="nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li id="lg"><a href="/login.html">log in</a></li>
-        <li id="su"><a href="/signup.html">sign up</a></li>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/about.html">ABOUT</a></li>
+        <li id="lg"></li>
+        <li id="su"></li>
       </ul>
       <h2>Welcome to VSB (Very Simple Blog)</h2>
       <p>
@@ -45,7 +45,10 @@
         console.log("res Is Login: ", isLogin);
         if (isLogin) {
           lg.innerHTML = `<a href='/note.manager.html'>${isLogin}</a>`;
-          su.innerHTML = `<a href="#" onclick='return logout()'>Log Out</a>`;
+          su.innerHTML = `<a href="#" onclick='return logout()'>EXIT</a>`;
+        } else {
+          lg.innerHTML = `<a href="/login.html">LOG IN</a>`;
+          su.innerHTML = `<a href="/signup.html">SIGN UP</a>`;
         }
       })();
 
@@ -57,7 +60,7 @@
         }
         const currentPage = page ? page : 1;
         const listNote = await getListNote(currentPage, keyword);
-        let innerNote = "";
+        let innerNote = getPageInfo(countNote, currentPage);
         for (const note of listNote) {
           innerNote += `<li class="note-item">
           <a class="note-tit" href='/note.view.html?noteId=${note._id}'>${

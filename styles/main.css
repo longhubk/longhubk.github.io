@@ -146,7 +146,8 @@ img[alt="img1"] {
 }
 
 #current-page {
-  color: black;
+  color: grey;
+  border: grey;
   pointer-events: none;
 }
 
@@ -296,5 +297,9 @@ img[alt="img1"] {
 @media only screen and (min-width: 320px) {
   #pagination a {
     font-size: 7vw;
+  }
+
+  #down-btn, #top-btn {
+    display: none;
   }
 }
