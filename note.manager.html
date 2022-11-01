@@ -32,12 +32,12 @@
         <li><a href="/breakout.html">Breakout</a></li>
         <li><a href="/snake.html">Snake</a></li>
       </ul>
-      <div class="search-box" id="sb"></div>
+      <div class="search-box" id="sb">Loading Search...</div>
       <button onclick="btnNewNote()">NEW NOTE</button>
       <button onclick="openModal()">NEW TAG</button>
       <div id="list-tag" class="fx wr">Loading Tag...</div>
       <br />
-      <div id="list-gim" class="fx"></div>
+      <div id="list-gim" class="fx">Loading Gim...</div>
       <ul id="list-note">
         Loading Note...
       </ul>
@@ -118,6 +118,9 @@
 
         const currentPage = page ? page : 1;
         const listNote = await getAdminListNote(currentPage, keyword, tag);
+        if (currentPage === 1 && listNote.length > 0) {
+          localStorage.setItem('LAST_NOTE', JSON.stringify(listNote[0]));
+        }
         let innerNote = getPageInfo(countNote, currentPage);
         for (const note of listNote) {
           const act = listAction.find(
