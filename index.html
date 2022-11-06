@@ -24,6 +24,7 @@
           >here</a
         >
       </p>
+      <button onclick="randomNote()">RANDOM</button>
       <div class="search-box" id="sb"></div>
       <ul id="list-note">
         Loading Post...
@@ -74,6 +75,12 @@
         }
         ln.innerHTML = innerNote;
       };
+
+      const randomNote = async () => {
+        const randomNote = await getRandomNote();
+        console.log({randomNote});
+        redirect(`/note.view.html?noteId=${randomNote.id}`);
+      }
 
       (async () => {
         await renderListNote(keyword);

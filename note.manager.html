@@ -35,9 +35,10 @@
       <div class="search-box" id="sb">Loading Search...</div>
       <button onclick="btnNewNote()">NEW NOTE</button>
       <button onclick="openModal()">NEW TAG</button>
+      <button onclick="randomNote()">RANDOM</button>
       <div id="list-tag" class="fx wr">Loading Tag...</div>
       <br />
-      <div id="list-gim" class="fx">Loading Gim...</div>
+      <div id="list-pin" class="fx">Loading Pin...</div>
       <ul id="list-note">
         Loading Note...
       </ul>
@@ -50,7 +51,7 @@
       const pg = document.getElementById("pagination");
       const bs = document.getElementById("bs");
       const lt = document.getElementById("list-tag");
-      const gim = document.getElementById("list-gim");
+      const pin = document.getElementById("list-pin");
       const page = getQueryParam("page");
       const keyword = getQueryParam("keyword");
       const tag = getQueryParam("tag");
@@ -89,24 +90,30 @@
         window.location.href = "/note.create.html";
       };
 
-      const renderGim = async (listAction) => {
+      const randomNote = async () => {
+        const randomNote = await getAdminRandomNote();
+        console.log({randomNote});
+        redirect(`/note.view.html?noteId=${randomNote.id}&role=1`);
+      }
+
+      const renderPin = async (listAction) => {
         listAction = await getNoteAction();
-        let gimHTML = "";
+        let pinHTML = "";
         for (const action of listAction) {
           const act = action.action;
           if (act === 1) {
             const noteID = action.noteId._id;
-            gimHTML += `<div>
+            pinHTML += `<div>
               <a href="/note.view.html?noteId=${noteID}&role=1">${
               action.noteId.title
             }</a>
               <button onClick="changeAction('${noteID}', ${Number(2)}, ${Number(
               act
-            )})" >Un Gim</button>
+            )})" >Un Pin</button>
               </div>`;
           }
         }
-        gim.innerHTML = gimHTML;
+        pin.innerHTML = pinHTML;
       };
 
       const renderListNote = async (keyword = "", tag) => {
@@ -198,7 +205,7 @@
 
       (async () => {
         await isLogin();
-        await renderGim();
+        await renderPin();
         await renderListNote(keyword, tag);
         injectSearch(keyword);
         getFooter();

@@ -1,6 +1,6 @@
-const server_url = "https://dblogit.herokuapp.com";
+// const server_url = "https://dblogit.herokuapp.com";
 // const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
-// const server_url = "http://localhost:3000";
+const server_url = "http://localhost:3000";
 
 const perPage = 10;
 const deltaPage = 2;
@@ -519,3 +519,36 @@ const getPageInfo = (countNote, currentPage) =>
   `<p>All: ${countNote} - Page: ${currentPage}/${Math.ceil(
     countNote / perPage
   )}</p>`;
+
+const getAdminRandomNote = async () => {
+  try {
+    const oldTK = localStorage.getItem("token");
+    const uri = `${server_url}/note/random-ad`;
+    const data = await axios.get(uri, {
+      headers: { Authorization: `Bearer ${oldTK}` },
+    });
+    if (data.data.code === "00") {
+      const res = data.data.msg;
+      return res;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getRandomNote = async () => {
+  try {
+    const uri = `${server_url}/note/random`;
+    const data = await axios.get(uri);
+    if (data.data.code === "00") {
+      const res = data.data.msg;
+      return res;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
