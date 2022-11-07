@@ -38,8 +38,10 @@
         <br /></br />
         <div class="fx space-b">
           <label for="txt-audio">Audio: </label>
-          <input id="txt-audio" type="file" name="audio" accept="audio/mp3" />
-          <button onclick="upload()">upload</button>
+          <input id="txt-audio" type="file" name="audio" accept="audio/*" />
+          <button onclick="uploadAud()">upload audio</button>
+          <input id="img-inp" type="file" name="image" accept="image/*" />
+          <button id="btn-img" onclick="uploadImg()">upload img</button>
           <button onclick="update()">update</button>
         </div>
         <div style="width: 2rem"></div>
@@ -74,9 +76,13 @@
         }
       };
 
-      const upload = async () => {
+      const uploadAud = async () => {
         const noteId = getQueryParam("noteId");
         await uploadAudio(noteId);
+      };
+
+      const uploadImg = async () => {
+        await uploadImage();
       };
 
       const viewNote = () => {

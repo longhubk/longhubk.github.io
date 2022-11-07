@@ -503,6 +503,31 @@ const uploadAudio = async (id) => {
   });
 };
 
+const uploadImage = async (api_key) => {
+  const btn = document.getElementById('btn-img');
+  btn.disabled = true;
+  if (!api_key) {
+    api_key = "b012d9e7d36dd261a914c2f5a9766c13";
+  }
+  const formData = new FormData();
+  const files = document.getElementById("img-inp");
+  formData.append("image", files.files[0]);
+  const res = await axios.post(
+    `https://api.imgbb.com/1/upload?expiration=15552000&key=${api_key}`,
+    formData
+  );
+  const url = res.data.data.display_url;
+  console.log({ data: res.data, url });
+  if (url) {
+    const txt = document.getElementById("txt-content");
+    console.log("val", txt.value);
+    txt.value = txt.value + `\n![img1](${url})`;
+  }
+  btn.disabled = false;
+  files.value = '';
+  return res.data;
+};
+
 const redirect = (uri) => {
   window.location.href = uri ? uri : "/";
 };
