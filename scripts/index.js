@@ -1,4 +1,5 @@
-const server_url = "https://dblogit.herokuapp.com";
+// const server_url = "https://dblogit.herokuapp.com";
+const server_url = "https://crud-blog.onrender.com";
 // const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
 // const server_url = "http://localhost:3000";
 
