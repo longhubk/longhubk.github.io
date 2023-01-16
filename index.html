@@ -12,8 +12,8 @@
   <body>
     <div class="container">
       <ul id="nav">
-        <li><a href="/">HOME</a></li>
-        <li><a href="/about.html">ABOUT</a></li>
+        <li><a href="/">VSB</a></li>
+        <li><a href="/about.html">About</a></li>
         <li id="lg"></li>
         <li id="su"></li>
       </ul>
@@ -24,7 +24,7 @@
           >here</a
         >
       </p>
-      <button onclick="randomNote()">RANDOM</button>
+      <button onclick="randomNote()">Random</button>
       <div class="search-box" id="sb"></div>
       <ul id="list-note">
         Loading Post...
@@ -46,10 +46,10 @@
         console.log("res Is Login: ", isLogin);
         if (isLogin) {
           lg.innerHTML = `<a href='/note.manager.html'>${isLogin}</a>`;
-          su.innerHTML = `<a href="#" onclick='return logout()'>EXIT</a>`;
+          su.innerHTML = `<a href="#" onclick='return logout()'>Exit</a>`;
         } else {
-          lg.innerHTML = `<a href="/login.html">LOG IN</a>`;
-          su.innerHTML = `<a href="/signup.html">SIGN UP</a>`;
+          lg.innerHTML = `<a href="/login.html">Log In</a>`;
+          su.innerHTML = `<a href="/signup.html">Sign Up</a>`;
         }
       })();
 

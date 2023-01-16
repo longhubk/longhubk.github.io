@@ -16,7 +16,7 @@
   <body>
     <div class="container">
       <ul id="nav">
-        <li><a href="/">HOME</a></li>
+        <li><a href="/">VSB</a></li>
       </ul>
       <div>
         <div class="fx space-b" id="tit-box">
@@ -94,7 +94,7 @@
               aud.muted = true;
               aud.load(); //call this to just preload the audio without playing
               setTimeout(() => {
-                console.log("start audio");
+                console.log("Start audio");
                 aud.play();
                 aud.muted = false;
               }, 5000);
@@ -127,14 +127,14 @@
               id="ic"
               type="text"
               value=""
-              placeholder="comment something..."
+              placeholder="Comment something..."
             />
-            <button id="bc" onclick="btnComment()">comment</button>`;
+            <button id="bc" onclick="btnComment()">Comment</button>`;
 
             const titBox = document.getElementById("tit-box");
             titBox.innerHTML =
               titBox.innerHTML +
-              `<button onClick="redirect('/note.edit.html?noteId=${note._id}')">EDIT</button>`;
+              `<button onClick="redirect('/note.edit.html?noteId=${note._id}')">Edit</button>`;
           }
         } else {
           blg.innerHTML = NOT_FOUND;
