@@ -1,11 +1,45 @@
 // const server_url = "https://dblogit.herokuapp.com";
-const server_url = "https://crud-blog.onrender.com";
+// const server_url = "https://crud-blog.onrender.com";
 // const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
-// const server_url = "http://localhost:3000";
+const server_url = "http://localhost:3000";
 
 const perPage = 10;
 const deltaPage = 2;
 const ACT = ["view", "like", "dislike"];
+const nextPrefix = 'NEXT_';
+const prevPrefix = 'PREV_';
+const currentPageKey = 'CURRENT_PAGE';
+
+const clearCache = (prefix) => {
+  var arr = []; // Array to hold the keys
+  // Iterate over localStorage and insert the keys that meet the condition into arr
+  for (let i = 0; i < localStorage.length; i++) {
+    if (localStorage.key(i).substring(0, prefix.length) == prefix) {
+      arr.push(localStorage.key(i));
+    }
+  }
+  // Iterate over arr and remove the items by key
+  for (let i = 0; i < arr.length; i++) {
+    localStorage.removeItem(arr[i]);
+  }
+}
+
+const handleSerializeNote = async (listNote = []) => {
+  clearCache(nextPrefix);
+  clearCache(prevPrefix);
+  for (let idx = 0; idx < listNote.length; idx++) {
+    const currentNote = listNote[idx];
+    let key = `${nextPrefix}${currentNote._id}`;
+    if (idx != listNote.length - 1) {
+      localStorage.setItem(key, listNote[idx + 1]._id);
+    } 
+
+    key = `${prevPrefix}${currentNote._id}`;
+    if (idx > 0) {
+      localStorage.setItem(key, listNote[idx - 1]._id)
+    } 
+  }
+}
 
 const getFooter = () => {
   const footer = document.getElementsByTagName("footer")[0];
@@ -27,8 +61,7 @@ const getQueryParam = (param) => {
 const createPageItem = async (countNote, page = 1) => {
   let itemPages = "";
   const templateBtn = (numPage, display, isHidden = false) =>
-    `<div ${isHidden ? 'class="hidden-page"' : ""}><button ${
-      Number(numPage) === Number(page) ? 'id="current-page"' : ""
+    `<div ${isHidden ? 'class="hidden-page"' : ""}><button ${Number(numPage) === Number(page) ? 'id="current-page"' : ""
     } onclick="insertParam('page', ${numPage})">${display}</button></div>`;
   let maxPage = 1;
   for (let i = 0; i < countNote; i += perPage) {
@@ -125,17 +158,33 @@ const renderNote = (rawMD) => {
       if (lang && hljs.getLanguage(lang)) {
         try {
           return hljs.highlight(lang, str).value;
-        } catch (err) {}
+        } catch (err) { }
       }
       try {
         return hljs.highlightAuto(str).value;
-      } catch (err) {}
+      } catch (err) { }
       return ""; // use external default escaping
     },
   });
   const res = md.render(rawMD);
   return res;
 };
+
+const getListAudio = async () => {
+  try {
+    const url = `${server_url}/note/audio/`;
+    const data = await axios.get(url);
+    if (data.data.code === "00") {
+      let res = data.data.msg;
+      return res;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const getAdminListNote = async (page = 1, keyword, tag) => {
   try {
     const oldTK = localStorage.getItem("token");
@@ -145,13 +194,15 @@ const getAdminListNote = async (page = 1, keyword, tag) => {
       keyword && tag
         ? `${kwUrl}&tag=${tag}`
         : tag
-        ? `${url}?tag=${tag}`
-        : kwUrl;
+          ? `${url}?tag=${tag}`
+          : kwUrl;
     const data = await axios.get(tgUrl, {
       headers: { Authorization: `Bearer ${oldTK}` },
     });
     if (data.data.code === "00") {
       const res = data.data.msg;
+      handleSerializeNote(res);
+      localStorage.setItem(currentPageKey, JSON.stringify({ type: 'admin', page, keyword, tag }))
       return res;
     } else {
       return false;
@@ -168,6 +219,8 @@ const getListNote = async (page = 1, keyword = "") => {
     );
     if (data.data.code === "00") {
       const res = data.data.msg;
+      localStorage.setItem(currentPageKey, JSON.stringify({ type: 'user', page, keyword }))
+      handleSerializeNote(res);
       return res;
     } else {
       return false;
@@ -270,9 +323,8 @@ const getNoteShare = async (noteId) => {
 const getAdminCountNote = async (keyword = "", tag = "") => {
   try {
     const oldTK = localStorage.getItem("token");
-    const uri = `${server_url}/note/count-ad${
-      keyword ? `?keyword=${keyword}` : ""
-    }${tag ? `${keyword === "" ? "?" : "&"}tag=${tag}` : ""} `;
+    const uri = `${server_url}/note/count-ad${keyword ? `?keyword=${keyword}` : ""
+      }${tag ? `${keyword === "" ? "?" : "&"}tag=${tag}` : ""} `;
     const data = await axios.get(uri, {
       headers: { Authorization: `Bearer ${oldTK}` },
     });
@@ -562,7 +614,7 @@ const getAdminRandomNote = async () => {
   } catch (err) {
     console.log(err);
   }
-};
+}
 
 const getRandomNote = async () => {
   try {
@@ -577,4 +629,4 @@ const getRandomNote = async () => {
   } catch (err) {
     console.log(err);
   }
-};
+}

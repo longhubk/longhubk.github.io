@@ -1,92 +1,137 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <title>VSB</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="styles/main.css" />
-    <link rel="shortcut icon" href="assets/code.ico" />
-    <!-- <script src="scripts/https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+
+<head>
+  <title>VSB</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link rel="shortcut icon" href="assets/code.ico" />
+  <!-- <script src="scripts/https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
   <script src="scripts/https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script> -->
-    <script src="scripts/remarkable.js" type="text/javascript"></script>
-    <script src="scripts/axios.js" type="text/javascript"></script>
-    <script src="scripts/index.js" type="text/javascript"></script>
-    <script src="scripts/countdown.js" type="text/javascript"></script>
-  </head>
+  <script src="scripts/remarkable.js" type="text/javascript"></script>
+  <script src="scripts/axios.js" type="text/javascript"></script>
+  <script src="scripts/index.js" type="text/javascript"></script>
+  <script src="scripts/countdown.js" type="text/javascript"></script>
+</head>
 
-  <body>
-    <div class="container">
-      <ul id="nav">
-        <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
-      </ul>
-      <div>
-        <div class="fx space-b" id="tit-box">
-          <h1 id="tit"></h1>
-        </div>
-        <div id="aud-box"></div>
-        <div id="blg">Loading...</div>
-        <div class="search-box" id="i-cmt"></div>
-        <div id="cmt"></div>
+<body>
+  <div class="container">
+    <ul id="nav">
+      <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
+    </ul>
+    <div>
+      <div class="fx space-b" id="tit-box">
+        <h1 id="tit"></h1>
       </div>
+      <div id="aud-box"></div>
+      <button onclick="viewPreviusNode()">Prev</button>
+      <button onclick="viewNextNode()">Next</button>
+      <div id="blg">Loading...</div>
+      <div class="search-box" id="i-cmt"></div>
+      <div id="cmt"></div>
     </div>
-    <footer></footer>
-    <script type="text/javascript">
-      const blg = document.getElementById("blg");
-      const tit = document.getElementById("tit");
-      const cmt = document.getElementById("cmt");
-      const iCmt = document.getElementById("i-cmt");
-      const ipCmt = document.getElementById("ic");
-      const btnCmt = document.getElementById("bc");
-      const noteTag = document.getElementById("note-tag");
-      const role = getQueryParam("role");
+  </div>
+  <footer></footer>
+  <script type="text/javascript">
+    const blg = document.getElementById("blg");
+    const tit = document.getElementById("tit");
+    const cmt = document.getElementById("cmt");
+    const iCmt = document.getElementById("i-cmt");
+    const ipCmt = document.getElementById("ic");
+    const btnCmt = document.getElementById("bc");
+    const noteTag = document.getElementById("note-tag");
+    const role = getQueryParam("role");
+    const noteId = getQueryParam("noteId");
+
+    const getMoreListNote = async (more) => {
+      try {
+        const currentPageInfo = JSON.parse(localStorage.getItem(`${currentPageKey}`));
+        const nextPage = +currentPageInfo.page + more;
+        let listNote = [];
+        if (nextPage > 0) {
+          if (currentPageInfo.type === 'admin') {
+            listNote = await getAdminListNote(nextPage, currentPageInfo?.keyword, currentPageInfo?.tag);
+          } else {
+            listNote = await getListNote(nextPage, currentPageInfo?.keyword);
+          }
+        }
+        return listNote;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    const viewNextNode = async () => {
       const noteId = getQueryParam("noteId");
+      let nextNodeId = localStorage.getItem(`${nextPrefix}${noteId}`);
+      if (!nextNodeId) {
+        const listNote = await getMoreListNote(1);
+        nextNodeId = listNote.length > 0 ? listNote[0]._id : '404';
+      }
+      redirect(`/note.view.html?noteId=${nextNodeId}&role=1`);
+    };
 
-      const btnComment = async () => {
-        const comment = {
-          noteId,
-          content: ipCmt.value,
-        };
-        const res = await createComment(comment);
-        if (res.code === "00") {
-          window.location.reload();
-        } else {
-          window.alert(`comment failed: ${res.msg}`);
-        }
+    const viewPreviusNode = async () => {
+      const noteId = getQueryParam("noteId");
+      let prevNodeId = localStorage.getItem(`${prevPrefix}${noteId}`);
+      if (!prevNodeId) {
+        const listNote = await getMoreListNote(-1);
+        prevNodeId = listNote.length > 0 ? listNote[listNote.length - 1]._id : '404';
+      }
+      redirect(`/note.view.html?noteId=${prevNodeId}&role=1`);
+    };
+
+    const btnComment = async () => {
+      const comment = {
+        noteId,
+        content: ipCmt.value,
       };
+      const res = await createComment(comment);
+      if (res.code === "00") {
+        window.location.reload();
+      } else {
+        window.alert(`comment failed: ${res.msg}`);
+      }
+    };
 
-      (async () => {
-        const isLogin = await checkIsLogin();
-        if (isLogin) {
-          addMangerNav(isLogin);
+    (async () => {
+      const isLogin = await checkIsLogin();
+      if (isLogin) {
+        addMangerNav(isLogin);
+      }
+      const listCMTs = await getComments(noteId);
+      let htmlCMTs = "";
+      if (listCMTs) {
+        for (const c of listCMTs) {
+          htmlCMTs += `<div class="box-ver"><b>${c.createBy.username}</b> : ${c.content}</div>`;
         }
-        const listCMTs = await getComments(noteId);
-        let htmlCMTs = "";
-        if (listCMTs) {
-          for (const c of listCMTs) {
-            htmlCMTs += `<div class="box-ver"><b>${c.createBy.username}</b> : ${c.content}</div>`;
-          }
-        }
-        cmt.innerHTML = htmlCMTs;
+      }
+      cmt.innerHTML = htmlCMTs;
 
-        if (role !== undefined) {
-          if (Number(role) === 1) {
-            note = await getAdminNote(noteId);
-          } else if (Number(role) === 2) {
-            note = await getNoteShare(noteId);
-          }
-        } else {
-          note = await getNote(noteId);
+      if (role !== undefined) {
+        if (Number(role) === 1) {
+          note = await getAdminNote(noteId);
+        } else if (Number(role) === 2) {
+          note = await getNoteShare(noteId);
         }
-        if (note) {
+      } else {
+        note = await getNote(noteId);
+      }
+      const listAudio = await getListAudio();
+      const listAudioID = listAudio.map(aud => aud.split('.')[0]);
+      console.log({ listAudio, a: note._id });
+      if (note) {
+        if (listAudioID.includes(note._id)) {
           try {
             const aud_uri = server_url + "/" + note._id + ".mp3";
             const isExist = await axios.get(aud_uri);
             if (isExist) {
               const aud_box = document.getElementById("aud-box");
               aud_box.innerHTML = `
-              <audio controls autoplay loop id="aud">
-                <source id="aud-src" src="scripts/" type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>`;
+                <audio controls autoplay loop id="aud">
+                  <source id="aud-src" src="scripts/" type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </audio>`;
               const aud = document.getElementById("aud");
               const aud_src = document.getElementById("aud-src");
               aud_src.src = aud_uri;
@@ -102,28 +147,29 @@
           } catch (err) {
             console.log("Not exist audio", err);
           }
+        }
 
-          tit.innerHTML = note.title;
-          if (
-            note.countdown !== undefined &&
-            note.countdown !== null &&
-            Number(role) === 2
-          ) {
-            // "Feb 14, 2022 0:0:0"
-            const countDownDate = new Date(note.countdown).getTime();
-            const now = new Date().getTime();
-            const delta = countDownDate - now;
-            if (delta > 0) {
-              setCountdown(countDownDate, blg);
-            } else {
-              blg.innerHTML = renderNote(note.content);
-            }
+        tit.innerHTML = note.title;
+        if (
+          note.countdown !== undefined &&
+          note.countdown !== null &&
+          Number(role) === 2
+        ) {
+          // "Feb 14, 2022 0:0:0"
+          const countDownDate = new Date(note.countdown).getTime();
+          const now = new Date().getTime();
+          const delta = countDownDate - now;
+          if (delta > 0) {
+            setCountdown(countDownDate, blg);
           } else {
             blg.innerHTML = renderNote(note.content);
           }
-          if (isLogin) {
-            const cmtBox = document.getElementById("i-cmt");
-            cmtBox.innerHTML = `<input
+        } else {
+          blg.innerHTML = renderNote(note.content);
+        }
+        if (isLogin) {
+          const cmtBox = document.getElementById("i-cmt");
+          cmtBox.innerHTML = `<input
               id="ic"
               type="text"
               value=""
@@ -131,16 +177,17 @@
             />
             <button id="bc" onclick="btnComment()">Comment</button>`;
 
-            const titBox = document.getElementById("tit-box");
-            titBox.innerHTML =
-              titBox.innerHTML +
-              `<button onClick="redirect('/note.edit.html?noteId=${note._id}')">Edit</button>`;
-          }
-        } else {
-          blg.innerHTML = NOT_FOUND;
+          const titBox = document.getElementById("tit-box");
+          titBox.innerHTML =
+            titBox.innerHTML +
+            `<button onClick="redirect('/note.edit.html?noteId=${note._id}')">Edit</button>`;
         }
-        getFooter();
-      })();
-    </script>
-  </body>
+      } else {
+        blg.innerHTML = NOT_FOUND;
+      }
+      getFooter();
+    })();
+  </script>
+</body>
+
 </html>
