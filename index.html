@@ -3,7 +3,7 @@
   <head>
     <title>VSB</title>
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
-    <link rel="shortcut icon" href="assets/code.ico" />
+    <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
     <script src="scripts/axios.js" type="text/javascript"></script>
     <script src="scripts/index.js" type="text/javascript"></script>
     <script src="scripts/search.js" type="text/javascript"></script>
@@ -70,7 +70,7 @@
           <a class="note-tit" href='/note.view.html?noteId=${note._id}'>${
             note.title
           }</a>
-          <p class="sub-txt">${new Date(note.created_at).toDateString()}</p>
+          <p class="sub-txt">${new Date(note.created_at).toLocaleDateString()}</p>
           </li>`;
         }
         if (innerNote === "") {

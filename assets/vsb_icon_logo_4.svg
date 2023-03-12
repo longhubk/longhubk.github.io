@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="500" height="500" viewBox="0 0 500 500" xml:space="preserve">
+<desc>Created with Fabric.js 4.6.0</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 65.98 115.45)" id="VLkLn4n9r-iYENOJlvZWC"  >
+<path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 0 0" stroke-linecap="round" />
+</g>
+<g transform="matrix(0.2 0 0 0.2 163.19 54.94)" id="07SdRnzKgnPRfjxcDP7cB"  >
+<path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 0 0" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 -13.47 66.25)" id="3iJUP0AzsQ-PA8nf9Tqhc"  >
+<path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 0 0" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 36.04 96.28)" id="bIJrxGpYs7BsnByIDe_YL"  >
+<path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 0 0" stroke-linecap="round" />
+</g>
+<g transform="matrix(0.93 0 0 0.9 118.85 193.84)" id="Np-xMS9mXg_4VUv7dh4H3"  >
+<filter id="SVGID_72" y="-24%" height="148%" x="-25%" width="150%" >
+	<feGaussianBlur in="SourceAlpha" stdDeviation="2.5"></feGaussianBlur>
+	<feOffset dx="5" dy="5" result="oBlur" ></feOffset>
+	<feFlood flood-color="rgb(137,137,137)" flood-opacity="1"/>
+	<feComposite in2="oBlur" operator="in" />
+	<feMerge>
+		<feMergeNode></feMergeNode>
+		<feMergeNode in="SourceGraphic"></feMergeNode>
+	</feMerge>
+</filter>
+<path style="stroke: rgb(0,0,0); stroke-width: 20; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;filter: url(#SVGID_72);" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M -101.49701 -57.91989 L -23.65270000000001 142.08011 L 17.065859999999986 51.06214999999999 L -23.65270000000001 -35.76420000000002 L 101.49699999999999 -142.08011000000002 L -5.0898300000000205 -141.08011000000002 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 231.83 250)" id="fsFfnst-g9GA8vZ-aApeI"  >
+<filter id="SVGID_62" y="-22%" height="144%" x="-23%" width="146%" >
+	<feGaussianBlur in="SourceAlpha" stdDeviation="2.5"></feGaussianBlur>
+	<feOffset dx="5" dy="5" result="oBlur" ></feOffset>
+	<feFlood flood-color="rgb(137,137,137)" flood-opacity="1"/>
+	<feComposite in2="oBlur" operator="in" />
+	<feMerge>
+		<feMergeNode></feMergeNode>
+		<feMergeNode in="SourceGraphic"></feMergeNode>
+	</feMerge>
+</filter>
+<path style="stroke: rgb(0,0,0); stroke-width: 20; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;filter: url(#SVGID_62);" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 68.26347 -228.14371 L -153.29342000000003 228.14371999999997 L -71.25749000000003 228.14371999999997 L 153.29341 -228.14371 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 242.03 387.13)" id="4DOsUaBtt5yWTKC0JZ6av"  >
+<path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 0 0" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 298.92 410.48)" id="EsxxJufEwC-0heRQQpTdk"  >
+<path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 0 0" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 279.16 396.19)" id="Jx10a3ZpohuGWF9RSxeSl"  >
+<path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 0 0" stroke-linecap="round" />
+</g>
+<g transform="matrix(0.75 0 0 0.87 372.57 284.94)" id="jfHKU2IdBTwKVxTvPix8d"  >
+<filter id="SVGID_50" y="-23%" height="146%" x="-24%" width="148%" >
+	<feGaussianBlur in="SourceAlpha" stdDeviation="2.5"></feGaussianBlur>
+	<feOffset dx="5" dy="5" result="oBlur" ></feOffset>
+	<feFlood flood-color="rgb(137,137,137)" flood-opacity="1"/>
+	<feComposite in2="oBlur" operator="in" />
+	<feMerge>
+		<feMergeNode></feMergeNode>
+		<feMergeNode in="SourceGraphic"></feMergeNode>
+	</feMerge>
+</filter>
+<path style="stroke: rgb(0,0,0); stroke-width: 20; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;filter: url(#SVGID_50);" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M -125.1003 163.77246 L -16.815870000000004 163.77246 L 125.10029999999999 25.44910999999999 L 2.345809999999986 -163.77245000000002 L -44.36078000000001 -73.35329000000002 L 23.902689999999986 12.87424999999999 z" stroke-linecap="round" />
+</g>
+</svg>

@@ -1,7 +1,7 @@
 // const server_url = "https://dblogit.herokuapp.com";
-// const server_url = "https://crud-blog.onrender.com";
+const server_url = "https://crud-blog.onrender.com";
 // const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
-const server_url = "http://localhost:3000";
+// const server_url = "http://localhost:3000";
 
 const perPage = 10;
 const deltaPage = 2;
@@ -9,6 +9,13 @@ const ACT = ["view", "like", "dislike"];
 const nextPrefix = 'NEXT_';
 const prevPrefix = 'PREV_';
 const currentPageKey = 'CURRENT_PAGE';
+
+const stateMap = {
+  "0": "Publish",
+  "1": "Private",
+  "2": "Hidden",
+  "3": "Sharing",
+}
 
 const clearCache = (prefix) => {
   var arr = []; // Array to hold the keys
@@ -32,12 +39,12 @@ const handleSerializeNote = async (listNote = []) => {
     let key = `${nextPrefix}${currentNote._id}`;
     if (idx != listNote.length - 1) {
       localStorage.setItem(key, listNote[idx + 1]._id);
-    } 
+    }
 
     key = `${prevPrefix}${currentNote._id}`;
     if (idx > 0) {
       localStorage.setItem(key, listNote[idx - 1]._id)
-    } 
+    }
   }
 }
 
@@ -47,8 +54,12 @@ const getFooter = () => {
   <div class="fx wr">
     <a class="mr-1" href="mailto:longn7284@gmail.com">Email</a>
     <a class="mr-1" href="https://github.com/longhubk">Github</a>
-    <button onclick="goToDown()" class="scroll-btn" id="down-btn" title="Go to down">v</button>
-    <button onclick="goToTop()" class="scroll-btn" id="top-btn" title="Go to top">^</button>
+    <button onclick="goToDown()" class="scroll-btn" id="down-btn" title="Go to down">
+      <img src="assets/vsb_icon_down.png" class="icon30" alt="v" />
+    </button>
+    <button onclick="goToTop()" class="scroll-btn" id="top-btn" title="Go to top">
+      <img src="assets/vsb_icon_up.png" class="icon30" alt="^" />
+    </button>
   </div>`;
 };
 
@@ -73,14 +84,14 @@ const createPageItem = async (countNote, page = 1) => {
     maxPage = numPage;
   }
   if (page > 1) {
-    itemPages = templateBtn(+page - 1, "<") + itemPages;
+    itemPages = templateBtn(+page - 1, "<img src='assets/vsb_icon_prev.png' class='icon30' alt='<' />") + itemPages;
   }
   if (page < maxPage) {
     itemPages =
-      itemPages + templateBtn(+page + 1, ">") + templateBtn(maxPage, ">>");
+      itemPages + templateBtn(+page + 1, "<img src='assets/vsb_icon_next.png' class='icon30' alt='>' />") + templateBtn(maxPage, "<img src='assets/vsb_icon_last.png' class='icon30' alt='>>' />");
   }
   if (page > deltaPage) {
-    itemPages = templateBtn(1, "<<") + itemPages;
+    itemPages = templateBtn(1, "<img src='assets/vsb_icon_first.png' class='icon30' alt='<<' />") + itemPages;
   }
   return itemPages;
 };

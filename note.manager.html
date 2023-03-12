@@ -3,7 +3,7 @@
   <head>
     <title>VSB</title>
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
-    <link rel="shortcut icon" href="assets/code.ico" />
+    <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
     <script src="scripts/axios.js" type="text/javascript"></script>
     <script src="scripts/index.js" type="text/javascript"></script>
     <script src="scripts/search.js" type="text/javascript"></script>
@@ -165,7 +165,7 @@
             note.state == 0 ? "Public" : note.state === 1 ? "Private" : "Hidden"
           }</span>
               <span>${note.tag ? note.tag.name : "no tag"}</span>
-              <span>${new Date(note.created_at).toDateString()}</span>
+              <span>${new Date(note.created_at).toLocaleDateString()}</span>
             </div>
           </li>`;
         }
