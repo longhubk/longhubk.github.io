@@ -196,7 +196,7 @@ const getListAudio = async () => {
   }
 };
 
-const getAdminListNote = async (page = 1, keyword, tag) => {
+const getAdminListNote = async (page = 1, keyword, tag, state) => {
   try {
     const oldTK = localStorage.getItem("token");
     const url = `${server_url}/note/page-ad/${page}`;
@@ -207,7 +207,9 @@ const getAdminListNote = async (page = 1, keyword, tag) => {
         : tag
           ? `${url}?tag=${tag}`
           : kwUrl;
-    const data = await axios.get(tgUrl, {
+    const stateUrl = state ? `${tgUrl}?state=${state}` : tgUrl;
+    console.log({stateUrl});
+    const data = await axios.get(stateUrl, {
       headers: { Authorization: `Bearer ${oldTK}` },
     });
     if (data.data.code === "00") {
@@ -491,6 +493,23 @@ const getComments = async (noteId) => {
     });
     if (data.data.code === "00") {
       const res = data.data.msg;
+      return res;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deleteNote = async (noteId) => {
+  try {
+    const oldTK = localStorage.getItem("token");
+    const data = await axios.delete(`${server_url}/note/delete/${noteId}`, {
+      headers: { Authorization: `Bearer ${oldTK}` },
+    });
+    if (data.data.code === "00") {
+      const res = data.data;
       return res;
     } else {
       return false;

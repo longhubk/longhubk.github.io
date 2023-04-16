@@ -1,113 +1,132 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>VSB</title>
-    <link rel="stylesheet" type="text/css" href="styles/main.css" />
-    <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
-    <script src="scripts/axios.js" type="text/javascript"></script>
-    <script src="scripts/index.js" type="text/javascript"></script>
-    <script src="scripts/auth.js" type="text/javascript"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
 
-  <body>
-    <div class="container">
-      <ul id="nav">
-        <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
-      </ul>
-      <div>
-        <div class="fx space-b" id="tit-box">
-          <textarea id="txt-title" rows="1"></textarea><br /><br />
-          <button onClick="viewNote()">View</button>
-        </div>
-        <br />
-        <textarea id="txt-content" rows="30"></textarea><br /><br />
-        <label for="txt-audio">State:..........</label>
-        <select id="note-state">
-          <option value="0">Publish</option>
-          <option value="1">Private</option>
-          <option value="2">Hidden</option>
-          <option value="3">Sharing</option>
-        </select>
-        <br /></br />
-        <label for="txt-audio">Tag:.............</label>
-        <select id="note-tag"></select>
-        <br /></br />
-        <label for="birthdaytime">Countdown: </label>
-        <input type="datetime-local" id="txt-date" name="cd" />
-        <br /></br />
-        <div class="fx space-b">
-          <label for="txt-audio">Audio: </label>
-          <input id="txt-audio" type="file" name="audio" accept="audio/*" />
-          <button onclick="uploadAud()">Upload audio</button>
-          <input id="img-inp" type="file" name="image" accept="image/*" />
-          <button id="btn-img" onclick="uploadImg()">Upload img</button>
-          <button onclick="update()">Update</button>
-        </div>
-        <div style="width: 2rem"></div>
+<head>
+  <title>VSB</title>
+  <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
+  <script src="scripts/axios.js" type="text/javascript"></script>
+  <script src="scripts/index.js" type="text/javascript"></script>
+  <script src="scripts/auth.js" type="text/javascript"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+  <div class="container">
+    <ul id="nav">
+      <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
+    </ul>
+    <div>
+      <div class="fx space-b" id="tit-box">
+        <textarea id="txt-title" rows="1"></textarea><br /><br />
+        <button onClick="viewNote()">View</button>
       </div>
+      <br />
+      <textarea id="txt-content" rows="30"></textarea><br /><br />
+      <label for="txt-audio">State:..........</label>
+      <select id="note-state">
+        <option value="0">Publish</option>
+        <option value="1">Private</option>
+        <option value="2">Hidden</option>
+        <option value="3">Sharing</option>
+      </select>
+      <br /></br />
+      <label for="txt-audio">Tag:.............</label>
+      <select id="note-tag"></select>
+      <br /></br />
+      <label for="birthdaytime">Countdown: </label>
+      <input type="datetime-local" id="txt-date" name="cd" />
+      <br /></br />
+      <div class="fx space-b">
+        <label for="txt-audio">Audio: </label>
+        <input id="txt-audio" type="file" name="audio" accept="audio/*" />
+        <button onclick="uploadAud()">Upload audio</button>
+        <input id="img-inp" type="file" name="image" accept="image/*" />
+        <button id="btn-img" onclick="uploadImg()">Upload img</button>
+        <button id="btn-dl" onclick="deletePost()">Delete</button>
+        <button id="btn-ud" onclick="update()">Update</button>
+      </div>
+      <div style="width: 2rem"></div>
     </div>
-    <footer></footer>
-    <script type="text/javascript">
-      const txtField = document.getElementById("txt-content");
-      const txtTitle = document.getElementById("txt-title");
-      const txtDate = document.getElementById("txt-date");
-      const txtAudio = document.getElementById("txt-audio");
-      const noteState = document.getElementById("note-state");
-      const noteTag = document.getElementById("note-tag");
-      let note;
+  </div>
+  <footer></footer>
+  <script type="text/javascript">
+    const txtField = document.getElementById("txt-content");
+    const txtTitle = document.getElementById("txt-title");
+    const txtDate = document.getElementById("txt-date");
+    const txtAudio = document.getElementById("txt-audio");
+    const noteState = document.getElementById("note-state");
+    const noteTag = document.getElementById("note-tag");
+    const updateBtn = document.getElementById("btn-ud");
+    const deleteBtn = document.getElementById("btn-dl");
+    let note;
 
-      const update = async () => {
-        const updateData = {
-          title: txtTitle.value,
-          content: txtField.value,
-          state: noteState.value,
-          tag: noteTag.value,
-        };
-        if (txtDate.value !== undefined && txtDate.value !== null) {
-          updateData.countdown = txtDate.value;
-        }
-        const res = await updateNote(updateData, note);
-        if (res.code === "00") {
-          // window.alert("update successfully");
-          redirect(`/note.view.html?noteId=${note._id}&role=1`);
-        } else {
-          window.alert(`update failed: ${res.msg}`);
-        }
+    const update = async () => {
+      const updateData = {
+        title: txtTitle.value,
+        content: txtField.value,
+        state: noteState.value,
+        tag: noteTag.value,
       };
+      if (txtDate.value !== undefined && txtDate.value !== null) {
+        updateData.countdown = txtDate.value;
+      }
+      updateBtn.disabled = true;
+      const res = await updateNote(updateData, note);
+      updateBtn.disabled = false;
+      if (res.code === "00") {
+        // window.alert("update successfully");
+        redirect(`/note.view.html?noteId=${note._id}&role=1`);
+      } else {
+        window.alert(`update failed: ${res.msg}`);
+      }
+    };
 
-      const uploadAud = async () => {
-        const noteId = getQueryParam("noteId");
-        await uploadAudio(noteId);
-      };
+    const uploadAud = async () => {
+      const noteId = getQueryParam("noteId");
+      await uploadAudio(noteId);
+    };
 
-      const uploadImg = async () => {
-        await uploadImage();
-      };
+    const deletePost = async () => {
+      const noteId = getQueryParam("noteId");
+      deleteBtn.disabled = true;
+      const res = await deleteNote(noteId);
+      deleteBtn.disabled = false;
+      if (res.code === "00") {
+        redirect(`/note.view.html?noteId=${note._id}&role=1`);
+      } else {
+        window.alert(`delete failed: ${res.msg}`);
+      }
+    };
 
-      const viewNote = () => {
-        const noteId = getQueryParam("noteId");
-        redirect(`/note.view.html?noteId=${noteId}&role=1`);
-      };
+    const uploadImg = async () => {
+      await uploadImage();
+    };
 
-      (async () => {
-        await isLogin();
-        const noteId = getQueryParam("noteId");
-        note = await getAdminNote(noteId);
-        txtTitle.value = note.title;
-        txtField.value = note.content;
-        txtDate.value = note.countdown;
-        noteState.value = note.state;
+    const viewNote = () => {
+      const noteId = getQueryParam("noteId");
+      redirect(`/note.view.html?noteId=${noteId}&role=1`);
+    };
 
-        const listTag = await getTag();
-        let innerTag = ``;
-        for (const tag of listTag) {
-          innerTag += `<option value="${tag._id}">${tag.name}</option>`;
-        }
-        noteTag.innerHTML = innerTag;
-        noteTag.value = note.tag;
-        getFooter();
-      })();
-    </script>
-  </body>
+    (async () => {
+      await isLogin();
+      const noteId = getQueryParam("noteId");
+      note = await getAdminNote(noteId);
+      txtTitle.value = note.title;
+      txtField.value = note.content;
+      txtDate.value = note.countdown;
+      noteState.value = note.state;
+
+      const listTag = await getTag();
+      let innerTag = ``;
+      for (const tag of listTag) {
+        innerTag += `<option value="${tag._id}">${tag.name}</option>`;
+      }
+      noteTag.innerHTML = innerTag;
+      noteTag.value = note.tag;
+      getFooter();
+    })();
+  </script>
+</body>
+
 </html>

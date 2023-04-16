@@ -1,93 +1,96 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>VSB</title>
-    <link rel="stylesheet" type="text/css" href="styles/main.css" />
-    <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
-    <script src="scripts/axios.js" type="text/javascript"></script>
-    <script src="scripts/index.js" type="text/javascript"></script>
-    <script src="scripts/auth.js" type="text/javascript"></script>
-  </head>
 
-  <body>
-    <div class="container">
-      <ul id="nav">
-        <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
-      </ul>
-      <div>
-        <textarea id="txt-title" rows="2" autofocus></textarea><br /><br />
-        <textarea id="txt-content" rows="20"></textarea><br /><br />
-        <div class="fx space-b align-c">
-          <div>
-            <select id="note-state">
-              <option value="1">Private</option>
-              <option value="0">Publish</option>
-              <option value="2">Hidden</option>
-            </select>
-            <select id="note-tag"></select>
-          </div>
-          <button onclick="create()">create</button>
+<head>
+  <title>VSB</title>
+  <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
+  <script src="scripts/axios.js" type="text/javascript"></script>
+  <script src="scripts/index.js" type="text/javascript"></script>
+  <script src="scripts/auth.js" type="text/javascript"></script>
+</head>
+
+<body>
+  <div class="container">
+    <ul id="nav">
+      <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
+    </ul>
+    <div>
+      <textarea id="txt-title" rows="2" autofocus></textarea><br /><br />
+      <textarea id="txt-content" rows="20"></textarea><br /><br />
+      <div class="fx space-b align-c">
+        <div>
+          <select id="note-state">
+            <option value="1">Private</option>
+            <option value="0">Publish</option>
+            <option value="2">Hidden</option>
+          </select>
+          <select id="note-tag"></select>
         </div>
-        <div style="width: 2rem"></div>
+        <button id="btn-ct" onclick="create()">create</button>
       </div>
+      <div style="width: 2rem"></div>
     </div>
-    <footer></footer>
-    <script type="text/javascript">
-      const txtField = document.getElementById("txt-content");
-      const txtTitle = document.getElementById("txt-title");
-      const noteState = document.getElementById("note-state");
-      const noteTag = document.getElementById("note-tag");
+  </div>
+  <footer></footer>
+  <script type="text/javascript">
+    const txtField = document.getElementById("txt-content");
+    const txtTitle = document.getElementById("txt-title");
+    const noteState = document.getElementById("note-state");
+    const noteTag = document.getElementById("note-tag");
+    const createBtn = document.getElementById("btn-ct");
 
-      const create = async () => {
-        const res = await createNote(
-          txtTitle.value,
-          txtField.value,
-          noteState.value,
-          noteTag.value
-        );
-        if (res.code === "00") {
-          // window.alert("create successfully");
-          localStorage.removeItem("TAGS");
-          window.location.href = `/note.view.html?noteId=${res.msg.noteId}&role=1`;
-        } else {
-          window.alert("create failed", res.msg);
-        }
-      };
+    const create = async () => {
+      createBtn.disabled = true;
+      const res = await createNote(
+        txtTitle.value,
+        txtField.value,
+        noteState.value,
+        noteTag.value
+      );
+      createBtn.disabled = false;
+      if (res.code === "00") {
+        // window.alert("create successfully");
+        localStorage.removeItem("TAGS");
+        window.location.href = `/note.view.html?noteId=${res.msg.noteId}&role=1`;
+      } else {
+        window.alert("create failed", res.msg);
+      }
+    };
 
-      (async () => {
-        await isLogin();
-        const listTag = await getTag();
-        let innerTag = ``;
-        for (const tag of listTag) {
-          innerTag += `<option value="${tag._id}">${tag.name}</option>`;
-        }
-        noteTag.innerHTML = innerTag;
-        getFooter();
-        try {
-          const lastNote = JSON.parse(localStorage.getItem("LAST_NOTE"));
-          const noteInfo = lastNote.title.split("-");
+    (async () => {
+      await isLogin();
+      const listTag = await getTag();
+      let innerTag = ``;
+      for (const tag of listTag) {
+        innerTag += `<option value="${tag._id}">${tag.name}</option>`;
+      }
+      noteTag.innerHTML = innerTag;
+      getFooter();
+      try {
+        const lastNote = JSON.parse(localStorage.getItem("LAST_NOTE"));
+        const noteInfo = lastNote.title.split("-");
 
-          const index = noteInfo[0].trim().substring(1);
-          const date = noteInfo[1].trim();
-          const now = new Date();
-          const _date = date.split("/");
-          now.setMonth(Number(_date[1]) - 1);
-          now.setDate(Number(_date[0]));
-          const _nextDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-          console.log({ now, _nextDate });
+        const index = noteInfo[0].trim().substring(1);
+        const date = noteInfo[1].trim();
+        const now = new Date();
+        const _date = date.split("/");
+        now.setMonth(Number(_date[1]) - 1);
+        now.setDate(Number(_date[0]));
+        const _nextDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+        console.log({ now, _nextDate });
 
-          const days = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-          txtTitle.value = `#${+index + 1} - ${_nextDate.getDate()}/${
-            _nextDate.getMonth() + 1
+        const days = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+        txtTitle.value = `#${+index + 1} - ${_nextDate.getDate()}/${_nextDate.getMonth() + 1
           } - ${days[_nextDate.getDay()]} `;
 
-          noteTag.value = lastNote.tag._id;
-          noteState.value = lastNote.state;
-        } catch (err) {
-          console.log("ERR_PARSE_JSON", err);
-        }
+        noteTag.value = lastNote.tag._id;
+        noteState.value = lastNote.state;
+      } catch (err) {
+        console.log("ERR_PARSE_JSON", err);
+      }
 
-        txtField.value = `Sáng nay dậy lúc _ giờ? _ gọi tôi dậy.
+      txtField.value = `Sáng nay dậy lúc _ giờ? _ gọi tôi dậy.
 Tôi ăn: _
 Trời nay: _
 
@@ -101,7 +104,8 @@ Tối nay làm cái quần gì?
 Tôi ăn: _
 
 Tôi ngủ lúc _ giờ`;
-      })();
-    </script>
-  </body>
+    })();
+  </script>
+</body>
+
 </html>
