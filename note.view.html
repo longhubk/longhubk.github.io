@@ -135,8 +135,8 @@
         const tags = JSON.parse(localStorage.getItem('tags'));
         info.innerHTML = `
         <p>${stateMap[String(note.state)]} | ${new Date(note.created_at).toLocaleTimeString()} | ${new Date(note.created_at).toLocaleDateString()}</p>
-          <button onClick="routeTag('${note?.tag?._id ? note?.tag?._id : tags.find(tag => tag._id === note.tag)?._id}')" > 
-          ${note?.tag?.name ? note?.tag?.name : tags.find(tag => tag._id === note.tag)?.name} 
+          <button onClick="routeTag('${note?.tag?._id ? note?.tag?._id : tags?.find(tag => tag?._id === note?.tag)?._id}')" > 
+          ${note?.tag?.name ? note?.tag?.name : tags?.find(tag => tag?._id === note?.tag)?.name} 
           </button>
         `;
         if (isLogin) {
