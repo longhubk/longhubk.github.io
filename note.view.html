@@ -25,9 +25,9 @@
       </div>
       <div id="aud-box"></div>
       <div id="note-info"></div>
+      <div id="blg">Loading...</div>
       <button onclick="viewPreviusNode()">Prev</button>
       <button onclick="viewNextNode()">Next</button>
-      <div id="blg">Loading...</div>
       <div class="search-box" id="i-cmt"></div>
       <div id="cmt"></div>
     </div>
@@ -96,6 +96,10 @@
       }
     };
 
+    const routeTag = (tagId) => {
+      document.location.href = `/note.manager.html?tag=${tagId}`;
+    }
+
     (async () => {
       const isLogin = await checkIsLogin();
       if (isLogin) {
@@ -119,17 +123,27 @@
       } else {
         note = await getNote(noteId);
       }
+
+
       const listAudio = await getListAudio();
       const listAudioID = listAudio.map(aud => aud.split('.')[0]);
       console.log({ listAudio, noteId: note._id });
+
+      // <p>Updated At: ${new Date(note.updated_at).toLocaleTimeString()} - ${new Date(note.updated_at).toLocaleDateString()}</p>
+      // <p>
       if (note) {
         const tags = JSON.parse(localStorage.getItem('tags'));
         info.innerHTML = `
-        <p>State: ${stateMap[String(note.state)]}</p>
-        <p>Created At: ${new Date(note.created_at).toLocaleTimeString()} - ${new Date(note.created_at).toLocaleDateString()}</p>
-        <p>Updated At: ${new Date(note.updated_at).toLocaleTimeString()} - ${new Date(note.updated_at).toLocaleDateString()}</p>
-        <p>Tag: ${note?.tag?.name ? note?.tag?.name : tags.find(tag => tag._id === note.tag)?.name}</p>
+        <p>${stateMap[String(note.state)]} | ${new Date(note.created_at).toLocaleTimeString()} | ${new Date(note.created_at).toLocaleDateString()}</p>
+          <button onClick="routeTag('${note?.tag?._id ? note?.tag?._id : tags.find(tag => tag._id === note.tag)?._id}')" > 
+          ${note?.tag?.name ? note?.tag?.name : tags.find(tag => tag._id === note.tag)?.name} 
+          </button>
         `;
+        if (isLogin) {
+          info.innerHTML +=
+            `<button onClick="redirect('/note.edit.html?noteId=${note._id}')">Edit</button>`
+        }
+        info.innerHTML += "</p>";
         if (listAudioID.includes(note._id)) {
           try {
             const aud_uri = server_url + "/" + note._id + ".mp3";
@@ -187,9 +201,6 @@
             <button id="bc" onclick="btnComment()">Comment</button>`;
 
           const titBox = document.getElementById("tit-box");
-          titBox.innerHTML =
-            titBox.innerHTML +
-            `<button onClick="redirect('/note.edit.html?noteId=${note._id}')">Edit</button>`;
         }
       } else {
         blg.innerHTML = NOT_FOUND;
