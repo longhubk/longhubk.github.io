@@ -2,7 +2,7 @@
 // const server_url = "https://crud-blog.onrender.com";
 // const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
 // const server_url = "http://localhost:3000";
-const server_url = "http://18.141.144.98:3000";
+const server_url = "https://api.vs-blog.tech";
 
 
 
