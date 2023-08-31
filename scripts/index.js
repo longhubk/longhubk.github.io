@@ -14,7 +14,7 @@ const prevPrefix = 'PREV_';
 const currentPageKey = 'CURRENT_PAGE';
 
 const stateMap = {
-  "0": "Publish",
+  "0": "Public",
   "1": "Private",
   "2": "Hidden",
   "3": "Sharing",
