@@ -28,6 +28,7 @@
           <select id="note-tag"></select>
         </div>
         <button id="btn-ct" onclick="create()">create</button>
+        <button id="btn-cl" onclick="handleBtnClear()">clear</button>
       </div>
       <div style="width: 2rem"></div>
     </div>
@@ -39,6 +40,16 @@
     const noteState = document.getElementById("note-state");
     const noteTag = document.getElementById("note-tag");
     const createBtn = document.getElementById("btn-ct");
+
+    const deleteCache = () => {
+      localStorage.removeItem('SAVED_NEW_CONTENT');
+      localStorage.removeItem('SAVED_NEW_TITLE');
+    }
+
+    const handleBtnClear  = () => {
+      deleteCache();
+      window.location.reload();
+    }
 
     const create = async () => {
       createBtn.disabled = true;
@@ -52,14 +63,32 @@
       if (res.code === "00") {
         // window.alert("create successfully");
         localStorage.removeItem("TAGS");
+        deleteCache();
         window.location.href = `/note.view.html?noteId=${res.msg.noteId}&role=1`;
       } else {
         window.alert("create failed", res.msg);
       }
     };
 
+
+    txtTitle.addEventListener("input", (event) => {
+      const changedValue = event.target.value;
+      console.log(`Text title on change`);
+      localStorage.setItem('SAVED_NEW_TITLE', changedValue);
+    });
+
+    txtField.addEventListener("input", (event) => {
+      const changedValue = event.target.value;
+      console.log(`Text content on change`);
+      localStorage.setItem('SAVED_NEW_CONTENT', changedValue);
+    });
+
     (async () => {
       await isLogin();
+
+      savedContent = localStorage.getItem('SAVED_NEW_CONTENT');
+      savedTitle = localStorage.getItem('SAVED_NEW_TITLE');
+
       const listTag = await getTag();
       let innerTag = ``;
       for (const tag of listTag) {
@@ -71,18 +100,21 @@
         const lastNote = JSON.parse(localStorage.getItem("LAST_NOTE"));
         const noteInfo = lastNote.title.split("-");
 
-        const index = noteInfo[0].trim().substring(1);
-        const date = noteInfo[1].trim();
-        const now = new Date();
-        const _date = date.split("/");
-        now.setMonth(Number(_date[1]) - 1);
-        now.setDate(Number(_date[0]));
-        const _nextDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-        console.log({ now, _nextDate });
-
-        const days = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-        txtTitle.value = `#${+index + 1} - ${_nextDate.getDate()}/${_nextDate.getMonth() + 1
-          } - ${days[_nextDate.getDay()]} `;
+        if (savedTitle) {
+          txtTitle.value = savedTitle;
+        } else {
+          const index = noteInfo[0].trim().substring(1);
+          const date = noteInfo[1].trim();
+          const now = new Date();
+          const _date = date.split("/");
+          now.setMonth(Number(_date[1]) - 1);
+          now.setDate(Number(_date[0]));
+          const _nextDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+          console.log({ now, _nextDate });
+          const days = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+          txtTitle.value = `#${+index + 1} - ${_nextDate.getDate()}/${_nextDate.getMonth() + 1
+            } - ${days[_nextDate.getDay()]} `;
+        }
 
         noteTag.value = lastNote.tag._id;
         noteState.value = lastNote.state;
@@ -90,7 +122,7 @@
         console.log("ERR_PARSE_JSON", err);
       }
 
-      txtField.value = `Sáng nay dậy lúc _ giờ? _ gọi tôi dậy.
+      txtField.value = savedContent ? savedContent : `Sáng nay dậy lúc _ giờ? _ gọi tôi dậy.
 Tôi ăn: _
 Trời nay: _
 
