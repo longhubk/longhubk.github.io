@@ -45,6 +45,7 @@
         <button id="btn-img" onclick="uploadImg()">Upload img</button>
         <button id="btn-dl" onclick="deletePost()">Delete</button>
         <button id="btn-ud" onclick="update()">Update</button>
+        <button id="btn-cl" onclick="handleBtnClear()">Clear</button>
       </div>
       <div style="width: 2rem"></div>
     </div>
@@ -60,6 +61,7 @@
     const updateBtn = document.getElementById("btn-ud");
     const deleteBtn = document.getElementById("btn-dl");
     let note;
+    const noteId = getQueryParam("noteId");
 
     const update = async () => {
       const updateData = {
@@ -76,19 +78,28 @@
       updateBtn.disabled = false;
       if (res.code === "00") {
         // window.alert("update successfully");
+        deleteCache();
         redirect(`/note.view.html?noteId=${note._id}&role=1`);
       } else {
         window.alert(`update failed: ${res.msg}`);
       }
     };
 
+    const deleteCache = () => {
+      localStorage.removeItem('SAVED_EDIT_CONTENT');
+      localStorage.removeItem('SAVED_EDIT_TITLE');
+    }
+
+    const handleBtnClear = () => {
+      deleteCache();
+      redirect(`/note.edit.html?noteId=${noteId}&role=1`);
+    }
+
     const uploadAud = async () => {
-      const noteId = getQueryParam("noteId");
       await uploadAudio(noteId);
     };
 
     const deletePost = async () => {
-      const noteId = getQueryParam("noteId");
       deleteBtn.disabled = true;
       const res = await deleteNote(noteId);
       deleteBtn.disabled = false;
@@ -104,16 +115,30 @@
     };
 
     const viewNote = () => {
-      const noteId = getQueryParam("noteId");
       redirect(`/note.view.html?noteId=${noteId}&role=1`);
     };
 
+    txtTitle.addEventListener("input", (event) => {
+      const changedValue = event.target.value;
+      console.log(`Text title on change`);
+      localStorage.setItem('SAVED_EDIT_TITLE', changedValue);
+    });
+
+    txtField.addEventListener("input", (event) => {
+      const changedValue = event.target.value;
+      console.log(`Text content on change`);
+      localStorage.setItem('SAVED_EDIT_CONTENT', changedValue);
+    });
+
     (async () => {
       await isLogin();
-      const noteId = getQueryParam("noteId");
       note = await getAdminNote(noteId);
-      txtTitle.value = note.title;
-      txtField.value = note.content;
+
+      savedContent = localStorage.getItem('SAVED_EDIT_CONTENT');
+      savedTitle = localStorage.getItem('SAVED_EDIT_TITLE');
+
+      txtTitle.value = savedTitle ? savedTitle : note.title;
+      txtField.value = savedContent ? savedContent : note.content;
       txtDate.value = note.countdown;
       noteState.value = note.state;
 
