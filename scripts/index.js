@@ -3,7 +3,25 @@
 // const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
 // const server_url = "http://localhost:3000";
 // const server_url = "https://api.vs-blog.tech";
-const server_url = "https://72e7-42-113-119-92.ngrok-free.app";
+let server_url = "https://72e7-42-113-119-92.ngrok-free.app";
+
+
+const getServerUrl = async () => {
+  const res = await axios
+    .get(`https://api.ngrok.com/endpoints`, {
+      headers: {
+        Authorization: 'Bearer 2dMZI5dzp1Ze1qxfQZVDpbJT12m_2gH6aoCDHEd5mXUQ1eFS4',
+        "Content-Type": "application/json",
+        "Ngrok-Version": "2"
+
+      }
+    })
+  const { endpoints } = res.data;
+  if (endpoints.length > 0) {
+    server_url = endpoints[0].public_url;
+  }
+  console.log({ server_url })
+}
 
 
 
@@ -102,6 +120,8 @@ const createPageItem = async (countNote, page = 1) => {
 };
 
 const checkIsLogin = async () => {
+  await getServerUrl();
+
   const oldTK = localStorage.getItem("token");
   if (oldTK) {
     try {
@@ -213,7 +233,7 @@ const getAdminListNote = async (page = 1, keyword, tag, state) => {
           ? `${url}?tag=${tag}`
           : kwUrl;
     const stateUrl = state ? `${tgUrl}?state=${state}` : tgUrl;
-    console.log({stateUrl});
+    console.log({ stateUrl });
     const data = await axios.get(stateUrl, {
       headers: { Authorization: `Bearer ${oldTK}` },
     });
