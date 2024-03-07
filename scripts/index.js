@@ -3,7 +3,7 @@
 // const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
 // const server_url = "http://localhost:3000";
 // const server_url = "https://api.vs-blog.tech";
-let server_url = "https://72e7-42-113-119-92.ngrok-free.app";
+let server_url = 'default-need-to-be-changed';
 
 
 const getServerUrl = async () => {
