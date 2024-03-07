@@ -86,6 +86,7 @@
       }
 
       (async () => {
+        await getServerUrl();
         await renderListNote(keyword);
         injectSearch(keyword);
         getFooter();
