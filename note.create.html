@@ -4,6 +4,12 @@
 <head>
   <title>VSB</title>
   <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
   <script src="scripts/axios.js" type="text/javascript"></script>
   <script src="scripts/index.js" type="text/javascript"></script>
@@ -11,29 +17,38 @@
 </head>
 
 <body>
+  <div id="nav">
+    <div class="logo">
+      <a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a>
+    </div>
+    <ul id="nav-man"></ul>
+  </div>
   <div class="container">
-    <ul id="nav">
-      <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
-    </ul>
     <div>
-      <textarea id="txt-title" rows="2" autofocus></textarea><br /><br />
-      <textarea id="txt-content" rows="20"></textarea><br /><br />
-      <div class="fx space-b align-c">
+      <div class="search-box">
+        <textarea id="txt-title" rows="2" autofocus></textarea>
+      </div>
+      <textarea id="txt-content" rows="20"></textarea>
+      <div class="control-actions">
         <div>
           <select id="note-state">
             <option value="1">Private</option>
             <option value="0">Publish</option>
             <option value="2">Hidden</option>
           </select>
+        </div>
+        <div>
           <select id="note-tag"></select>
         </div>
-        <button id="btn-ct" onclick="create()">create</button>
-        <button id="btn-cl" onclick="handleBtnClear()">clear</button>
+        <div>
+          <button id="btn-ct" onclick="create()">create</button>
+          <button id="btn-cl" onclick="handleBtnClear()">clear</button>
+        </div>
       </div>
       <div style="width: 2rem"></div>
     </div>
   </div>
-  <footer></footer>
+  <div class="footer"></div>
   <script type="text/javascript">
     const txtField = document.getElementById("txt-content");
     const txtTitle = document.getElementById("txt-title");
@@ -46,7 +61,7 @@
       localStorage.removeItem('SAVED_NEW_TITLE');
     }
 
-    const handleBtnClear  = () => {
+    const handleBtnClear = () => {
       deleteCache();
       window.location.reload();
     }

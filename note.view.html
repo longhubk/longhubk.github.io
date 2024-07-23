@@ -5,6 +5,12 @@
   <title>VSB</title>
   <meta charset="utf-8" />
   <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
   <!-- <script src="scripts/https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
   <script src="scripts/https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script> -->
@@ -15,24 +21,29 @@
 </head>
 
 <body>
+  <div id="nav">
+    <div class="logo"><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></div>
+    <ul id="nav-man"></ul>
+  </div>
+
   <div class="container">
-    <ul id="nav">
-      <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
-    </ul>
     <div>
       <div class="fx space-b" id="tit-box">
         <h1 id="tit"></h1>
       </div>
       <div id="aud-box"></div>
       <div id="note-info"></div>
-      <div id="blg">Loading...</div>
+      <div id="blg">
+        <p>Loading...
+        <p>
+      </div>
       <button onclick="viewPreviusNode()">Prev</button>
       <button onclick="viewNextNode()">Next</button>
       <div class="search-box" id="i-cmt"></div>
       <div id="cmt"></div>
     </div>
   </div>
-  <footer></footer>
+  <div class="footer"></div>
   <script type="text/javascript">
     const blg = document.getElementById("blg");
     const info = document.getElementById("note-info");
@@ -124,17 +135,14 @@
         note = await getNote(noteId);
       }
 
-
       const listAudio = await getListAudio();
       const listAudioID = listAudio.map(aud => aud.split('.')[0]);
       console.log({ listAudio, noteId: note._id });
 
-      // <p>Updated At: ${new Date(note.updated_at).toLocaleTimeString()} - ${new Date(note.updated_at).toLocaleDateString()}</p>
-      // <p>
       if (note) {
         const tags = JSON.parse(localStorage.getItem('tags'));
         info.innerHTML = `
-        <p>${stateMap[String(note.state)]} | ${new Date(note.created_at).toLocaleTimeString()} | ${new Date(note.created_at).toLocaleDateString()}</p>
+        <p class="date-str">${role == 1 ? `${stateMap[String(note.state)]} | ` : ''}${dateVNFormat(note.created_at)}</p>
           <button onClick="routeTag('${note?.tag?._id ? note?.tag?._id : tags?.find(tag => tag?._id === note?.tag)?._id}')" > 
           ${note?.tag?.name ? note?.tag?.name : tags?.find(tag => tag?._id === note?.tag)?.name} 
           </button>

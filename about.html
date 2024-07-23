@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <title>VSB</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="styles/main.css" />
-    <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
-    <script src="scripts/index.js" type="text/javascript"></script>
-  </head>
 
-  <body>
-    <div class="container">
-      <ul id="nav">
-        <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
-      </ul>
-      <img alt="img1" src="assets/avatar.JPG" />
-      <pre id="info"></pre>
-    </div>
-    <footer></footer>
-    <script type="text/javascript">
-      const _info = document.getElementById("info");
-      const currentYear = new Date().getFullYear();
-      _info.innerHTML = `
-  Xin chào các bạn, mình tên là Nguyễn Thành Long, ${
-    currentYear - 1999
-  } tuổi. Mình đã học
-  tại trường Đại Học Bách Khoa Hà Nội trong 4 năm với chuyên ngành công
-  nghệ thông tin. 
-  Mình lập ra blog đơn giản này chỉ với mục đích lưu lại
-  những suy nghĩ và ý tưởng của cá nhân mình, ngoài ra mình còn muốn chia
-  sẻ với các bạn những thứ mình biết xoay quanh cuộc sống và ngành nghề
-  của mình. 
-  Cảm ơn các bạn đã quan tâm theo dõi blog của mình. Nếu có
-  gì cần đóng góp các bạn có thể đăng kí lấy 1 tài khoản và phản hồi cho
-  mình ở mỗi bài viết trong phần bình luận.`;
+<head>
+  <title>VSB</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
+  <script src="scripts/index.js" type="text/javascript"></script>
+</head>
 
-      getFooter();
-    </script>
-  </body>
+<body>
+  <class id="nav">
+    <div class="logo"><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></div>
+  </class>
+  <div class="container">
+    <img alt="img1" src="assets/avatar.JPG" />
+    <pre id="info"></pre>
+    <p>
+      Hello, my name is Long, an IT worker
+    </p>
+    <p>
+      Welcome to my blog
+    </p>
+    <p>
+      Nice to share with you!
+    </p>
+  </div>
+  <div class="footer"></div>
+  <script type="text/javascript">
+    getFooter();
+  </script>
+</body>
+
 </html>

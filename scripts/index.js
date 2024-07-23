@@ -1,9 +1,9 @@
 // const server_url = "https://dblogit.herokuapp.com";
 // const server_url = "https://crud-blog.onrender.com";
 // const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
-// const server_url = "http://localhost:3000";
+let server_url = "http://localhost:3000";
 // const server_url = "https://api.vs-blog.tech";
-let server_url = 'default-need-to-be-changed';
+// let server_url = 'default-need-to-be-changed';
 
 
 const getServerUrl = async () => {
@@ -72,18 +72,35 @@ const handleSerializeNote = async (listNote = []) => {
 }
 
 const getFooter = () => {
-  const footer = document.getElementsByTagName("footer")[0];
+  const footer = document.getElementsByClassName("footer")[0]
   footer.innerHTML = `
-  <div class="fx wr">
-    <a class="mr-1" href="mailto:longn7284@gmail.com">Email</a>
     <a class="mr-1" href="https://github.com/longhubk">Github</a>
+    <a class="mr-1" href="https://www.youtube.com/channel/UC8fMajduEZycJJfdyLNhYdg">Youtube</a>
     <button onclick="goToDown()" class="scroll-btn" id="down-btn" title="Go to down">
       <img src="assets/vsb_icon_down.png" class="icon30" alt="v" />
     </button>
     <button onclick="goToTop()" class="scroll-btn" id="top-btn" title="Go to top">
       <img src="assets/vsb_icon_up.png" class="icon30" alt="^" />
     </button>
-  </div>`;
+  `;
+
+  window.addEventListener('scroll', function () {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollTop + window.innerHeight >= document.documentElement.scrollHeight) {
+      // Show footer when at the bottom
+      footer.classList.add('show');
+    } else {
+      // Hide footer when scrolling up
+      footer.classList.remove('show');
+    }
+  });
+
+  // Initially show the footer if the content is shorter than the viewport
+  // document.addEventListener('DOMContentLoaded', function () {
+  const isContentShort = document.documentElement.scrollHeight <= window.innerHeight;
+  if (isContentShort) {
+    footer.classList.add('show');
+  }
 };
 
 const getQueryParam = (param) => {
@@ -643,13 +660,13 @@ const redirect = (uri) => {
 const NOT_FOUND = "404 NOT FOUND";
 
 const addMangerNav = (username) => {
-  const nav = document.getElementById("nav");
+  const nav = document.getElementById("nav-man");
   nav.innerHTML =
     nav.innerHTML + `<li><a href="/note.manager.html">${username}</a></li>`;
 };
 
 const getPageInfo = (countNote, currentPage) =>
-  `<p>All: ${countNote} - Page: ${currentPage}/${Math.ceil(
+  `<p class="sub-txt">All: ${countNote} - Page: ${currentPage}/${Math.ceil(
     countNote / perPage
   )}</p>`;
 
@@ -684,4 +701,17 @@ const getRandomNote = async () => {
   } catch (err) {
     console.log(err);
   }
+}
+
+const dateVNFormat = (date) => {
+  return new Date(date).toLocaleDateString('vi-VN', {
+    // dateStyle: 'short',
+    timeZone: 'Asia/Ho_Chi_Minh',
+  })
+}
+
+const dateTimeVNFormat = (date) => {
+  // dateStyle: 'short',
+  const d = new Date(date);
+  return `${d.toLocaleDateString('vi-VN')} ${d.toLocaleTimeString('vi-VN')} `
 }

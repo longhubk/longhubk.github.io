@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>VSB</title>
-    <link rel="stylesheet" type="text/css" href="styles/main.css" />
-    <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
-    <script src="scripts/axios.js" type="text/javascript"></script>
-    <script src="scripts/index.js" type="text/javascript"></script>
-  </head>
 
-  <body>
-    <div class="container">
-      <ul id="nav">
-        <li><a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a></li>
-      </ul>
-      <label for="us"></label>
-      <input id="us" type="text" placeholder="enter username" /><br /><br />
-      <input id="pw" type="password" placeholder="enter password" /><br />
-      <br />
-      <button id="btn-login" onclick="lg()">Log In</button>
+<head>
+  <title>VSB</title>
+  <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link rel="shortcut icon" href="assets/vsb_icon_logo_4.png" />
+  <script src="scripts/axios.js" type="text/javascript"></script>
+  <script src="scripts/index.js" type="text/javascript"></script>
+</head>
+
+<body>
+  <div id="nav">
+    <div class="logo">
+      <a href="/"><img src="assets/vsb_logo_2.svg" id="logo" alt="Logo SVG" /></a>
     </div>
-    <footer></footer>
-    <script type="text/javascript">
-      const uf = document.getElementById("us");
-      const pf = document.getElementById("pw");
-      const lg = () => login(uf.value, pf.value);
+  </div>
+  <div class="container">
+    <label for="us"></label>
+    <input id="us" type="text" placeholder="enter username" /><br /><br />
+    <input id="pw" type="password" placeholder="enter password" /><br />
+    <br />
+    <button id="btn-login" onclick="lg()">Log In</button>
+  </div>
+  <div class="footer"></div>
+  <script type="text/javascript">
+    const uf = document.getElementById("us");
+    const pf = document.getElementById("pw");
+    const lg = () => login(uf.value, pf.value);
 
-      (async () => {
-        const isLogin = await checkIsLogin();
-        if (isLogin) {
-          window.location.href = "/";
-        }
-      })();
-    </script>
-  </body>
+    (async () => {
+      const isLogin = await checkIsLogin();
+      if (isLogin) {
+        window.location.href = "/";
+      }
+    })();
+
+    pf.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') { // Check if the pressed key is Enter
+        event.preventDefault(); // Prevent default action (e.g., form submission)
+        document.getElementById('btn-login').click(); // Trigger button click
+      }
+    });
+  </script>
+</body>
+
 </html>
