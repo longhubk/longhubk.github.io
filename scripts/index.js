@@ -40,6 +40,42 @@ const stateMap = {
   "3": "Sharing",
 }
 
+const emojis = [
+  "😀", "😁", "😂", "🤣", "😃", "😄", "😅", "😆", "😉", "😊", "😋", "😎", "😍", "😘", "😗",
+  "😙", "😚", "☺️", "🙂", "🤗", "🤩", "🤔", "🤨", "😐", "😑", "😶", "🙄", "😏", "😣", "😥",
+  "😮", "🤐", "😯", "😪", "😫", "😴", "😌", "😛", "😜", "😝", "🤤", "😒", "😓", "😔", "😕",
+  "🙃", "🤑", "😲", "☹️", "🙁", "😖", "😞", "😟", "😤", "😢", "😭", "😦", "😧", "😨", "😩",
+  "🤯", "😬", "😰", "😱", "😳", "🤪", "😵", "😡", "😠", "🤬", "😷", "🤒", "🤕", "🤢", "🤮",
+  "🤧", "😇", "🤠", "🤡", "🤥", "🤫", "🤭", "🧐", "🤓", "😈", "👿", "👹", "👺", "💀", "👻",
+  "👽", "👾", "🤖", "💩", "😺", "😸", "😹", "😻", "😼", "😽", "🙀", "😿", "😾", "❤️", "💛", "💚", "💙", "💜", "🖤", "💔", "❣️", "💕", "💞", "💓", "💗", "💖", "💘",
+  "💝", "💟"
+];
+
+
+const loadEmojis = (textarea) => {
+  const emojiList = document.getElementById('emojiList');
+
+  emojis.forEach(emoji => {
+    const span = document.createElement('span');
+    span.className = 'emoji';
+    span.textContent = emoji;
+    span.addEventListener('click', () => insertEmoji(emoji));
+    emojiList.appendChild(span);
+  });
+
+  function insertEmoji(emoji) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    textarea.value = text.slice(0, start) + emoji + text.slice(end);
+    textarea.setSelectionRange(start + emoji.length, start + emoji.length);
+    textarea.focus();
+    if (txtPreview) {
+      txtPreview.innerHTML = renderNote(txtField.value);
+    }
+  }
+}
+
 const clearCache = (prefix) => {
   var arr = []; // Array to hold the keys
   // Iterate over localStorage and insert the keys that meet the condition into arr

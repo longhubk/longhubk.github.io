@@ -1,78 +1,56 @@
 * {
-  font-size: calc(0.75em + 1vmin);
+  font-size: 16px;
 }
 
 body {
   padding-top: 65px;
   margin-top: 10px;
   display: block !important;
-  /* Overriding display property */
   margin: 0 !important;
-  /* Removing default margin */
   /* font-family: "Helvetica", "Arial", "Sans-Serif"; */
   /* font-family: inter; */
   box-sizing: border-box;
   /* font-family: 'Roboto', sans-serif; */
   /* font-family: 'Lora', serif; */
-  font-family: 'Montserrat', sans-serif;
-
-
-  /* font-family: 'Merriweather', serif; */
-  /* font-family: 'Poppins', sans-serif; */
-
+  /* font-family: 'Montserrat', sans-serif; */
+  font-family: Lato, sans-serif;
+  font-style: normal;
 }
 
 .container {
   margin-top: 1rem;
-  /* width: 90%; */
   margin: 1rem 2rem;
   padding-bottom: 65px;
 }
 
+.article {
+  max-width: 672px;
+}
+
 #nav {
   background-color: #6e6e6e;
-  /* Dark gray background */
-  /* color: white; */
-  /* White text color */
   display: flex;
-  /* Flexbox layout */
   justify-content: space-between;
-  /* Space between items */
   align-items: center;
-  /* Center items vertically */
   padding: 10px 20px;
-  /* Padding inside the nav */
   width: 100%;
-  /* Full width */
   box-sizing: border-box;
-  /* Include padding in width calculation */
   position: fixed;
-  /* Fixed positioning at the top */
   top: 0;
-  /* Align to the top */
   left: 0;
-  /* Align to the left */
   z-index: 1000;
-  /* Ensure it sits above other content */
 }
 
 #nav .logo {
   font-size: 18px;
-  /* Font size for logo or brand name */
   font-weight: bold;
-  /* Bold font weight for emphasis */
 }
 
 #nav ul {
   list-style: none;
-  /* Remove default list styling */
-  /* background-color: #5a6268; */
   margin: 0;
-  /* Remove default margin */
   padding: 0;
-  /* Remove default padding */
   display: flex;
-  /* Flexbox layout for list items */
 }
 
 #nav ul li {
@@ -117,52 +95,33 @@ textarea:focus {
 
 button {
   background-color: #808b94;
-  /* Gray background */
   color: white;
-  /* White text */
   border: none;
-  /* No border */
   padding: 10px 20px;
-  /* Padding for the button */
   font-size: 16px;
-  /* Font size */
   border-radius: 5px;
-  /* Rounded corners */
   cursor: pointer;
-  /* Pointer cursor on hover */
   transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
-  /* Smooth transition for transform and background color */
 }
 
 button:hover {
   transform: scale(1.1);
-  /* Scales the button to 110% of its original size */
   background-color: #5a6268;
-  /* Slightly darker gray on hover */
 }
 
 input {
   margin-right: 0.5rem;
   background-color: #f1f1f1;
   border: none;
-  /* No border */
   padding: 1rem 2rem;
-  /* Padding for the input */
   font-size: 16px;
-  /* Font size */
   border-radius: 5px;
-  /* Rounded corners */
   transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
-  /* Smooth transition for transform and background color */
 }
 
 input:focus {
   transform: scale(1.01);
-  /* Scales the input to 105% of its original size on focus */
-  /* background-color: #dadada; */
-  /* Slightly darker gray on focus */
   outline: none;
-  /* Removes the default outline */
 }
 
 .content,
@@ -208,20 +167,16 @@ ul {
 
 #list-note {
   background-color: #eee;
-  border-radius: 1rem;
   padding: 1rem;
 }
 
 .note-link {
   display: inline-block;
-  /* Ensures that the transform effect applies correctly */
   transition: transform 0.3s ease-in-out;
-  /* Smooth transition for scaling */
 }
 
 .note-link:hover {
   transform: scale(1.1);
-  /* Scales the link to 110% of its original size */
 }
 
 #list-note .note-item {
@@ -377,31 +332,20 @@ textarea {
   border-radius: 20%;
 }
 
-/* The Modal (background) */
 .modal {
   display: none;
-  /* Hidden by default */
   position: fixed;
-  /* Stay in place */
   z-index: 1;
-  /* Sit on top */
   padding-top: 100px;
-  /* Location of the box */
   left: 0;
   top: 0;
   width: 100%;
-  /* Full width */
   height: 100%;
-  /* Full height */
   overflow: auto;
-  /* Enable scroll if needed */
   background-color: rgb(0, 0, 0);
-  /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4);
-  /* Black w/ opacity */
 }
 
-/* Modal Content */
 .modal-content {
   position: relative;
   background-color: #fefefe;
@@ -416,7 +360,6 @@ textarea {
   animation-duration: 0.4s;
 }
 
-/* Add Animation */
 @-webkit-keyframes animatetop {
   from {
     top: -300px;
@@ -441,7 +384,6 @@ textarea {
   }
 }
 
-/* The Close Button */
 .close {
   color: #555;
   float: right;
@@ -504,33 +446,22 @@ textarea {
 
 select {
   appearance: none;
-  /* Remove default arrow */
   background-color: white;
-  /* White background */
   color: #333;
-  /* Dark text color */
   padding: 10px;
-  /* Padding for the select */
   font-size: 16px;
-  /* Font size */
   border: 1px solid #ccc;
-  /* Light gray border */
   border-radius: 5px;
-  /* Rounded corners */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow */
   width: 100%;
-  /* Full width */
   box-sizing: border-box;
-  /* Ensure padding is included in the width */
   transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  /* Smooth transition for border and shadow */
 }
 
 select:focus {
-  border-color: #007bff;
+  border-color: #949494;
   /* Blue border on focus */
-  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 2px 5px rgba(182, 182, 182, 0.5);
   /* Blue shadow on focus */
   outline: none;
   /* Remove default outline */
@@ -571,57 +502,37 @@ select option {
 }
 
 .custom-file-label:hover {
-  border-color: #007bff;
+  border-color: #9c9c9c;
   /* Blue border on hover */
-  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 2px 5px rgba(112, 112, 112, 0.5);
   /* Blue shadow on hover */
 }
 
 textarea {
   width: 100%;
-  /* Full width */
   max-width: 100%;
-  /* Prevents expanding beyond container */
-  /* height: 150px; */
-  /* Fixed height */
   padding: 10px;
-  /* Padding inside the textarea */
   font-size: 16px;
-  /* Font size */
   border: 1px solid #ccc;
-  /* Light gray border */
   border-radius: 5px;
-  /* Rounded corners */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow */
   background-color: white;
-  /* White background */
   color: #333;
-  /* Dark text color */
   resize: vertical;
-  /* Allow vertical resizing only */
   transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  /* Smooth transition for border and shadow */
 }
 
 textarea:focus {
   border-color: #007bff;
-  /* Blue border on focus */
   box-shadow: 0 2px 5px rgba(0, 123, 255, 0.5);
-  /* Blue shadow on focus */
   outline: none;
-  /* Remove default outline */
 }
 
 .footer {
   background-color: #6e6e6e;
-  /* Dark gray background */
   color: white;
-  /* White text color */
   text-align: center;
-  /* Center-align text */
   padding: 20px;
-  /* Padding inside the footer */
   width: 100%;
   position: fixed;
   bottom: 0;
@@ -632,16 +543,12 @@ textarea:focus {
 
 .footer.show {
   transform: translateY(0);
-  /* Show footer */
 }
 
 .footer a {
   color: #f1f1f1;
-  /* Light gray color for links */
   text-decoration: none;
-  /* Remove underline from links */
   margin: 0 10px;
-  /* Space between links */
 }
 
 .footer a:hover {
@@ -656,7 +563,16 @@ textarea:focus {
   /* Font size for footer text */
 }
 
-/* If the screen size is 600px wide or less, hide the element */
+.editor-box {
+  display: flex;
+}
+
+.editor-box #txt-preview {
+  width: 672px;
+  height: 600px;
+  overflow-y: scroll;
+}
+
 /* @media only screen and (min-width: 1000px) {
   body {
     margin: 60px auto;
