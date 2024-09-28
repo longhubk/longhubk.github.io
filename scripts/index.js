@@ -4,7 +4,34 @@
 let server_url = "http://localhost:3000";
 // const server_url = "https://api.vs-blog.tech";
 // let server_url = 'default-need-to-be-changed';
+const gcp_server_url = "http://34.87.80.77:3000";
 
+function checkEndpointHealth(url) {
+  return axios.get(url)
+    .then(function (response) {
+      // Return true if the status code indicates success (200-299)
+      if (response.status >= 200 && response.status < 300) {
+        console.log(`Endpoint is healthy. Status Code: ${response.status}`);
+        return true;
+      } else {
+        console.log(`Endpoint is unhealthy. Status Code: ${response.status}`);
+        return false;
+      }
+    })
+    .catch(function (error) {
+      if (error.response) {
+        // Server responded with a status code out of the 2xx range
+        console.log(`Endpoint is unhealthy. Status Code: ${error.response.status}`);
+      } else if (error.request) {
+        // No response was received
+        console.error('No response received from the endpoint.');
+      } else {
+        // Some other error occurred
+        console.error(`Error: ${error.message}`);
+      }
+      return false;  // If any error occurs, consider the endpoint unhealthy
+    });
+}
 
 const getServerUrl = async () => {
   const res = await axios
@@ -19,6 +46,11 @@ const getServerUrl = async () => {
   const { endpoints } = res.data;
   if (endpoints.length > 0) {
     server_url = endpoints[0].public_url;
+  }
+  isLocalOn = await checkEndpointHealth(server_url)
+
+  if (!isLocalOn) {
+    server_url = gcp_server_url
   }
   console.log({ server_url })
 }
