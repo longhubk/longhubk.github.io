@@ -47,11 +47,6 @@ const getServerUrl = async () => {
   if (endpoints.length > 0) {
     server_url = endpoints[0].public_url;
   }
-  isLocalOn = await checkEndpointHealth(server_url)
-
-  if (!isLocalOn) {
-    server_url = gcp_server_url
-  }
   console.log({ server_url })
 }
 
