@@ -6,6 +6,11 @@ let server_url = "http://localhost:3000";
 // let server_url = 'default-need-to-be-changed';
 const gcp_server_url = "http://34.87.80.77:3000";
 
+const FALLBACK_URLS = [
+  "https://illustrated-tribes-viruses-mono.trycloudflare.com",
+  gcp_server_url
+];
+
 function checkEndpointHealth(url) {
   return axios.get(url)
     .then(function (response) {
@@ -33,23 +38,79 @@ function checkEndpointHealth(url) {
     });
 }
 
+// const getServerUrl = async () => {
+//   const res = await axios
+//     .get(`https://api.ngrok.com/endpoints`, {
+//       headers: {
+//         Authorization: 'Bearer 2dMZI5dzp1Ze1qxfQZVDpbJT12m_2gH6aoCDHEd5mXUQ1eFS4',
+//         "Content-Type": "application/json",
+//         "Ngrok-Version": "2"
+
+//       }
+//     })
+//   const { endpoints } = res.data;
+//   if (endpoints.length > 0) {
+//     server_url = endpoints[0].public_url;
+//   }
+//   console.log({ server_url })
+// }
+
+const checkEndpointHealth = async (url) => {
+  try {
+    const res = await axios.get(url, { timeout: 3000 });
+    return res.status >= 200 && res.status < 300;
+  } catch (e) {
+    return false;
+  }
+};
+
 const getServerUrl = async () => {
-  const res = await axios
-    .get(`https://api.ngrok.com/endpoints`, {
+  // 1. try localStorage first
+  const saved = localStorage.getItem("server_url");
+  if (saved && await checkEndpointHealth(saved)) {
+    return saved;
+  }
+
+  // 2. try ngrok
+  try {
+    const res = await axios.get(`https://api.ngrok.com/endpoints`, {
       headers: {
         Authorization: 'Bearer 2dMZI5dzp1Ze1qxfQZVDpbJT12m_2gH6aoCDHEd5mXUQ1eFS4',
-        "Content-Type": "application/json",
         "Ngrok-Version": "2"
-
       }
-    })
-  const { endpoints } = res.data;
-  if (endpoints.length > 0) {
-    server_url = endpoints[0].public_url;
-  }
-  console.log({ server_url })
-}
+    });
 
+    const endpoints = res.data.endpoints;
+    if (endpoints.length > 0) {
+      const ngrokUrl = endpoints[0].public_url;
+
+      if (await checkEndpointHealth(ngrokUrl)) {
+        localStorage.setItem("server_url", ngrokUrl);
+        return ngrokUrl;
+      }
+    }
+  } catch (e) {
+    console.log("ngrok failed");
+  }
+
+  // 3. try fallback URLs
+  for (const url of FALLBACK_URLS) {
+    if (await checkEndpointHealth(url)) {
+      localStorage.setItem("server_url", url);
+      return url;
+    }
+  }
+
+  // 4. last resort: ask user
+  const userUrl = prompt("All servers are down. Enter server URL:");
+  if (userUrl && await checkEndpointHealth(userUrl)) {
+    localStorage.setItem("server_url", userUrl);
+    return userUrl;
+  }
+
+  alert("All servers are unavailable. Please try again later.");
+  return null;
+};
 
 
 
