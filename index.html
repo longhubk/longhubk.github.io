@@ -99,7 +99,7 @@
     }
 
     (async () => {
-      await getServerUrl();
+      server_url = await getServerUrl();
       await renderListNote(keyword);
       injectSearch(keyword);
       getFooter();
