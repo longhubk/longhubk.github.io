@@ -11,54 +11,10 @@ const FALLBACK_URLS = [
   gcp_server_url
 ];
 
-// function checkEndpointHealth(url) {
-//   return axios.get(url)
-//     .then(function (response) {
-//       // Return true if the status code indicates success (200-299)
-//       if (response.status >= 200 && response.status < 300) {
-//         console.log(`Endpoint is healthy. Status Code: ${response.status}`);
-//         return true;
-//       } else {
-//         console.log(`Endpoint is unhealthy. Status Code: ${response.status}`);
-//         return false;
-//       }
-//     })
-//     .catch(function (error) {
-//       if (error.response) {
-//         // Server responded with a status code out of the 2xx range
-//         console.log(`Endpoint is unhealthy. Status Code: ${error.response.status}`);
-//       } else if (error.request) {
-//         // No response was received
-//         console.error('No response received from the endpoint.');
-//       } else {
-//         // Some other error occurred
-//         console.error(`Error: ${error.message}`);
-//       }
-//       return false;  // If any error occurs, consider the endpoint unhealthy
-//     });
-// }
-
-// const getServerUrl = async () => {
-//   const res = await axios
-//     .get(`https://api.ngrok.com/endpoints`, {
-//       headers: {
-//         Authorization: 'Bearer 2dMZI5dzp1Ze1qxfQZVDpbJT12m_2gH6aoCDHEd5mXUQ1eFS4',
-//         "Content-Type": "application/json",
-//         "Ngrok-Version": "2"
-
-//       }
-//     })
-//   const { endpoints } = res.data;
-//   if (endpoints.length > 0) {
-//     server_url = endpoints[0].public_url;
-//   }
-//   console.log({ server_url })
-// }
-
-const checkEndpointHealth = async (url) => {
+const checkEndpointHealth = async (baseUrl) => {
   try {
-    const res = await axios.get(url, { timeout: 3000 });
-    return res.status >= 200 && res.status < 300;
+    const res = await axios.get(`${baseUrl}/health`, { timeout: 3000 });
+    return res.status === 200 && res.data.status === "ok";
   } catch (e) {
     return false;
   }
