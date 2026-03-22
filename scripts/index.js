@@ -1,14 +1,6 @@
-// const server_url = "https://dblogit.herokuapp.com";
-// const server_url = "https://crud-blog.onrender.com";
-// const server_url = "https://crud-blog-lflgu9yk4-longhubk.vercel.app";
-let server_url = "http://localhost:3000";
-// const server_url = "https://api.vs-blog.tech";
-// let server_url = 'default-need-to-be-changed';
-const gcp_server_url = "http://34.87.80.77:3000";
-
+let server_url = localStorage.getItem("server_url");
 const FALLBACK_URLS = [
-  "https://illustrated-tribes-viruses-mono.trycloudflare.com",
-  gcp_server_url
+  "https://illustrated-tribes-viruses-mono.trycloudflare.com"
 ];
 
 const checkEndpointHealth = async (baseUrl) => {
